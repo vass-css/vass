@@ -1,0 +1,4 @@
+@use "sass:string";
+@debug string.slice("abcdef", 2, 4);
+@debug string.slice("abcdef", -3);
+.a { v: 1; }

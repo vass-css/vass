@@ -1,0 +1,5 @@
+@use "sass:math" as m
+@function vol($r)
+  @return m.pow($r, 3)
+.a
+  v: vol(2)

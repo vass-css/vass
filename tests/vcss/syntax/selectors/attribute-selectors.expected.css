@@ -1,0 +1,15 @@
+[hidden] {
+  d: none;
+}
+
+[type=text] {
+  b: 1;
+}
+
+[href^=https] {
+  s: 1;
+}
+
+[a|b] {
+  x: 1;
+}

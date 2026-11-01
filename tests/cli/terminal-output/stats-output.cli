@@ -1,0 +1,5 @@
+run: stats {tests}/fixtures/cli/_ok.vcss
+exit: 0
+stdout: has:syntax:
+stdout: has:braces (.vcss)
+stdout: has:rules:

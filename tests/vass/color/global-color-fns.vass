@@ -1,0 +1,5 @@
+@debug rgb(255, 0, 0)
+@debug hsl(120, 50%, 50%)
+@debug rgba(#036, 0.5)
+.a
+  v: 1

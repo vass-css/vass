@@ -1,0 +1,5 @@
+@use "sass:color"
+@debug color.same(#f00, rgb(255, 0, 0))
+@debug color.same(#f00, #00f)
+.a
+  v: 1

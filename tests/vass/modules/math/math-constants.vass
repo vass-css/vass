@@ -1,0 +1,7 @@
+@use "sass:math"
+.a
+  a: math.$pi
+  b: math.$e
+  c: math.$epsilon
+  d: math.$max-safe-integer
+  e: math.$min-safe-integer

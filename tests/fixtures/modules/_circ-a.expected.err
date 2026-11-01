@@ -1,0 +1,7 @@
+────────────────────────────────────────────────────────
+/workspaces/codespaces-blank/tests/fixtures/modules/_circ-b.vcss 🔥 1 error 🔥
+────────────────────────────────────────────────────────
+
+   1: @use "circ-a";
+      ↑
+      └─ ✖ Circular import cycle detected: /workspaces/codespaces-blank/tests/fixtures/modules/_circ-a.vcss. [ E0008 ]

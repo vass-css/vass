@@ -1,0 +1,4 @@
+.a {
+  --pad: 8px;
+  padding: var(--pad);
+}

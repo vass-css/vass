@@ -1,0 +1,2 @@
+@use "sass:color";
+.a { a: color.to-gamut(oklch(60% 0.4 20deg), $space: rgb, $method: clip); }

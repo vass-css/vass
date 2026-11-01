@@ -1,0 +1,5 @@
+.card
+  &-head
+    c: 1
+  &-body
+    c: 2

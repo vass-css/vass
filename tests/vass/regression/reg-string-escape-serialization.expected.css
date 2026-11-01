@@ -1,0 +1,28 @@
+@charset "UTF-8";
+.a {
+  content: "\f112";
+}
+
+.b {
+  content: "a\\b";
+}
+
+.c {
+  content: "→";
+}
+
+.d {
+  content: "😀";
+}
+
+.e {
+  content: "\e000";
+}
+
+.f {
+  content: "豈";
+}
+
+.g {
+  content: "\1f";
+}

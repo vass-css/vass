@@ -1,0 +1,16 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug VASS CLI",
+      "type": "lldb",
+      "request": "launch",
+      "cargo": {
+        "args": ["build", "--bin", "vass"],
+        "filter": { "name": "vass", "kind": "bin" }
+      },
+      "args": ["--help"],
+      "cwd": "${workspaceFolder}"
+    }
+  ]
+}

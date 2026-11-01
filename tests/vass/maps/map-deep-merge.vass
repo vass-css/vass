@@ -1,0 +1,4 @@
+@use "sass:map"
+$m: map.deep-merge((a: (x: 1)), (a: (y: 2)))
+.a
+  v: inspect($m)

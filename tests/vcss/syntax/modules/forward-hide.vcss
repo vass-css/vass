@@ -1,0 +1,2 @@
+@use "../../fixtures/modules/forwarder-hide" as fh;
+.a { v: fh.$keep; }

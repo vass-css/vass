@@ -1,0 +1,9 @@
+.wrap {
+  border-radius: 8px;
+}
+.child .wrap {
+  color: red;
+}
+.wrap:hover {
+  color: blue;
+}

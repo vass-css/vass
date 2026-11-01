@@ -1,0 +1,5 @@
+@use "sass:list"
+@debug list.nth(a b c, 2)
+@debug list.nth((a, b, c), -1)
+.a
+  v: 1

@@ -1,0 +1,25 @@
+// BASS demo — braces syntax (.bcss)
+$primary: #5b21b6
+$radius: 8px !default
+@mixin card($pad: 16px)
+  padding: $pad
+  border-radius: $radius
+  @content
+@function double($n)
+  @return $n * 2
+body
+  font-family: system-ui, sans-serif
+  color: darken($primary, 10%)
+.card
+  @include card(24px)
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1)
+  &:hover
+    background: lighten($primary, 40%)
+  .title
+    font-size: double(9px)
+@each $name, $hex in (info: #0ea5e9, ok: #22c55e)
+  .badge-#{$name}
+    border-color: $hex
+@media (max-width: 600px)
+  .card
+    padding: 12px

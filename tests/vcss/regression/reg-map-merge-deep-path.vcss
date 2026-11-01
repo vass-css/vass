@@ -1,0 +1,34 @@
+// map.merge($map1, $keys..., $map2) — deep-path form.
+//
+// Reference: dart-sass 1.107.0. The LAST argument is the overlay map; every
+// argument in between is a key path. At the path: an existing map is merged
+// into (overlay wins, key order preserved), a missing key creates the path,
+// and an existing non-map value is replaced by the overlay.
+//
+// Regression (round 6): Bass only implemented the 2-argument form and used
+// to reject the 3-argument form with
+//   error[E0003]: map.merge: `$map2` is not a map (got "theme").
+@use "vass:map" as map;
+
+$settings: (
+  "theme": (
+    "color": red,
+    "font": ("size": 16px)
+  )
+);
+
+// Path merge into an existing map: overlay wins, order kept, new keys appended.
+@debug map.merge($settings, "theme", ("color": blue, "radius": 4px));
+
+// Two-level path merge.
+@debug map.merge($settings, "theme", "font", ("weight": 700));
+
+// Missing path key: created and merged.
+@debug map.merge($settings, "unknown", ("new": 1));
+
+// Non-map value at the path: replaced by the overlay.
+$leaf: ("name": "Bass");
+@debug map.merge($leaf, "name", ("a": 1));
+
+// Plain 2-argument form still merges top-level keys.
+@debug map.merge(("a": 1), ("b": 2));

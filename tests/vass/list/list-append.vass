@@ -1,0 +1,5 @@
+@use "sass:list"
+@debug list.separator(list.append(a b, c))
+@debug list.separator(list.append((a, b), c, $separator: space))
+.a
+  v: 1

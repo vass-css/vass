@@ -1,0 +1,4 @@
+@use "sass:math"
+.a
+  a: math.clamp(10px, 50px, 100px)
+  b: math.clamp(10px, 5px, 100px)

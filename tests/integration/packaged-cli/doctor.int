@@ -1,0 +1,8 @@
+run: doctor
+exit: 0
+stdout: has:OK    version:
+stdout: has:OK    syntax detection (.vass indented)
+stdout: has:OK    syntax detection (.vcss braces)
+stdout: has:OK    parse indented source
+stdout: has:OK    parse braces source
+stdout: has:OK    evaluate + builtin library

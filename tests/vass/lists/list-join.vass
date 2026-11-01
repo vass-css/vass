@@ -1,0 +1,4 @@
+@use "sass:list"
+@debug list.separator(list.join((a, b), (c d)))
+.a
+  v: list.join((a, b), (c d))

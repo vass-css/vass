@@ -1,0 +1,161 @@
+accept-comment-above-attributes = true
+accept-comment-above-statement = true
+allow-comparison-to-zero = true
+allow-dbg-in-tests = true
+allow-exact-repetitions = true
+allow-expect-in-consts = false
+allow-expect-in-tests = true
+allow-indexing-slicing-in-tests = true
+allow-mixed-uninlined-format-args = true
+allow-one-hash-in-raw-strings = true
+allow-panic-in-tests = true
+allow-print-in-tests = true
+allow-private-module-inception = false
+allow-unwrap-in-consts = false
+allow-unwrap-in-tests = true
+allow-useless-vec-in-tests = true
+cargo-ignore-publish = true
+check-incompatible-msrv-in-tests = true
+check-inconsistent-struct-field-initializers = true
+check-private-items = true
+
+module-item-order-groupings = [
+  [
+    "externs",
+    [
+      "extern_crate",
+    ],
+  ],
+  [
+    "modules",
+    [
+      "mod",
+    ],
+  ],
+  [
+    "foreign",
+    [
+      "foreign_mod",
+    ],
+  ],
+  [
+    "uses",
+    [
+      "use",
+    ],
+  ],
+  [
+    "macros",
+    [
+      "macro",
+    ],
+  ],
+  [
+    "asm",
+    [
+      "global_asm",
+    ],
+  ],
+  [
+    "statics",
+    [
+      "static",
+    ],
+  ],
+  [
+    "consts",
+    [
+      "const",
+    ],
+  ],
+  [
+    "type_aliases",
+    [
+      "ty_alias",
+    ],
+  ],
+  [
+    "enums",
+    [
+      "enum",
+    ],
+  ],
+  [
+    "structs",
+    [
+      "struct",
+    ],
+  ],
+  [
+    "unions",
+    [
+      "union",
+    ],
+  ],
+  [
+    "traits",
+    [
+      "trait",
+    ],
+  ],
+  [
+    "trait_aliases",
+    [
+      "trait_alias",
+    ],
+  ],
+  [
+    "impls",
+    [
+      "impl",
+    ],
+  ],
+  [
+    "functions",
+    [
+      "fn",
+    ],
+  ],
+]
+
+
+source-item-ordering = ["module", "struct", "enum", "trait", "impl"]
+trait-assoc-item-kinds-order = ["const", "type", "fn"]
+
+array-size-threshold = 512
+cognitive-complexity-threshold = 25
+const-literal-digits-threshold = 4
+enum-variant-name-threshold = 52
+enum-variant-size-threshold = 1024
+excessive-nesting-threshold = 7
+future-size-threshold = 1024
+large-error-threshold = 256
+literal-representation-threshold = 32
+max-fn-params-bools = 1
+max-include-file-size = 100000
+max-struct-bools = 3
+max-suggested-slice-pattern-length = 8
+max-trait-bounds = 3
+min-ident-chars-threshold = 2
+single-char-binding-names-threshold = 1
+stack-size-threshold = 8192
+struct-field-name-threshold = 3
+too-large-for-stack = 1024
+too-many-arguments-threshold = 7
+too-many-lines-threshold = 350
+trivial-copy-size-limit = 128
+type-complexity-threshold = 250
+unnecessary-box-size = 256
+vec-box-size-threshold = 128
+verbose-bit-mask-threshold = 8
+missing-docs-allow-unused = false
+missing-docs-in-crate-items = false
+warn-on-all-wildcard-imports = false
+warn-unsafe-macro-metavars-in-private-macros = true
+upper-case-acronyms-aggressive = false
+absolute-paths-max-segments = 4
+enable-raw-pointer-heuristic-for-send = true
+enforce-iter-loop-reborrow = true
+semicolon-inside-block-ignore-singleline = true
+semicolon-outside-block-ignore-multiline = true
+pub-underscore-fields-behavior = "PubliclyExported"

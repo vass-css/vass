@@ -1,0 +1,4 @@
+@function greet($n)
+  @return "hi #{$n}"
+.a
+  c: greet(x)

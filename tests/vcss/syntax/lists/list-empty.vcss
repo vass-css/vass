@@ -1,0 +1,4 @@
+@use "sass:list";
+@use "sass:meta";
+$e: ();
+.a { n: list.length($e); t: meta.type-of($e); }

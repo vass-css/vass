@@ -1,0 +1,2 @@
+$t: screen;
+@media #{$t} { .a { c: 1; } }

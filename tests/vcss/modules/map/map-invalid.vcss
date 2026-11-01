@@ -1,0 +1,3 @@
+@use "sass:map";
+$m: (a: 1);
+.a { v: map.has-key($m, "a"); }

@@ -1,0 +1,2 @@
+@use "../../fixtures/modules/configured";
+.a { v: 1; }

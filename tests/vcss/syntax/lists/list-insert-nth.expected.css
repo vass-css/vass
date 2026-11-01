@@ -1,0 +1,3 @@
+.a {
+  v: list.insert-nth(a b, x, 2);
+}

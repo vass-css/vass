@@ -1,0 +1,2 @@
+Round 6 regression: selector.parse must accept complex selectors with combinators.
+Outputs verified byte-identical against dart-sass 1.106.1 and 1.107.0 (npx sass probes).

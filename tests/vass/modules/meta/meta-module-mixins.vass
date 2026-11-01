@@ -1,0 +1,4 @@
+@use "sass:meta"
+@debug meta.type-of(1px)
+.a
+  v: 1

@@ -1,0 +1,9 @@
+run: list
+exit: 0
+stdout: has:math
+stdout: has:color
+stdout: has:string
+stdout: has:list
+stdout: has:map
+stdout: has:selector
+stdout: has:meta

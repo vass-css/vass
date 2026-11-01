@@ -1,0 +1,4 @@
+@mixin ghost
+  x: 1
+.a
+  @include ghost

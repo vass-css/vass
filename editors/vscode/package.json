@@ -1,0 +1,137 @@
+{
+  "name": "vass-vscode",
+  "displayName": "VASS CSS Preprocessor",
+  "description": "VASS CSS preprocessor language support (.vass and .vcss): file icons, deep syntax highlighting, IntelliSense, diagnostics, hover, go-to-definition, symbols and formatting via the VASS Language Server.",
+  "version": "1.0.0",
+  "publisher": "vasslang",
+  "license": "Apache-2.0",
+  "icon": "./icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vass-css/vass"
+  },
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Formatters",
+    "Linters"
+  ],
+  "keywords": [
+    "css",
+    "sass",
+    "scss",
+    "preprocessor",
+    "vass",
+    "vcss",
+    "file icons"
+  ],
+  "activationEvents": [],
+  "main": "./extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "vass",
+        "aliases": [
+          "VASS",
+          "vass"
+        ],
+        "extensions": [
+          ".vass"
+        ],
+        "configuration": "./language-configurations/vass-language-configuration.json",
+        "icon": {
+          "light": "./icons/vass-file.svg",
+          "dark": "./icons/vass-file.svg"
+        }
+      },
+      {
+        "id": "vcss",
+        "aliases": [
+          "VCSS",
+          "VASS CSS",
+          "vcss"
+        ],
+        "extensions": [
+          ".vcss"
+        ],
+        "configuration": "./language-configurations/vcss-language-configuration.json",
+        "icon": {
+          "light": "./icons/vcss-file.svg",
+          "dark": "./icons/vcss-file.svg"
+        }
+      }
+    ],
+    "grammars": [
+      {
+        "language": "vass",
+        "scopeName": "source.vass",
+        "path": "./syntaxes/vass.tmLanguage.json"
+      },
+      {
+        "language": "vcss",
+        "scopeName": "source.vcss",
+        "path": "./syntaxes/vcss.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "vass",
+        "path": "./snippets/vass.json"
+      },
+      {
+        "language": "vcss",
+        "path": "./snippets/vcss.json"
+      }
+    ],
+    "configuration": {
+      "title": "VASS",
+      "properties": {
+        "vass.server.path": {
+          "type": "string",
+          "default": "vass",
+          "description": "Path to the VASS executable (vass / vass.exe). Change this if `vass` is not on your PATH, e.g. D:\\Tools\\vass\\vass.exe"
+        },
+        "vass.server.args": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "lsp",
+            "--stdio"
+          ],
+          "description": "Arguments used to start the VASS language server. The default matches `vass lsp --stdio`."
+        },
+        "vass.trace.server": {
+          "type": "string",
+          "enum": [
+            "off",
+            "messages",
+            "verbose"
+          ],
+          "default": "off",
+          "description": "Trace the communication between VS Code and the VASS language server."
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "vass.restartServer",
+        "title": "VASS: Restart Language Server",
+        "category": "VASS"
+      },
+      {
+        "command": "vass.showSetupInfo",
+        "title": "VASS: Show Setup Info",
+        "category": "VASS"
+      },
+      {
+        "command": "vass.enableFormatOnSave",
+        "title": "VASS: Enable Format On Save (.vass + .vcss)",
+        "category": "VASS"
+      }
+    ]
+  }
+}

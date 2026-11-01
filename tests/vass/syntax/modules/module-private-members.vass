@@ -1,0 +1,3 @@
+@use "../../fixtures/modules/private" as pr
+.a
+  v: pr.$pub

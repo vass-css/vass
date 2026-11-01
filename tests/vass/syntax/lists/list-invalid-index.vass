@@ -1,0 +1,4 @@
+@use "sass:list"
+$l: a b
+.a
+  v: list.nth($l, 1)

@@ -1,0 +1,4 @@
+@function f()
+  @return 7
+.a
+  v: f()

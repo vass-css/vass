@@ -1,0 +1,5 @@
+# Errors use the ESLint-crisp layout: `✖ message [ CODE ]` headline.
+run: compile {tests}/fixtures/cli/_units-error.vcss
+exit: 1
+stderr: has:Incompatible units 1px + 1s
+stderr: has:E0003

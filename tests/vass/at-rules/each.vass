@@ -1,0 +1,3 @@
+@each $i in a, b, c
+  .#{$i}
+    v: $i

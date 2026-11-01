@@ -1,0 +1,3 @@
+$g: 1;
+@function bump() { $g: 2; @return $g; }
+.a { a: bump(); b: $g; }

@@ -1,0 +1,4 @@
+$g: 1px !default
+$g: 2px !default
+.a
+  g: $g

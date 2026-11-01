@@ -1,0 +1,18 @@
+[package]
+name = "vass-parser"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+description = "Lexer and parser for VASS CSS preprocessor"
+keywords = ["css", "preprocessor", "parser", "lexer"]
+categories = ["web-programming"]
+
+[dependencies]
+vass-core.workspace = true
+thiserror.workspace = true
+tracing.workspace = true
+
+[dev-dependencies]
+pretty_assertions.workspace = true

@@ -1,0 +1,4 @@
+@use "sass:list";
+@debug list.is-bracketed([a]);
+@debug list.is-bracketed((a));
+.a { v: 1; }

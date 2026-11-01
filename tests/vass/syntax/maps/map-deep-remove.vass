@@ -1,0 +1,4 @@
+@use "sass:map"
+$m: map.deep-remove((a: (b: 1, c: 2)), a, b)
+.a
+  v: inspect($m)

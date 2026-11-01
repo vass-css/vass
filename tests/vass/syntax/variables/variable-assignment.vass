@@ -1,0 +1,4 @@
+$x: red
+$x: blue
+.a
+  c: $x

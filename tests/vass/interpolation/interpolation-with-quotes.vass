@@ -1,0 +1,4 @@
+$q: "inner"
+.a
+  v: "outer #{$q}"
+  u: outer-#{$q}

@@ -1,0 +1,6 @@
+📦 error[E0008]: Circular import cycle detected: /workspaces/codespaces-blank/tests/vcss/fixtures/modules/_circ-a.vcss.
+  📍 /workspaces/codespaces-blank/tests/vcss/fixtures/modules/_circ-b.vcss:1:1
+    1 | @use "circ-a";
+      | ^^^^^^^^^^^^^^
+
+   📘 run `vass explain E0008` for every cause and fix

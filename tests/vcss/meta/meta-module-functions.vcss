@@ -1,0 +1,6 @@
+@use "sass:meta";
+@use "sass:map";
+@use "sass:math";
+$fs: meta.module-functions("math");
+@debug map.has-key($fs, "sqrt");
+.a { v: 1; }

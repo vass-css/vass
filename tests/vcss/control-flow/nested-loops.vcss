@@ -1,0 +1,1 @@
+@for $r from 1 to 2 { @for $c from 1 to 3 { .r#{$r}c#{$c} { v: 1; } } }

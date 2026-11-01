@@ -1,0 +1,3 @@
+$p: margin
+.a
+  #{$p} -top: 4px

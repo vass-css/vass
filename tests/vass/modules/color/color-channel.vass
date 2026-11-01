@@ -1,0 +1,6 @@
+@use "sass:color"
+@debug color.channel(#036, "red" )
+@debug color.channel(#036, "alpha" )
+@debug color.channel(oklch(60% 0.1 20deg), "chroma" )
+.a
+  v: 1

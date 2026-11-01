@@ -1,0 +1,3 @@
+run: exec "a { b: 1px; }" --style compressed
+exit: 0
+stdout: exact:a{b:1px}\n

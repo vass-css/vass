@@ -1,0 +1,8 @@
+file: in.vcss
+<<<
+$w: 4px;
+a { width: $w * 2; }
+>>>
+run: compile in.vcss
+exit: 0
+stdout: exact:a {\n  width: 8px;\n}\n

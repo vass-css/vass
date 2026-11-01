@@ -1,0 +1,2 @@
+@function pair($a, $b) { @return $a, $b; }
+.x { v: nth(pair(1, 2), 2); }

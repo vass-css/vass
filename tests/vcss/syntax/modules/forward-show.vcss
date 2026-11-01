@@ -1,0 +1,2 @@
+@use "../../fixtures/modules/forwarder-show" as fs;
+.a { v: fs.$keep; }

@@ -1,0 +1,4 @@
+@use "sass:color";
+@debug color.is-powerless(hsl(0 0% 50%), "hue");
+@debug color.is-powerless(hsl(0 50% 50%), "hue");
+.a { v: 1; }

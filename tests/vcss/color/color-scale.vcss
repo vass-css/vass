@@ -1,0 +1,4 @@
+@use "sass:color";
+@debug color.scale(#036, $lightness: 20%);
+@debug color.scale(#036, $alpha: -50%);
+.a { v: 1; }

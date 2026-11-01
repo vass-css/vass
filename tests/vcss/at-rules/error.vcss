@@ -1,0 +1,2 @@
+@error "boom";
+.a { c: 1; }

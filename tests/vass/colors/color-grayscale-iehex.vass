@@ -1,0 +1,4 @@
+@use "sass:color"
+.a
+  a: color.grayscale(#036)
+  b: color.ie-hex-str(#036)

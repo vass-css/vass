@@ -1,0 +1,3 @@
+run: exec "a { b: 1px; }" --style bogus
+exit: 1
+stderr: has:unknown --style `bogus`

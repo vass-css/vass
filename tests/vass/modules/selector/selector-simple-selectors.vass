@@ -1,0 +1,4 @@
+@use "sass:selector"
+@debug selector.simple-selectors(".a.b")
+.a
+  v: 1

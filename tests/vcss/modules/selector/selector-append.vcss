@@ -1,0 +1,3 @@
+@use "sass:selector";
+@debug selector.append(".a", "-b");
+.a { v: 1; }

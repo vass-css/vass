@@ -1,0 +1,4 @@
+@mixin m($a)
+  x: $a
+.a
+  @include m(1)

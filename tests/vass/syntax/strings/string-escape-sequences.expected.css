@@ -1,0 +1,6 @@
+@charset "UTF-8";
+.a {
+  a: "tabthere";
+  b: 'quote"inside';
+  c: 😀;
+}

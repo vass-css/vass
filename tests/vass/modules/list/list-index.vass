@@ -1,0 +1,5 @@
+@use "sass:list"
+@debug list.index(a b c, c)
+@debug list.index(a b c, q)
+.a
+  v: 1

@@ -1,0 +1,3 @@
+@use "sass:color";
+@debug color.is-missing(rgb(none 0 0), red);
+.a { v: 1; }

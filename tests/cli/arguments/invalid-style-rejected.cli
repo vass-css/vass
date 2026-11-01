@@ -1,0 +1,10 @@
+# Unknown --style values are rejected (regression: they used to fall back
+# to expanded output silently).
+file: in.vcss
+<<<
+a { b: c; }
+>>>
+run: compile --style bogus in.vcss
+exit: 1
+stderr: has:unknown --style `bogus`
+stderr: has:expected `expanded` or `compressed`

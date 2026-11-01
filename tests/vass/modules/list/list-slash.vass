@@ -1,0 +1,5 @@
+@use "sass:list"
+@debug list.separator(list.slash(a, b, c))
+@debug list.length(list.slash(a, b, c))
+.a
+  v: 1

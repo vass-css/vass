@@ -1,0 +1,4 @@
+@use "sass:map"
+$m: (a: (b: (c: deep)))
+.a
+  v: map.get(map.get(map.get($m, a), b), c)

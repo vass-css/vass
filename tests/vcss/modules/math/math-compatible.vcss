@@ -1,0 +1,5 @@
+@use "sass:math";
+@debug math.compatible(1px, 1em);
+@debug math.compatible(1px, 1s);
+@debug math.compatible(1, 2px);
+.a { v: 1; }

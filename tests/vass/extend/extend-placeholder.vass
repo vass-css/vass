@@ -1,0 +1,4 @@
+%btn
+  padding: 4px
+.a
+  @extend %btn

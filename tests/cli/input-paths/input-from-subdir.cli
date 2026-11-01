@@ -1,0 +1,8 @@
+# Input resolved from the process CWD, not from any project root.
+file: sub/in.vcss
+<<<
+a { b: c; }
+>>>
+run: compile sub/in.vcss
+exit: 0
+stdout: exact:a {\n  b: c;\n}\n

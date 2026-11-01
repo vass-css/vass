@@ -1,0 +1,4 @@
+@use "sass:meta";
+@mixin m { @if meta.content-exists() { has: content; } @content; }
+.a { @include m { c: 1; } }
+.b { @include m; }

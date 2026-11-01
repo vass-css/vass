@@ -1,0 +1,4 @@
+@use "sass:map"
+$m: (1: a, 2: b)
+.a
+  v: map.get($m, 2)

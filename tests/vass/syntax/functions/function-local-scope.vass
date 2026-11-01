@@ -1,0 +1,5 @@
+@function f()
+  $l: inner
+  @return $l
+.a
+  v: f()

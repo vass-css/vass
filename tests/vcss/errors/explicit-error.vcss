@@ -1,0 +1,2 @@
+@error "explicit boom";
+.a { v: 1; }

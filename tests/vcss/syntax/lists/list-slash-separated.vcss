@@ -1,0 +1,2 @@
+@use "sass:list";
+.a { g: 24px/1.5; n: list.length(list.slash(24px, 1.5)); }

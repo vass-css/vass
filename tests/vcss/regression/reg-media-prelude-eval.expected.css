@@ -1,0 +1,55 @@
+@media (min-width: 960px) {
+  .a {
+    display: none;
+  }
+}
+@media screen and (min-width: 700px) {
+  .b {
+    a: b;
+  }
+}
+@media screen and (min-width: 960px), print {
+  .c {
+    a: b;
+  }
+}
+@media (min-width: 105px) {
+  .d {
+    a: b;
+  }
+}
+@media (min-width: 960px) {
+  .e {
+    a: b;
+  }
+}
+@media not screen {
+  .f {
+    a: b;
+  }
+}
+@media only screen and (min-width: 500px) {
+  .g {
+    a: b;
+  }
+}
+@media (min-width: 970px) {
+  .h {
+    a: b;
+  }
+}
+@media (width: 500px) or (hover: hover) {
+  .i {
+    a: b;
+  }
+}
+@media screen, print {
+  .j {
+    a: b;
+  }
+}
+@media screen and (min-width: 700px) and (max-width: 900px) {
+  .k {
+    a: b;
+  }
+}

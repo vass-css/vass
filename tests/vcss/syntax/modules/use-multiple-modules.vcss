@@ -1,0 +1,3 @@
+@use "sass:math";
+@use "sass:string";
+.a { v: math.round(1.4); c: string.to-upper-case(ab); }

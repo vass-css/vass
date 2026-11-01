@@ -1,0 +1,19 @@
+[package]
+name = "vass-lsp-server"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+description = "VASS CSS preprocessor LSP server"
+keywords = ["css", "preprocessor", "lsp", "language-server"]
+categories = ["development-tools"]
+
+[[bin]]
+name = "vass-lsp-server"
+path = "src/main.rs"
+
+[dependencies]
+vass-lsp.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true

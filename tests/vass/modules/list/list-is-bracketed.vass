@@ -1,0 +1,5 @@
+@use "sass:list"
+@debug list.is-bracketed([a b])
+@debug list.is-bracketed(a b)
+.a
+  v: 1

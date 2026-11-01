@@ -1,0 +1,5 @@
+@function cfg($k)
+  $m: (a: 1, b: 2)
+  @return map-get($m, $k)
+.x
+  v: cfg(b)

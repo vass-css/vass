@@ -1,0 +1,4 @@
+@use "sass:color"
+@debug color.to-gamut(#036, $space: rgb, $method: clip)
+.a
+  v: 1

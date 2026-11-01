@@ -1,0 +1,3 @@
+@use "../../fixtures/modules/forwarder-cfg" as fc
+.a
+  s: fc.$size

@@ -1,0 +1,7 @@
+@use "sass:color";
+.x {
+  color: color.channel(
+    oklch(60% 0.4 20deg),
+    "lightness"
+  );
+}

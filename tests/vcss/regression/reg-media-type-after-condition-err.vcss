@@ -1,0 +1,1 @@
+@media (max-width: 960px) and only print { .x { a: b; } }

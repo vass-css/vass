@@ -1,0 +1,3 @@
+# Argument/usage errors are clap errors -> exit 2.
+args: compile --bogus
+exit: 2

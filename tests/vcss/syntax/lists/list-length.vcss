@@ -1,0 +1,2 @@
+@use "sass:list";
+.a { a: list.length(()); b: list.length((1,)); c: list.length(1 2 3); }

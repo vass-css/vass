@@ -1,0 +1,16 @@
+# _partials are library files: `build` emits only entry stylesheets.
+file: src/_lib.vcss
+<<<
+$v: 9px;
+>>>
+file: src/main.vcss
+<<<
+@use "lib";
+a { w: lib.$v; }
+>>>
+run: build src
+exit: 0
+stdout: has:built 1 stylesheet(s)
+file-has: dist/main.css:w: 9px;
+nofile: dist/_lib.css
+nofile: dist/lib.css

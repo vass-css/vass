@@ -1,0 +1,3 @@
+args: -h
+exit: 0
+stdout: has:Usage: vass

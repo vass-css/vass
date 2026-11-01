@@ -1,0 +1,2 @@
+@function pick($c) { @return if($c, yes, no); }
+.a { v: pick(true); }

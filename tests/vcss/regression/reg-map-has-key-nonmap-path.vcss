@@ -1,0 +1,20 @@
+// map.has-key with multi-level key paths.
+//
+// Reference: dart-sass 1.107.0. A key path only exists when every
+// intermediate value along the path is itself a map; a non-map intermediate
+// reports false even though the key exists on that value.
+//
+// Regression (round 6): Bass returned true for a key under a non-map
+// intermediate (e.g. has-key($m, "name", "x") where $name is a string).
+@use "vass:map" as map;
+
+$settings: (
+  "name": "Bass",
+  "theme": ("color": red)
+);
+
+@debug map.has-key($settings, "name");
+@debug map.has-key($settings, "name", "x");
+@debug map.has-key($settings, "theme", "color");
+@debug map.has-key($settings, "theme", "color", "x");
+@debug map.has-key($settings, "theme", "missing");

@@ -1,0 +1,12 @@
+$a: sans - serif;
+$b: "sans" - "serif";
+$c: sans- + serif;
+$d: 1 - a;
+$e: "a" + b;
+$f: 1 + "a";
+$g: a + "b";
+$h: red + "a";
+.i { font: $a; x1: $b; x2: $c; x3: $d; x4: $e; x5: $f; x6: $g; x7: $h; }
+@debug sans - serif;
+@debug "sans" - "serif";
+@debug 5px - 3px;

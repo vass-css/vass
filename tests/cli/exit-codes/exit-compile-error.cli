@@ -1,0 +1,5 @@
+# A compile error exits 1 with the diagnostic block.
+run: compile {tests}/fixtures/cli/_units-error.vcss
+exit: 1
+stderr: has:Incompatible units 1px + 1s
+stderr: has:E0003

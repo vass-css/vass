@@ -1,0 +1,2 @@
+@use "sass:map";
+.a { v: map.get(1px, x); }

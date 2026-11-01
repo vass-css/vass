@@ -1,0 +1,64 @@
+
+# Build artifacts
+/target/
+**/*.rs.bk
+*.pdb
+
+# IDE
+.idea/
+*.swp
+*.swo
+*~
+*.sublime-workspace
+*.sublime-project
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Test outputs
+/tests/output/
+/coverage/
+
+# Documentation build artifacts
+/docs/book/
+
+# Profiling
+*.profraw
+*.profdata
+flamegraph.svg
+perf.data
+perf.data.old
+
+# Node.js
+node_modules/
+package-lock.json
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm/
+*.tgz
+
+# npm postinstall binary downloads
+vendor/
+
+# Temporary files
+/tmp/
+/temp/
+*.tmp
+*.temp
+*.log
+
+# Environment and secrets
+.env
+.env.local
+.env.*.local
+
+# Benchmark results
+/bench/results/
+/benches/results/
+/criterion/
+
+# Local project backup
+/bass-full-backup.zip

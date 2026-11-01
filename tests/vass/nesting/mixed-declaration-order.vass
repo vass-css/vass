@@ -1,0 +1,8 @@
+.a
+  color: red
+  .b
+    c: 1
+  margin: 0
+  .c
+    c: 2
+  padding: 0

@@ -1,0 +1,13 @@
+file: src/one.vcss
+<<<
+x { y: 1; }
+>>>
+file: src/two.vcss
+<<<
+z { w: 2; }
+>>>
+run: build src
+exit: 0
+stdout: has:built 2 stylesheet(s)
+file-has: dist/one.css:y: 1;
+file-has: dist/two.css:w: 2;

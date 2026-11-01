@@ -1,0 +1,4 @@
+%i
+  c: 1
+a.x
+  @extend %i

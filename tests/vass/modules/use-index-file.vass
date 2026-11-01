@@ -1,0 +1,3 @@
+@use "../../fixtures/modules/idxdir" as ix
+.a
+  v: ix.$iv

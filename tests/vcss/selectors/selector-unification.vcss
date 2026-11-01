@@ -1,0 +1,1 @@
+%base { c: 1; } .m { @extend %base; }

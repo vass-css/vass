@@ -1,0 +1,5 @@
+# `vass --help` exits 0 and prints the top-level help.
+args: --help
+exit: 0
+stdout: has:Usage: vass
+stdout: has:Commands:

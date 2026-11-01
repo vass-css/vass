@@ -1,0 +1,10 @@
+# fmt --check exits 1 when a file is not formatted.
+file: messy.vcss
+<<<
+a {
+ b:   c;
+}
+>>>
+run: fmt --check messy.vcss
+exit: 1
+stdout: has:would be reformatted

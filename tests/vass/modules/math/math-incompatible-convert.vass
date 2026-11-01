@@ -1,0 +1,3 @@
+@use "sass:math"
+.a
+  a: 1px + 1px

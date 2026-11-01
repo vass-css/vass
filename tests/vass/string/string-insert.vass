@@ -1,0 +1,4 @@
+@use "sass:string"
+.a
+  a: string.insert("abcd", "-X-" , 3)
+  b: string.insert("abcd", "Z" , -2)

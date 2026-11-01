@@ -1,0 +1,5 @@
+@media print {
+  .p, .pl {
+    c: 1;
+  }
+}

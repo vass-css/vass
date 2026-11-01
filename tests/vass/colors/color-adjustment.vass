@@ -1,0 +1,3 @@
+@use "sass:color"
+.a
+  a: color.adjust(#036, $lightness: 10%)

@@ -1,0 +1,1 @@
+.btn { &:hover { c: 1; } &:focus { c: 2; } }

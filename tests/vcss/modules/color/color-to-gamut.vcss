@@ -1,0 +1,4 @@
+@use "sass:color";
+@debug color.to-gamut(oklch(60% 0.4 20deg), $space: rgb, $method: clip);
+@debug color.to-gamut(oklch(60% 0.4 20deg), $space: rgb, $method: local-minde);
+.a { v: 1; }

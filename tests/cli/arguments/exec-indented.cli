@@ -1,0 +1,3 @@
+run: exec --indented "a\n  b: 1px\n"
+exit: 0
+stdout: exact:a {\n  b: 1px;\n}\n

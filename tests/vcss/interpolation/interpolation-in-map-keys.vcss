@@ -1,0 +1,3 @@
+$k: size;
+$m: (#{$k}: 10px);
+.a { v: map-get($m, size); }

@@ -1,0 +1,3 @@
+@use "../../fixtures/modules/circ-a"
+.a
+  v: 1

@@ -1,0 +1,7 @@
+# No subcommand -> clap prints long help to stdout and exits 2.
+run: vass
+exit: 2
+stdout: has:Usage: vass
+stdout: has:Commands:
+stdout: has:compile
+stdout: has:watch

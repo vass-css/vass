@@ -1,0 +1,6 @@
+$v: top
+.a
+  $v: bottom
+  v: $v
+.b
+  v: $v

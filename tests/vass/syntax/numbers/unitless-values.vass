@@ -1,0 +1,5 @@
+@use "sass:math"
+@debug math.is-unitless(5)
+@debug math.is-unitless(5px)
+.a
+  v: 1

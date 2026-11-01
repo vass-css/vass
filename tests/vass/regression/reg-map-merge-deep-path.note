@@ -1,0 +1,2 @@
+Round 6 regression: map.merge deep-path form (3+ arguments).
+Verified byte-identical against dart-sass 1.107.0 via npx sass.

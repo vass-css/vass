@@ -1,0 +1,4 @@
+@use "sass:string"
+.a
+  a: string.quote(x)
+  b: string.quote("y")

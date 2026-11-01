@@ -1,0 +1,2 @@
+@mixin m($list...) { x: nth($list, 2); }
+.a { @include m(a b c...); }

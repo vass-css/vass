@@ -1,0 +1,4 @@
+.a
+  @media print
+    .b
+      c: 1

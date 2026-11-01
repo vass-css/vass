@@ -1,0 +1,9 @@
+@use "sass:color";
+@debug color.red(#123456);
+@debug color.green(#123456);
+@debug color.blue(#123456);
+@debug color.hue(hsl(180, 50%, 50%));
+@debug color.saturation(hsl(180, 50%, 50%));
+@debug color.lightness(hsl(180, 50%, 50%));
+@debug color.alpha(#123456);
+.a { v: 1; }

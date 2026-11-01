@@ -1,0 +1,5 @@
+@use "sass:string"
+@debug string.length("hello")
+@debug string.length(héllo)
+.a
+  v: 1

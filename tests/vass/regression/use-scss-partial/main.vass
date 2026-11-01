@@ -1,0 +1,4 @@
+$primary-color: blue
+.inverse
+  background-color: $primary-color
+  color: white

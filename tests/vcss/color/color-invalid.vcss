@@ -1,0 +1,2 @@
+@use "sass:color";
+.a { a: color.channel(#036, "bogus"); }

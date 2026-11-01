@@ -1,0 +1,5 @@
+@mixin m
+  @content
+.a
+  @include m
+    inner: 1

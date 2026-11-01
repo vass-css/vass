@@ -1,0 +1,2 @@
+@use "sass:math";
+.a { a: math.floor(4.8); b: math.floor(-4.8); }

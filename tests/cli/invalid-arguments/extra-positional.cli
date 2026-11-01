@@ -1,0 +1,2 @@
+args: compile a.vcss b.css extra
+exit: 2

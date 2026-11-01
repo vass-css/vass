@@ -1,0 +1,5 @@
+@use "sass:meta"
+@use "sass:math"
+@debug meta.inspect(meta.module-variables("math"))
+.a
+  v: 1

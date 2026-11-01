@@ -1,0 +1,7 @@
+$t: true
+$f: false
+.a
+  @if $t
+    yes: 1
+  @if not $f
+    also: 2

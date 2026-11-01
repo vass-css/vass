@@ -1,0 +1,3 @@
+@use "sass:selector";
+@debug selector.parse(".a .b, .c");
+.a { v: 1; }

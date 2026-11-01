@@ -1,0 +1,5 @@
+@use "sass:math"
+.a
+  a: math.round(2.5)
+  b: math.round(-2.5)
+  c: math.round(2.4)

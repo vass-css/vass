@@ -1,0 +1,4 @@
+@use "sass:math";
+@debug math.cos(60deg) == 0.5;
+@debug math.sin(30deg) == 0.5;
+.a { v: 1; }

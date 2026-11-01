@@ -1,0 +1,3 @@
+@use "sass:map";
+$m: ((a b): v);
+.a { v: map.get($m, a b); }

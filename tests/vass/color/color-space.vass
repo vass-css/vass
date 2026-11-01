@@ -1,0 +1,6 @@
+@use "sass:color"
+@debug color.space(#036)
+@debug color.space(oklch(60% 0.1 20deg))
+@debug color.space(hsl(0 50% 50%))
+.a
+  v: 1

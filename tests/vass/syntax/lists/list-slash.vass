@@ -1,0 +1,4 @@
+@use "sass:list"
+@debug list.separator(list.slash(1, 2))
+.a
+  v: list.slash(1, 2)

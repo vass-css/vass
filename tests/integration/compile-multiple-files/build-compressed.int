@@ -1,0 +1,7 @@
+file: src/one.vcss
+<<<
+x { y: 1px + 1px; }
+>>>
+run: build src --style compressed
+exit: 0
+file-has: dist/one.css:x{y:2px}

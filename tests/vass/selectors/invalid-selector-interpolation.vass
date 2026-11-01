@@ -1,0 +1,3 @@
+$undef: test
+.#{$undef}
+  c: 1

@@ -1,0 +1,4 @@
+@use "sass:color";
+@debug color.change(#036, $green: 255);
+@debug color.change(oklch(60% 0.1 20deg), $hue: 90deg);
+.a { v: 1; }

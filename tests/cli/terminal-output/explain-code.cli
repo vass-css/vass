@@ -1,0 +1,27 @@
+# `vass explain` - friendly documentation for every diagnostic code.
+run: explain E0008
+exit: 0
+stdout: has:E0008 - Can't find module
+stdout: has:How to fix:
+stdout: has:_base.vcss
+
+# Case-insensitive + bare digits are accepted
+run: explain e0008
+exit: 0
+stdout: has:E0008 - Can't find module
+
+run: explain 11
+exit: 0
+stdout: has:E0011 - Runtime error
+
+# Listing every code (one line per code, no dash in the list view)
+run: explain
+exit: 0
+stdout: has:E0004
+stdout: has:Undefined variable
+stdout: has:E0011
+
+# Unknown code fails with the valid list
+run: explain banana
+exit: 1
+stderr: has:Unknown diagnostic code

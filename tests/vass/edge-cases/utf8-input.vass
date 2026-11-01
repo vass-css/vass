@@ -1,0 +1,2 @@
+/* héllo wörld ✓ 日本語 */ .a::before
+  content: "中文テスト"

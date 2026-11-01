@@ -1,0 +1,2 @@
+@use "../../fixtures/modules/partial-member" as p;
+.a { v: p.$val; }

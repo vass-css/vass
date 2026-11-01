@@ -1,0 +1,19 @@
+// selector.parse — complex selectors, permissiveness and errors.
+//
+// Reference: dart-sass 1.106.1 / 1.107.0 (probed). `selector.parse` returns
+// a comma list whose elements are each complex selector's source text,
+// whitespace-normalised. It accepts leading, trailing and repeated
+// combinators (`a >`, `>`, `a >> b`), and rejects parent selectors `&`
+// ("Parent selectors aren't allowed here") and lexical garbage like `..`.
+//
+// Regression (round 6): Bass rejected every complex selector containing a
+// standalone combinator — `selector.parse("a > b")` failed with
+//   error[E0003]: selector.parse: $selector: "a > b" is not a valid CSS selector.
+@use "sass:selector";
+
+@debug selector.parse("a > b");
+@debug selector.parse("*");
+@debug selector.parse("ul li");
+@debug selector.parse(".a, .b");
+@debug selector.parse("a >");
+@debug selector.parse(">");

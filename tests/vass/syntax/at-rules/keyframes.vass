@@ -1,0 +1,5 @@
+@keyframes spin
+  from
+    t: 0
+  to
+    t: 1

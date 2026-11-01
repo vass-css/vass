@@ -1,0 +1,5 @@
+@media print
+  .p
+    c: 1
+.pl
+  @extend .p

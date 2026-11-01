@@ -1,0 +1,3 @@
+@use "../../fixtures/modules/plain"
+.a
+  v: plain.$v

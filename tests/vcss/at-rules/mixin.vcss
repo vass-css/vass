@@ -1,0 +1,2 @@
+@mixin m($x: 1px) { w: $x; }
+.a { @include m; }

@@ -1,0 +1,2 @@
+@use "../../fixtures/modules/forwarder-prefix" as fp;
+.a { v: fp.$p-v; }

@@ -1,0 +1,2 @@
+@import "../../fixtures/modules/plain";
+.a { v: $v; }

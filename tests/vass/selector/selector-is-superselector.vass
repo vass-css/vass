@@ -1,0 +1,5 @@
+@use "sass:selector"
+@debug selector.is-superselector(".a", ".a.b" )
+@debug selector.is-superselector(".a.b", ".a" )
+.a
+  v: 1

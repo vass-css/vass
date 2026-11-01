@@ -1,0 +1,8 @@
+file: in.vcss
+<<<
+a { b: c; }
+>>>
+run: compile -o out.css in.vcss
+exit: 0
+stdout: has:compiled in.vcss -> out.css
+file-has: out.css:a {

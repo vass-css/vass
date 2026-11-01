@@ -1,0 +1,4 @@
+// map.has-key with multi-level key paths.
+@use "vass:map" as map
+$settings: ("name": "Bass", "theme": ("color": red))
+@debug map.has-key($settings, "name")

@@ -1,0 +1,31 @@
+[package]
+name = "vass-wasm"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+description = "WASM bindings for VASS CSS preprocessor"
+keywords = ["css", "preprocessor", "wasm", "webassembly"]
+categories = ["web-programming", "wasm"]
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[features]
+default = []
+console_error_panic_hook = ["dep:console_error_panic_hook"]
+
+[dependencies]
+vass-core.workspace = true
+vass-parser.workspace = true
+vass-evaluator.workspace = true
+vass-transpiler.workspace = true
+wasm-bindgen = "0.2"
+js-sys = "0.3"
+serde.workspace = true
+serde-wasm-bindgen = "0.6"
+console_error_panic_hook = { version = "0.1", optional = true }
+
+[dev-dependencies]
+wasm-bindgen-test = "0.3"

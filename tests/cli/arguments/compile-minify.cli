@@ -1,0 +1,7 @@
+file: in.vcss
+<<<
+a { b: c; }
+>>>
+run: compile --minify in.vcss
+exit: 0
+stdout: exact:a{b:c}\n

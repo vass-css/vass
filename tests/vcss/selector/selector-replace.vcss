@@ -1,0 +1,3 @@
+@use "sass:selector";
+@debug selector.replace(".a .b", ".b", ".x");
+.a { v: 1; }

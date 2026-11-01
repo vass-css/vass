@@ -1,0 +1,2 @@
+@use "sass:math" as mm;
+.a { v: mm.max(1, 5); }

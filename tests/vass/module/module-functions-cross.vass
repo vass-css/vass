@@ -1,0 +1,6 @@
+@use "sass:math" as m
+@use "sass:meta"
+$f: meta.get-function("floor", $module: "m" )
+@debug meta.call($f, 2.9)
+.a
+  v: 1

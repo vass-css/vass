@@ -1,0 +1,6 @@
+.a
+  c: 1
+.b
+  @extend .a
+.c
+  @extend .b

@@ -1,0 +1,4 @@
+@use "sass:math"
+.a
+  a: math.acos(1)
+  b: math.asin(0)

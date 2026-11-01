@@ -1,0 +1,6 @@
+@use "sass:string"
+@use "sass:list"
+$parts: string.split("a;b;c", ";" )
+.a
+  v: $parts
+  n: list.length($parts)

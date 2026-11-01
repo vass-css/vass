@@ -1,0 +1,4 @@
+.wrap
+  @container card (min-width: 400px)
+    .t
+      c: 1

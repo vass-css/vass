@@ -1,0 +1,2 @@
+@use "sass:string";
+.a { v: string.slice("hello", 1, 2); }

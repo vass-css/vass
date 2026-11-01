@@ -1,0 +1,4 @@
+pre: {vass} init myproj && printf '%s\n' '$brand: #304050' 'body' '  color: $brand' > myproj/src/main.vass
+run: compile myproj/src/main.vass
+exit: 0
+stdout: has:color: #304050;

@@ -1,0 +1,4 @@
+.a
+  $l: 7px !global
+.b
+  w: $l

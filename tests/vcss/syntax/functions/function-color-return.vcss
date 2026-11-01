@@ -1,0 +1,2 @@
+@function tint($p) { @return rgba(255, 0, 0, $p); }
+.a { c: tint(0.5); }

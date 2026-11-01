@@ -1,0 +1,4 @@
+@use "sass:selector"
+@debug selector.nest(".a", "&:hover" )
+.a
+  v: 1

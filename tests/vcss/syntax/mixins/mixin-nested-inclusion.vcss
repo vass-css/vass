@@ -1,0 +1,3 @@
+@mixin inner { a: 1; }
+@mixin outer { @include inner; b: 2; }
+.x { @include outer; }

@@ -1,0 +1,6 @@
+@use "sass:list"
+@debug list.separator((a, b))
+@debug list.separator(a b)
+@debug list.separator((a,))
+.a
+  v: 1

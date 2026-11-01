@@ -1,0 +1,3 @@
+@use "sass:map";
+$m: map.remove((a: 1, b: 2), a);
+.a { v: inspect($m); }

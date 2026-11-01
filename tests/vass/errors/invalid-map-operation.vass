@@ -1,0 +1,4 @@
+@use "sass:map"
+$m: (a: 1)
+.a
+  v: map.keys($m)

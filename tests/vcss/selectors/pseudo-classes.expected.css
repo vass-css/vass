@@ -1,0 +1,11 @@
+a:hover {
+  c: 1;
+}
+
+:not(.x) {
+  c: 2;
+}
+
+:nth-child(2n) {
+  c: 3;
+}

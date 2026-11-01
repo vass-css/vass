@@ -1,0 +1,2 @@
+@use "nonexistent-module-x";
+.a { v: 1; }

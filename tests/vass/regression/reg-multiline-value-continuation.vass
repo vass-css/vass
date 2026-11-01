@@ -1,0 +1,8 @@
+$sp: 1px 2px
+$sum: 1 + 2
+$g: 1px !default
+.x
+  margin: $sp
+  width: $sum
+  top: $g
+  background: linear-gradient(red, blue) no-repeat

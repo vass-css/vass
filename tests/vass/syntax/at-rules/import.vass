@@ -1,0 +1,3 @@
+@import "../../fixtures/modules/imported-basic"
+.a
+  v: $imported

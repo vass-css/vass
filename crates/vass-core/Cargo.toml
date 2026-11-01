@@ -1,0 +1,23 @@
+[package]
+name = "vass-core"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+description = "Core AST, values, errors, and tokens for VASS CSS preprocessor"
+keywords = ["css", "preprocessor", "ast", "values"]
+categories = ["web-programming"]
+
+[dependencies]
+thiserror.workspace = true
+serde = { workspace = true, optional = true }
+indexmap.workspace = true
+hashbrown.workspace = true
+smallvec.workspace = true
+smartstring.workspace = true
+bitflags.workspace = true
+
+[features]
+default = []
+serde = ["dep:serde", "indexmap/serde", "smallvec/serde"]

@@ -1,0 +1,6 @@
+@use "sass:list"
+$l: a b c
+$m: list.set-nth($l, 2, X)
+.a
+  v: inspect($m)
+  o: nth($l, 2)

@@ -1,0 +1,4 @@
+// map.merge($map1, $keys..., $map2) — deep-path form.
+@use "vass:map" as map
+$settings: ("theme": ("color": red, "font": ("size": 16px)))
+@debug map.merge($settings, "theme", ("color": blue, "radius": 4px))

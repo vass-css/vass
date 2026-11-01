@@ -1,0 +1,5 @@
+@use "sass:math"
+.a
+  a: math.ceil(4.2)
+  b: math.ceil(-4.2)
+  c: math.ceil(4px)

@@ -1,0 +1,22 @@
+@keyframes spin {
+  from {
+    t: 0;
+  }
+}
+.after {
+  x: 1;
+}
+
+@media s {
+  .m {
+    y: 2;
+  }
+}
+.z2 {
+  z: 1;
+}
+
+/* loud */
+.q {
+  c: 1;
+}

@@ -1,0 +1,3 @@
+$missing-var: 1px
+.a
+  v: $missing-var

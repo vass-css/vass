@@ -1,0 +1,87 @@
+// Embedded Sass Protocol
+// Based on Dart Sass embedded protocol
+
+syntax = "proto3";
+
+package sass.embedded;
+
+// A request from the host to the compiler.
+message InboundMessage {
+  oneof message {
+    CompileRequest compile_request = 1;
+  }
+}
+
+// A response from the compiler to the host.
+message OutboundMessage {
+  oneof message {
+    CompileResponse compile_response = 1;
+    LogEvent log_event = 2;
+  }
+}
+
+// A request to compile a Sass file.
+message CompileRequest {
+  oneof input {
+    string string = 1;
+    string path = 2;
+  }
+
+  OutputStyle style = 3;
+  bool source_map = 4;
+  repeated Importer importers = 5;
+}
+
+// A response from a compile request.
+message CompileResponse {
+  oneof result {
+    CompileSuccess success = 1;
+    CompileFailure failure = 2;
+  }
+}
+
+// A successful compilation.
+message CompileSuccess {
+  string css = 1;
+  string source_map = 2;
+}
+
+// A failed compilation.
+message CompileFailure {
+  string message = 1;
+  string span = 2;
+  string stack_trace = 3;
+}
+
+// Output style for CSS.
+enum OutputStyle {
+  EXPANDED = 0;
+  COMPRESSED = 1;
+}
+
+// An importer for resolving imports.
+message Importer {
+  oneof importer {
+    FileImporter file = 1;
+  }
+}
+
+// A file-based importer.
+message FileImporter {
+  repeated string include_paths = 1;
+}
+
+// A log event.
+message LogEvent {
+  LogEventType type = 1;
+  string message = 2;
+  string span = 3;
+  string stack_trace = 4;
+}
+
+// Types of log events.
+enum LogEventType {
+  WARNING = 0;
+  DEPRECATION_WARNING = 1;
+  DEBUG = 2;
+}

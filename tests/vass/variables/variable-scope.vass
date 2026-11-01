@@ -1,0 +1,6 @@
+$g: outer
+.m
+  $g: inner
+  v: $g
+.a
+  v: $g

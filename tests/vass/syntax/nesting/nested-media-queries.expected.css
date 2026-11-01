@@ -1,0 +1,8 @@
+.a {
+  c: 1;
+}
+@media (min-width: 100px) {
+  .a {
+    c: 2;
+  }
+}

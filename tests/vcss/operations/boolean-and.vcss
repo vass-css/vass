@@ -1,0 +1,3 @@
+@debug true and false;
+@debug true and true;
+.a { v: 1; }

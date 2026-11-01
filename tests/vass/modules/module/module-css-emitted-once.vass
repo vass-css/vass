@@ -1,0 +1,4 @@
+@use "../../fixtures/modules/counter" as c1
+@use "../../fixtures/modules/counter" as c2
+.a
+  v: 1

@@ -1,0 +1,4 @@
+.ghost
+  c: 1
+.x
+  @extend .ghost !optional

@@ -1,0 +1,4 @@
+.e
+  c: 1
+.a
+  @extend .e

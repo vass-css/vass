@@ -1,0 +1,3 @@
+@debug join(a b, c d);
+@debug append((a, b), c);
+.a { v: 1; }

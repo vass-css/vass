@@ -1,0 +1,13 @@
+file: main.vcss
+<<<
+@use "lib/button";
+.btn { color: button.$accent; }
+>>>
+file: lib/_button.vcss
+<<<
+$accent: #ff0000;
+>>>
+run: compile main.vcss
+exit: 0
+stdout: has:.btn {
+stdout: has:color: #ff0000;

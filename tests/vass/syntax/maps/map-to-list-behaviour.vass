@@ -1,0 +1,7 @@
+@use "sass:map"
+@use "sass:list"
+$m: (a: 1, b: 2)
+$l: map.keys($m)
+.a
+  v: list.separator($l)
+  n: list.length($l)

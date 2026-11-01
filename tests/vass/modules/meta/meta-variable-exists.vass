@@ -1,0 +1,6 @@
+@use "sass:meta"
+$x: 1
+@debug meta.variable-exists("x")
+@debug meta.variable-exists("y")
+.a
+  v: 1

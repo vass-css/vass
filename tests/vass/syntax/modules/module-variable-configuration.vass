@@ -1,0 +1,3 @@
+@use "../../fixtures/modules/configured" as cfg with ($size: 40px)
+.a
+  s: cfg.$size

@@ -1,0 +1,4 @@
+@use "sass:string";
+@debug string.index("hello", "ll");
+@debug string.index("hello", "x");
+.a { v: 1; }

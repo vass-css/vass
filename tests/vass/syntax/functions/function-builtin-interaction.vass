@@ -1,0 +1,6 @@
+@use "sass:math"
+@function clampw($w)
+  @return math.clamp($w, 100px, 200px)
+.x
+  a: clampw(150px)
+  b: clampw(50px)

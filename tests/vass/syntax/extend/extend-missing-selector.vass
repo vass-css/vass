@@ -1,0 +1,4 @@
+.nope
+  y: 1
+.x
+  @extend .nope

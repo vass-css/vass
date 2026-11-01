@@ -1,0 +1,1 @@
+.a { a: min(10px, 5px); b: max(1rem, 2rem); c: clamp(1px, 2vw, 3px); }

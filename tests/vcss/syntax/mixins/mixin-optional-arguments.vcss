@@ -1,0 +1,3 @@
+@mixin m($a: A, $b: B) { x: $a; y: $b; }
+.a { @include m; }
+.b { @include m(X); }

@@ -1,0 +1,4 @@
+run: exec --stdin
+stdin: a { b: 2 * 3; }\n
+exit: 0
+stdout: exact:a {\n  b: 6;\n}\n

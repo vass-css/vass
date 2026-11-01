@@ -1,0 +1,2 @@
+run: compile {tests}/fixtures/cli/_ok.vcss
+exit: 0

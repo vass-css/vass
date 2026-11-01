@@ -1,0 +1,1 @@
+.wrap { @at-root .out { c: 1; } }

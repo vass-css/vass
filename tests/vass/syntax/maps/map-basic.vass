@@ -1,0 +1,4 @@
+@use "sass:map"
+$m: (width: 10px, height: 20px)
+.a
+  w: map.get($m, width)

@@ -1,0 +1,5 @@
+@use "sass:map"
+$m: (sm: 1px, md: 2px)
+@each $k, $v in $m
+  .#{$k}
+    w: $v

@@ -1,0 +1,10 @@
+@mixin m { $q: 1; .a { $q: 2; } @debug $q; @each $i in (1) { $q: 3; } @debug $q; @if true { $q: 4; } @debug $q; }
+.x { @include m; }
+$g: 1;
+.a { $g: 2; }
+@debug $g;
+@mixin n { $h: 1; @for $i from 1 to 2 { $h: 9; } @debug $h; }
+.y { @include n; }
+$top: "";
+@each $c in ("p" "q") { $top: $top + $c; }
+@debug $top;

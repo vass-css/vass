@@ -1,0 +1,21 @@
+[package]
+name = "vass-embedded"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+description = "Embedded protocol for VASS CSS preprocessor"
+keywords = ["css", "preprocessor", "embedded", "protocol"]
+categories = ["web-programming"]
+
+[dependencies]
+vass-core.workspace = true
+vass-evaluator.workspace = true
+vass-io.workspace = true
+thiserror.workspace = true
+tokio.workspace = true
+serde.workspace = true
+
+[dev-dependencies]
+pretty_assertions.workspace = true

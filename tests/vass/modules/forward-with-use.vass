@@ -1,0 +1,4 @@
+@forward "../../fixtures/modules/plain"
+@use "../../fixtures/modules/plain" as p
+.a
+  v: p.$v

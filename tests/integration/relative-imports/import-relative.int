@@ -1,0 +1,12 @@
+file: main.vcss
+<<<
+@import "vars";
+a { m: $margin; }
+>>>
+file: _vars.vcss
+<<<
+$margin: 10px;
+>>>
+run: compile main.vcss
+exit: 0
+stdout: has:m: 10px;

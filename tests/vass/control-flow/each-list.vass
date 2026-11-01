@@ -1,0 +1,3 @@
+@each $c in red, green, blue
+  .#{$c}
+    v: 1

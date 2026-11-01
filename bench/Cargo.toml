@@ -1,0 +1,13 @@
+[package]
+name = "vass-bench"
+version.workspace = true
+edition.workspace = true
+publish = false
+
+[lib]
+path = "src/lib.rs"
+
+[dependencies]
+vass-parser.workspace = true
+vass-evaluator.workspace = true
+vass-transpiler.workspace = true

@@ -1,0 +1,3 @@
+@use "sass:color";
+@debug color.space(hsl(120 50% 50%));
+.a { v: hsl(120 50% 50%); }

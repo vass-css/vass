@@ -1,0 +1,6 @@
+@use "sass:meta"
+@debug meta.inspect((a: 1, b: (c: 2)))
+@debug meta.inspect([1, 2])
+@debug meta.inspect((1,))
+.a
+  v: 1

@@ -1,0 +1,2 @@
+@use "sass:list";
+.a { m: 1px 2px 3px; n: list.length(1px 2px 3px); }

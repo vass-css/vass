@@ -1,0 +1,2 @@
+@debug map-get((a: 1), a);
+.a { v: 1; }

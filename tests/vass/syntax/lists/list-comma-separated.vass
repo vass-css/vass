@@ -1,0 +1,4 @@
+@use "sass:list"
+.a
+  f: Arial, sans-serif
+  n: list.length((Arial, sans-serif))

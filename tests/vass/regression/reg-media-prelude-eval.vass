@@ -1,0 +1,36 @@
+$v: 960px
+$q: "screen and (min-width: 700px)"
+$w: 500px
+@media (min-width: $v)
+  .a
+    display: none
+@media #{$q}
+  .b
+    a: b
+@media screen and (min-width: $v), print
+  .c
+    a: b
+@media (min-width: 100px + 5)
+  .d
+    a: b
+@media (min-width:960px )
+  .e
+    a: b
+@media not screen
+  .f
+    a: b
+@media only screen and (min-width: 500px)
+  .g
+    a: b
+@media (min-width: $v + 10px)
+  .h
+    a: b
+@media (width: $w) or (hover: hover)
+  .i
+    a: b
+@media screen, print
+  .j
+    a: b
+@media #{$q} and (max-width: 900px)
+  .k
+    a: b

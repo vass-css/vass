@@ -1,0 +1,14 @@
+# A failed compilation must not poison the next invocation.
+file: bad.vcss
+<<<
+a { b: 1px + 1s; }
+>>>
+file: good.vcss
+<<<
+a { b: 2px; }
+>>>
+run: compile bad.vcss
+exit: 1
+run: compile good.vcss
+exit: 0
+stdout: exact:a {\n  b: 2px;\n}\n

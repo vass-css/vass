@@ -1,0 +1,2 @@
+$n: null;
+.a { c: pre-#{$n}-post; }

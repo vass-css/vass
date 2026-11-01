@@ -1,0 +1,3 @@
+@use "sass:map";
+@debug map.deep-get((a: (b: (c: 9))), a, b, c);
+.a { v: 1; }

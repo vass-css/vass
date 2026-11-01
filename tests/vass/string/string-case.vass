@@ -1,0 +1,4 @@
+@use "sass:string"
+.a
+  a: string.to-upper-case(MiXeD)
+  b: string.to-lower-case(MiXeD)

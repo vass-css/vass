@@ -1,0 +1,3 @@
+args: --version
+exit: 0
+stdout: re:^vass \d+\.\d+\.\d+$

@@ -1,0 +1,1 @@
+.i { &::before { content: "<"; } &::after { content: ">"; } }

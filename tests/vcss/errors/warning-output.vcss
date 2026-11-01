@@ -1,0 +1,2 @@
+@warn "watch out";
+.a { v: 1; }

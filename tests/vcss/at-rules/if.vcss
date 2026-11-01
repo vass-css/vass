@@ -1,0 +1,2 @@
+$c: true;
+@if $c { .a { v: yes; } } @else { .a { v: no; } }

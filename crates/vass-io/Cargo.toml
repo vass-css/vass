@@ -1,0 +1,21 @@
+[package]
+name = "vass-io"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+description = "File I/O, importers, and watcher for VASS CSS preprocessor"
+keywords = ["css", "preprocessor", "io", "importer"]
+categories = ["web-programming"]
+
+[dependencies]
+vass-core.workspace = true
+thiserror.workspace = true
+tokio.workspace = true
+tracing.workspace = true
+parking_lot.workspace = true
+
+[dev-dependencies]
+pretty_assertions.workspace = true
+tempfile = "3.8"

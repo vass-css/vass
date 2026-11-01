@@ -1,0 +1,7 @@
+$v: outer
+@mixin m
+  $v: from-mixin
+  @content
+.a
+  @include m
+    v: $v

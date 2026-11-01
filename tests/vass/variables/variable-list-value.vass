@@ -1,0 +1,4 @@
+$l: (a, b, c)
+.a
+  x: nth($l, 2)
+  n: length($l)

@@ -1,0 +1,5 @@
+@use "sass:list"
+$l: a b c
+.a
+  a: list.index($l, b)
+  b: list.index($l, z)

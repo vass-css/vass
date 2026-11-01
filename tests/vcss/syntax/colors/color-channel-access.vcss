@@ -1,0 +1,3 @@
+@use "sass:color";
+@debug color.channel(#036, "red");
+.a { a: color.channel(oklch(60% 0.1 20deg), "lightness"); }

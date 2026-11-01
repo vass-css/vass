@@ -1,0 +1,6 @@
+@use "theme";
+
+.btn {
+  @include theme.focus-ring;
+  border-color: theme.$accent;
+}

@@ -1,0 +1,6 @@
+@use "sass:meta";
+@use "sass:list";
+$x: red,;
+@debug meta.type-of($x);
+@debug list.separator($x);
+.a { v: 1; }

@@ -1,0 +1,5 @@
+@use "sass:map"
+@debug map.remove((a: 1, b: 2, c: 3), a, c)
+@debug map.remove((a: 1), z)
+.a
+  v: 1

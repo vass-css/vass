@@ -1,0 +1,4 @@
+@use "sass:math"
+.a
+  a: math.abs(-5px)
+  b: math.abs(5)

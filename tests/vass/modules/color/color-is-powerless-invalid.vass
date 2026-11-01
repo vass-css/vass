@@ -1,0 +1,3 @@
+@use "sass:color"
+.a
+  v: color.is-powerless(#f00, "red" )

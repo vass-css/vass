@@ -1,0 +1,2 @@
+@use "sass:map";
+.a { v: map.keys(1px); }

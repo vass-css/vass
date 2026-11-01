@@ -1,0 +1,4 @@
+.a
+  c: 1
+  @media (min-width: 100px)
+    c: 2

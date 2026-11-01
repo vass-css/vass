@@ -1,0 +1,4 @@
+@use "sass:math"
+.a
+  a: math.min(4px, 2px, 8px)
+  b: math.min(-1, -2.5)

@@ -1,0 +1,3 @@
+args: compile --bogus x.vcss
+exit: 2
+stderr: has:unexpected argument '--bogus'

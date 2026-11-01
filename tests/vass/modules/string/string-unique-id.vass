@@ -1,0 +1,6 @@
+@use "sass:string"
+$a: string.unique-id()
+$b: string.unique-id()
+@debug $a != $b
+.a
+  v: 1

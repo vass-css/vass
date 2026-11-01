@@ -1,0 +1,9 @@
+# {vass} is the release artifact under test; verify it runs from an
+# unrelated working directory with no project context.
+file: in.vcss
+<<<
+a { b: c; }
+>>>
+run: {vass} compile in.vcss
+exit: 0
+stdout: exact:a {\n  b: c;\n}\n

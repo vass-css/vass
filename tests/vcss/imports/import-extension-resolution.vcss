@@ -1,0 +1,2 @@
+@import "../../fixtures/modules/explicit-css";
+.a { v: 1; }

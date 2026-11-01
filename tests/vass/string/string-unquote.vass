@@ -1,0 +1,4 @@
+@use "sass:string"
+.a
+  a: string.unquote("hi")
+  b: inspect(string.unquote("a b"))

@@ -1,0 +1,19 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "VASS: check workspace",
+      "type": "shell",
+      "command": "cargo check --workspace --all-targets",
+      "group": "build",
+      "problemMatcher": "$rustc"
+    },
+    {
+      "label": "VASS: test workspace",
+      "type": "shell",
+      "command": "cargo test --workspace",
+      "group": "test",
+      "problemMatcher": "$rustc"
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+.a {
+  --x: calc(8px + 1rem);
+  y: var(--x);
+}

@@ -1,0 +1,4 @@
+@use "sass:color";
+@debug color.is-legacy(#f00);
+@debug color.is-legacy(oklch(60% 0.1 20deg));
+.a { v: 1; }

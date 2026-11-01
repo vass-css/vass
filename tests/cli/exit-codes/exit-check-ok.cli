@@ -1,0 +1,4 @@
+# A clean check exits 0.
+run: check {tests}/fixtures/cli/_ok.vcss
+exit: 0
+stdout: has:file(s) checked — no problems found

@@ -1,0 +1,31 @@
+// map.deep-remove — missing keys must leave the map unchanged.
+//
+// Reference: dart-sass 1.107.0. If any key along the path is missing (or an
+// intermediate value is not a map), the map is returned as-is. A missing
+// single key behaves like map.remove (which is also a no-op). The empty
+// list `()` is accepted as an empty map.
+//
+// Regression (round 6): Bass used to fail with
+//   error[E0003]: map.deep-remove: $map: () is not a map.
+// and errored with "Map has no key ..." on missing paths.
+@use "vass:map" as map;
+
+$settings: (
+  "name": "Bass",
+  "theme": ("color": red)
+);
+
+// Missing nested key: unchanged.
+@debug map.deep-remove($settings, "theme", "unknown");
+
+// Missing top-level key: unchanged.
+@debug map.deep-remove($settings, "unknown");
+
+// Empty map input: unchanged.
+@debug map.deep-remove((), "missing");
+
+// Non-map value in the middle of the path: unchanged.
+@debug map.deep-remove($settings, "name", "x");
+
+// Existing path: key removed.
+@debug map.deep-remove($settings, "theme", "color");

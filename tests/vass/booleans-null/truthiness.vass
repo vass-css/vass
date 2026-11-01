@@ -1,0 +1,6 @@
+@debug if("", T, F)
+@debug if(0, T, F)
+@debug if((), T, F)
+@debug if(null, T, F)
+.a
+  v: 1

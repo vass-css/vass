@@ -1,0 +1,15 @@
+.a {
+  color: red;
+}
+.a .b {
+  c: 1;
+}
+.a {
+  margin: 0;
+}
+.a .c {
+  c: 2;
+}
+.a {
+  padding: 0;
+}

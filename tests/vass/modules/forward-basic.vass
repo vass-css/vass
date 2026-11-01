@@ -1,0 +1,3 @@
+@use "../../fixtures/modules/forwarder" as fw
+.a
+  v: fw.$v

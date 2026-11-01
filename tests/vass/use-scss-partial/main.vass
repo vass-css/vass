@@ -1,0 +1,4 @@
+@use "lib"
+.inverse
+  background-color: lib.$primary-color
+  color: white

@@ -1,0 +1,22 @@
+.icon-eye:before {
+  display: inline-block;
+  content: "\f112";
+  font-size: 12px;
+}
+
+.icon-start:before {
+  display: inline-block;
+  content: "\f12e";
+  font-size: 16px;
+}
+
+.icon-stop:before {
+  display: inline-block;
+  content: "\f12f";
+  font-size: 10px;
+}
+
+.x {
+  margin: 1px 2px;
+  color: red;
+}

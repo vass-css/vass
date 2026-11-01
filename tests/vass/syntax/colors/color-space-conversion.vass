@@ -1,0 +1,3 @@
+@use "sass:color"
+.a
+  a: color.to-space(#036, oklch)

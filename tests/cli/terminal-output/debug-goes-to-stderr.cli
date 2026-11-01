@@ -1,0 +1,5 @@
+# @debug output lands on stderr; the CSS still goes to stdout.
+run: compile {tests}/fixtures/cli/_debug.vcss
+exit: 0
+stderr: re:DEBUG: 2
+stdout: has:.err {

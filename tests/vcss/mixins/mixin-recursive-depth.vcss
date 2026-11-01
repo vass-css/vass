@@ -1,0 +1,2 @@
+@mixin spin($n) { @if $n > 0 { a: $n; @include spin($n - 1); } }
+.x { @include spin(3); }

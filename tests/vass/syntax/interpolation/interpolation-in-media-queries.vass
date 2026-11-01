@@ -1,0 +1,4 @@
+$w: 100px
+@media (min-width: #{$w} )
+  .a
+    c: 1

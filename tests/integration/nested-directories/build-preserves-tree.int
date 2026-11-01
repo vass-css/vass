@@ -1,0 +1,13 @@
+file: src/top.vcss
+<<<
+a { b: 1; }
+>>>
+file: src/deep/nested/two.vcss
+<<<
+c { d: 2; }
+>>>
+run: build src
+exit: 0
+stdout: has:built 2 stylesheet(s)
+file-has: dist/top.css:a {
+file-has: dist/deep/nested/two.css:d: 2;

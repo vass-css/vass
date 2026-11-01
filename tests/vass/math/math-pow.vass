@@ -1,0 +1,4 @@
+@use "sass:math"
+.a
+  a: math.pow(2, 10)
+  b: math.pow(2, 0.5)

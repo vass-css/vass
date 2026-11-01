@@ -1,0 +1,4 @@
+$w: world
+.a
+  c: "hello #{$w}"
+  u: hi-#{$w}

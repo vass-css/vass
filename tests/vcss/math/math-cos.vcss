@@ -1,0 +1,4 @@
+@use "sass:math";
+@debug math.cos(0deg) == 1;
+@debug math.hypot(3.14 / 2, 0) == 1.57;
+.a { v: 1; }

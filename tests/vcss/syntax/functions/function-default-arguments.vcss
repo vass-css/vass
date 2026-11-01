@@ -1,0 +1,2 @@
+@function pow2($n, $e: 2) { @return $n * $n; }
+.x { v: pow2(3); }

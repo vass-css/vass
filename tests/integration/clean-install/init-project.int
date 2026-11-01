@@ -1,0 +1,9 @@
+# `init` scaffolds a project that compiles out of the box.
+run: init myproj
+exit: 0
+stdout: has:Created project 'myproj'
+file-has: myproj/vass.toml:[
+run: compile myproj/src/main.vass
+exit: 0
+stdout: has:body {
+stdout: has:.container {

@@ -1,0 +1,2 @@
+@import "../../fixtures/modules/partial-member";
+.a { v: $val; }

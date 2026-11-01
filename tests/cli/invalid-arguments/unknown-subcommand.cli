@@ -1,0 +1,3 @@
+args: frobnicate
+exit: 2
+stderr: has:unrecognized subcommand 'frobnicate'

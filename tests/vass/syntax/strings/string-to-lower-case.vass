@@ -1,0 +1,3 @@
+@use "sass:string"
+.a
+  v: string.to-lower-case(ABC)

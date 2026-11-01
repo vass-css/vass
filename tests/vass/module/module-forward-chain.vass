@@ -1,0 +1,3 @@
+@use "../../fixtures/modules/forwarder-chain" as ch
+.a
+  v: ch.$v

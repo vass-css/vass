@@ -1,0 +1,14 @@
+.a
+  content: "\f112"
+.b
+  content: "a\\b"
+.c
+  content: "\2192"
+.d
+  content: "\1F600"
+.e
+  content: "\e000"
+.f
+  content: "\f900"
+.g
+  content: "\1f"

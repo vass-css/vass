@@ -1,0 +1,2 @@
+@mixin m { @extend .absent-base; }
+.x { @include m; }

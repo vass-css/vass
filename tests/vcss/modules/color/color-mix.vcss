@@ -1,0 +1,4 @@
+@use "sass:color";
+@debug color.mix(red, blue, 25%);
+@debug color.mix(red, blue, $method: oklch);
+.a { v: 1; }

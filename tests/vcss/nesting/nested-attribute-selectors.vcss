@@ -1,0 +1,1 @@
+.i { &[disabled] { o: .5; } &[type="text"] { b: 1; } }

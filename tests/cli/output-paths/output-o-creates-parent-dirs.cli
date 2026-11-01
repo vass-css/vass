@@ -1,0 +1,7 @@
+file: in.vcss
+<<<
+a { b: c; }
+>>>
+run: compile -o deep/er/out.css in.vcss
+exit: 0
+file-has: deep/er/out.css:b: c;

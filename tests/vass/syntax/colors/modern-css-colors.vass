@@ -1,0 +1,5 @@
+.a
+  a: oklch(60% 0.4 20deg)
+  b: lab(50% 20 -10)
+  c: color(display-p3 1 0 0)
+  d: color-mix(in oklch, red, blue)

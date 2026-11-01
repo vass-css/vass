@@ -1,0 +1,4 @@
+@use "sass:map"
+$m: map.set((a: 1), b, 2)
+.a
+  v: inspect($m)

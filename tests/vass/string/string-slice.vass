@@ -1,0 +1,5 @@
+@use "sass:string"
+.a
+  a: string.slice("abcdef", 2, 4)
+  b: string.slice("abcdef", 3)
+  c: string.slice("abcdef", -2)

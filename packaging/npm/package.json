@@ -1,0 +1,66 @@
+{
+  "name": "vass",
+  "version": "1.0.0",
+  "description": "VASS — A modern CSS preprocessor CLI written in Rust. Compiles .vass (indented) and .vcss (bracket) syntax to CSS.",
+  "license": "Apache-2.0",
+  "author": "VASS Contributors",
+  "contributors": [],
+  "homepage": "https://github.com/vass-css/vass#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vass-css/vass.git"
+  },
+  "bugs": {
+    "url": "https://github.com/vass-css/vass/issues"
+  },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/vass-css"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "os": [
+    "linux",
+    "win32"
+  ],
+  "cpu": [
+    "x64"
+  ],
+  "bin": {
+    "vass": "bin/vass.js"
+  },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "bin/**",
+    "vendor/**",
+    "scripts/postinstall.js"
+  ],
+  "scripts": {
+    "postinstall": "node scripts/postinstall.js",
+    "prepack": "node scripts/stage-license.js",
+    "postpack": "node scripts/unstage-license.js"
+  },
+  "keywords": [
+    "vass",
+    "vass-css",
+    "css",
+    "preprocessor",
+    "scss",
+    "sass",
+    "stylesheet",
+    "cli",
+    "rust",
+    "binary",
+    "compile",
+    "build-tool",
+    "frontend",
+    "web-development",
+    "css-preprocessor"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "types": "bin/vass.js"
+}

@@ -1,0 +1,11 @@
+$icons: "eye" "\f112" 12px, "start" "\f12e" 16px, "stop" "\f12f" 10px
+@each $name, $glyph, $size in $icons
+  .icon-#{$name} :before
+    display: inline-block
+    content: $glyph
+    font-size: $size
+$a: 1px 2px
+$b: red
+.x
+  margin: $a
+  color: $b

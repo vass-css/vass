@@ -1,0 +1,4 @@
+@use "sass:map";
+@debug map.merge((a: 1), (b: 2));
+@debug map.merge((a: 1), (a: 9));
+.a { v: 1; }

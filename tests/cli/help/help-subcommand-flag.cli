@@ -1,0 +1,4 @@
+args: compile --help
+exit: 0
+stdout: has:Compile a VASS file to CSS
+stdout: has:--style

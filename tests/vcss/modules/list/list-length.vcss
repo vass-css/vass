@@ -1,0 +1,5 @@
+@use "sass:list";
+@debug list.length(());
+@debug list.length(1 2 3);
+@debug list.length((1, 2));
+.a { v: 1; }

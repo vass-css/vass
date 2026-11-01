@@ -1,0 +1,5 @@
+@use "sass:color"
+@debug color.invert(#036)
+@debug color.invert(#036, $space: oklch)
+.a
+  v: 1

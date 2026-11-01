@@ -1,0 +1,9 @@
+.a {
+  v: 1;
+  m: 2px;
+}
+
+/* dropped in compressed */
+.b {
+  w: 5;
+}

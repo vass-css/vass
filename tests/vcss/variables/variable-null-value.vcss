@@ -1,0 +1,2 @@
+$n: null;
+.a { keep: 1; drop: $n; }

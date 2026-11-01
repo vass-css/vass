@@ -1,0 +1,7 @@
+@use "sass:meta"
+@mixin m
+  a: 1
+@debug meta.mixin-exists("m")
+@debug meta.mixin-exists("nope")
+.a
+  v: 1

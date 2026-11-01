@@ -1,0 +1,2 @@
+@use "sass:math";
+.a { v: math.abs(-3); }

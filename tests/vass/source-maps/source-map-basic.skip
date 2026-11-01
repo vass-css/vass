@@ -1,0 +1,1 @@
+UNSUPPORTED: source map generation is not implemented; --source-map fails loudly (see tests/README.md)

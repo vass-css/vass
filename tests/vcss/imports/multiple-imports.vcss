@@ -1,0 +1,3 @@
+@import "../../fixtures/modules/plain";
+@import "../../fixtures/modules/partial-member";
+.a { a: $v; b: $val; }

@@ -1,0 +1,2 @@
+@import "../../fixtures/modules/idxdir";
+.a { v: $iv; }

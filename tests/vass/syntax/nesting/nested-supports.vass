@@ -1,0 +1,3 @@
+.a
+  @supports (display: grid)
+    d: grid

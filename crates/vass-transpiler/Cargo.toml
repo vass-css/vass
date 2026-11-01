@@ -1,0 +1,17 @@
+[package]
+name = "vass-transpiler"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+description = "CSS output generation for VASS CSS preprocessor"
+keywords = ["css", "preprocessor", "transpiler", "output"]
+categories = ["web-programming"]
+
+[dependencies]
+vass-core.workspace = true
+thiserror.workspace = true
+
+[dev-dependencies]
+pretty_assertions.workspace = true

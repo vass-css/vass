@@ -1,0 +1,3 @@
+$n: card;
+.#{$n} { border: 1px; }
+.#{$n}-head { c: 2; }

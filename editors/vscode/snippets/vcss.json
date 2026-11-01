@@ -1,0 +1,217 @@
+{
+  "use-module": {
+    "prefix": "use",
+    "body": ["@use \"${1:vass:math}\";"],
+    "description": "@use a module"
+  },
+  "use-alias": {
+    "prefix": "useas",
+    "body": ["@use \"${1:module}\" as ${2:ns};"],
+    "description": "@use a module with a namespace"
+  },
+  "use-star": {
+    "prefix": "usestar",
+    "body": ["@use \"${1:module}\" as *;"],
+    "description": "@use a module into the global scope"
+  },
+  "use-with": {
+    "prefix": "usewith",
+    "body": ["@use \"${1:module}\" with (", "\t$${2:var}: ${3:value}", ");"],
+    "description": "@use with configuration"
+  },
+  "forward-module": {
+    "prefix": "forward",
+    "body": ["@forward \"${1:module}\";"],
+    "description": "@forward a module"
+  },
+  "forward-show": {
+    "prefix": "forwardshow",
+    "body": ["@forward \"${1:module}\" show ${2:members};"],
+    "description": "@forward only listed members"
+  },
+  "forward-prefix": {
+    "prefix": "forwardp",
+    "body": ["@forward \"${1:module}\" as ${2:prefix}-*;"],
+    "description": "@forward all members with a prefix"
+  },
+  "mixin": {
+    "prefix": "mixin",
+    "body": ["@mixin ${1:name}(${2:args}) {", "\t$0", "}"],
+    "description": "Mixin declaration"
+  },
+  "mixin-rest": {
+    "prefix": "mixinr",
+    "body": ["@mixin ${1:name}(${2:args}...) {", "\t$0", "}"],
+    "description": "Mixin with rest arguments"
+  },
+  "include": {
+    "prefix": "include",
+    "body": ["@include ${1:mixin};"],
+    "description": "Include a mixin"
+  },
+  "include-args": {
+    "prefix": "includea",
+    "body": ["@include ${1:mixin}(${2:args});"],
+    "description": "Include a mixin with arguments"
+  },
+  "include-content": {
+    "prefix": "includec",
+    "body": ["@include ${1:mixin} {", "\t${2:// content}", "}"],
+    "description": "Include a mixin with a content block"
+  },
+  "content": {
+    "prefix": "content",
+    "body": "@content;",
+    "description": "@content block passthrough"
+  },
+  "function": {
+    "prefix": "fun",
+    "body": ["@function ${1:name}(${2:args}) {", "\t@return ${3:value};", "}"],
+    "description": "Function declaration"
+  },
+  "variable": {
+    "prefix": "var",
+    "body": "$$${1:name}: ${2:value};",
+    "description": "Variable declaration"
+  },
+  "variable-default": {
+    "prefix": "vard",
+    "body": "$$${1:name}: ${2:value} !default;",
+    "description": "Variable with !default"
+  },
+  "variable-global": {
+    "prefix": "varg",
+    "body": "$$${1:name}: ${2:value} !global;",
+    "description": "Variable with !global"
+  },
+  "map": {
+    "prefix": "map",
+    "body": ["$$${1:map}: (", "\t${2:key}: ${3:value},", ");"],
+    "description": "Map literal"
+  },
+  "if": {
+    "prefix": "if",
+    "body": ["@if ${1:condition} {", "\t${2}", "}"],
+    "description": "@if block"
+  },
+  "if-else": {
+    "prefix": "ifel",
+    "body": ["@if ${1:condition} {", "\t${2}", "} @else {", "\t${3}", "}"],
+    "description": "@if / @else"
+  },
+  "if-else-if": {
+    "prefix": "ifele",
+    "body": ["@if ${1:condition} {", "\t${2}", "} @else if ${3:condition} {", "\t${4}", "} @else {", "\t${5}", "}"],
+    "description": "@if / @else if / @else"
+  },
+  "each": {
+    "prefix": "each",
+    "body": ["@each $${1:item} in ${2:list} {", "\t${3}", "}"],
+    "description": "@each loop"
+  },
+  "each-map": {
+    "prefix": "eachm",
+    "body": ["@each $${1:key}, $${2:value} in $${3:map} {", "\t${4}", "}"],
+    "description": "@each over a map"
+  },
+  "for-through": {
+    "prefix": "for",
+    "body": ["@for $${1:i} from ${2:1} through ${3:10} {", "\t${4}", "}"],
+    "description": "@for loop (inclusive)"
+  },
+  "for-to": {
+    "prefix": "fort",
+    "body": ["@for $${1:i} from ${2:1} to ${3:10} {", "\t${4}", "}"],
+    "description": "@for loop (exclusive)"
+  },
+  "while": {
+    "prefix": "while",
+    "body": ["@while ${1:condition} {", "\t${2}", "}"],
+    "description": "@while loop"
+  },
+  "extend": {
+    "prefix": "ext",
+    "body": "@extend ${1:.selector};",
+    "description": "@extend a selector"
+  },
+  "extend-optional": {
+    "prefix": "exto",
+    "body": "@extend ${1:.selector} !optional;",
+    "description": "@extend with !optional"
+  },
+  "placeholder": {
+    "prefix": "ph",
+    "body": ["%${1:name} {", "\t$0", "}"],
+    "description": "Placeholder selector"
+  },
+  "at-root": {
+    "prefix": "atroot",
+    "body": ["@at-root {", "\t$0", "}"],
+    "description": "@at-root block"
+  },
+  "media": {
+    "prefix": "med",
+    "body": ["@media (${1:min-width}: ${2:600px}) {", "\t${3}", "}"],
+    "description": "@media block"
+  },
+  "media-dark": {
+    "prefix": "meddark",
+    "body": ["@media (prefers-color-scheme: dark) {", "\t${1}", "}"],
+    "description": "@media dark mode"
+  },
+  "supports": {
+    "prefix": "sup",
+    "body": ["@supports (${1:display}: ${2:grid}) {", "\t${3}", "}"],
+    "description": "@supports block"
+  },
+  "keyframes": {
+    "prefix": "kf",
+    "body": ["@keyframes ${1:name} {", "\tfrom {", "\t\t${2}", "\t}", "", "\tto {", "\t\t${3}", "\t}", "}"],
+    "description": "@keyframes animation"
+  },
+  "font-face": {
+    "prefix": "ff",
+    "body": ["@font-face {", "\tfont-family: \"${1:Name}\";", "\tsrc: url(\"${2:file.woff2}\") format(\"woff2\");", "\tfont-display: ${3|swap,block,fallback,optional,auto|};", "}"],
+    "description": "@font-face declaration"
+  },
+  "property": {
+    "prefix": "cprop",
+    "body": ["@property --${1:name} {", "\tsyntax: \"${2|<color>,<length>,<number>,<percentage>,<angle>,<string>|}\";", "\tinherits: ${3|false,true|};", "\tinitial-value: ${4:black};", "}"],
+    "description": "@property registration"
+  },
+  "layer": {
+    "prefix": "layer",
+    "body": ["@layer ${1:name} {", "\t$0", "}"],
+    "description": "@layer cascade layer"
+  },
+  "container": {
+    "prefix": "container",
+    "body": ["@container (${1:min-width}: ${2:400px}) {", "\t${3}", "}"],
+    "description": "@container query"
+  },
+  "debug": {
+    "prefix": "dbg",
+    "body": "@debug ${1:value};",
+    "description": "@debug output"
+  },
+  "warn": {
+    "prefix": "warn",
+    "body": "@warn \"${1:message}\";",
+    "description": "@warn message"
+  },
+  "error": {
+    "prefix": "err",
+    "body": "@error \"${1:message}\";",
+    "description": "@error message"
+  },
+  "flex-center": {
+    "prefix": "flexc",
+    "body": ["display: flex;", "align-items: center;", "justify-content: center;"],
+    "description": "Flexbox centering"
+  },
+  "absolute-center": {
+    "prefix": "abscenter",
+    "body": ["position: absolute;", "top: 50%;", "left: 50%;", "transform: translate(-50%, -50%);"],
+    "description": "Absolute centering"
+  }
+}

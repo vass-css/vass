@@ -1,0 +1,9 @@
+file: neat.vcss
+<<<
+a {
+  b: c;
+}
+>>>
+run: fmt --check neat.vcss
+exit: 0
+stdout: has:formatted OK

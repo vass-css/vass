@@ -1,0 +1,2 @@
+@mixin m { a: 1; }
+.b { @include m; }

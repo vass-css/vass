@@ -1,0 +1,6 @@
+.base
+  x: 1
+@mixin m
+  @extend .base
+.x
+  @include m

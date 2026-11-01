@@ -1,0 +1,2 @@
+@page { margin: 1cm; }
+@page :first { margin: 2cm; }

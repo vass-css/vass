@@ -1,0 +1,4 @@
+@mixin m($a, $b: 10px)
+  y: $b
+.a
+  @include m(1)

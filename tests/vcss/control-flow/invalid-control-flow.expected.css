@@ -1,0 +1,4 @@
+🚨 error[E0001]: Declaration `v` may only be used within a style rule.
+  📍 tests/vcss/control-flow/invalid-control-flow.vcss
+
+   📘 run `vass explain E0001` for every cause and fix

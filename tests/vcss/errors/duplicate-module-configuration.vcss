@@ -1,0 +1,3 @@
+@use "../fixtures/modules/configured" with ($size: 1px);
+@use "../fixtures/modules/configured" as b with ($size: 2px);
+.a { v: 1; }

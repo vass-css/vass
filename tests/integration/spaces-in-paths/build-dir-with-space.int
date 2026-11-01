@@ -1,0 +1,8 @@
+file: "my src/one.vcss"
+<<<
+x { y: 1; }
+>>>
+run: build "my src"
+exit: 0
+stdout: has:built 1 stylesheet(s)
+file-has: dist/one.css:x {

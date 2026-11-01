@@ -1,0 +1,5 @@
+@use "sass:list"
+@debug list.zip(1px 2px 3px, 4px 5px 6px)
+@debug list.zip(a, b)
+.a
+  v: 1

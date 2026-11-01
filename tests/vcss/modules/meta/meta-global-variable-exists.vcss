@@ -1,0 +1,4 @@
+@use "sass:meta";
+$g: 1;
+@debug meta.global-variable-exists("g");
+.a { $l: 2; @debug meta.global-variable-exists("l"); v: 1; }

@@ -1,0 +1,6 @@
+@use "sass:meta"
+@debug meta.feature-exists("at-error")
+@debug meta.feature-exists("units-interoperable")
+@debug meta.feature-exists("no-such-feature")
+.a
+  v: 1

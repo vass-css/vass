@@ -1,0 +1,3 @@
+@use "sass:color"
+.a
+  a: color.mix(red, blue, 50%)

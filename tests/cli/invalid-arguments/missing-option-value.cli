@@ -1,0 +1,3 @@
+args: compile -o
+exit: 2
+stderr: has:a value is required for '--output <OUTPUT>'

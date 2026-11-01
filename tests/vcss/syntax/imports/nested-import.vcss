@@ -1,0 +1,2 @@
+@import "../../fixtures/modules/with-import";
+.a { v: $nested; }

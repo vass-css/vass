@@ -1,0 +1,12 @@
+[package]
+name = "xtask"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish = false
+description = "VASS development automation tasks"
+
+[dependencies]
+anyhow.workspace = true
+clap = { version = "4.0", features = ["derive"] }
+clap_complete.workspace = true

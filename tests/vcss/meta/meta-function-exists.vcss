@@ -1,0 +1,4 @@
+@use "sass:meta";
+@debug meta.function-exists("rgb");
+@debug meta.function-exists("not-a-fn");
+.a { v: 1; }

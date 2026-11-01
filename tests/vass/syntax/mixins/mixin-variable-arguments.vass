@@ -1,0 +1,5 @@
+@mixin m($args...)
+  @each $a in $args
+    v: $a
+.a
+  @include m(1px, 2px)

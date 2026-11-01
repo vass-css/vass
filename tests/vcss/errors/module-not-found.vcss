@@ -1,0 +1,2 @@
+@use "no-such-thing" as x;
+.a { v: 1; }

@@ -1,0 +1,22 @@
+[package]
+name = "vass-evaluator"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+description = "Expression evaluator and built-in functions for VASS CSS preprocessor"
+keywords = ["css", "preprocessor", "evaluator"]
+categories = ["web-programming"]
+
+[dependencies]
+vass-core.workspace = true
+vass-parser.workspace = true
+thiserror.workspace = true
+tracing.workspace = true
+indexmap.workspace = true
+
+[dev-dependencies]
+vass-parser.workspace = true
+vass-transpiler.workspace = true
+pretty_assertions.workspace = true

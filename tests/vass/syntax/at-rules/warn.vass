@@ -1,0 +1,3 @@
+@warn "careful"
+.a
+  c: 1

@@ -1,0 +1,5 @@
+("theme": ("color": blue, "font": ("size": 16px), "radius": 4px))
+("theme": ("color": red, "font": ("size": 16px, "weight": 700)))
+("theme": ("color": red, "font": ("size": 16px)), "unknown": ("new": 1))
+("name": ("a": 1))
+("a": 1, "b": 2)

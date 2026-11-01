@@ -1,0 +1,5 @@
+@use "sass:math";
+@debug math.round(2.5);
+@debug math.ceil(2.1);
+@debug math.floor(2.9);
+.a { v: 1; }

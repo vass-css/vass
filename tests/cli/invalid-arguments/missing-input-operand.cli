@@ -1,0 +1,3 @@
+args: compile
+exit: 2
+stderr: has:required arguments were not provided

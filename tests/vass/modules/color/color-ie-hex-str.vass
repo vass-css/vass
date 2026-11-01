@@ -1,0 +1,5 @@
+@use "sass:color"
+@debug color.ie-hex-str(#036)
+@debug color.ie-hex-str(rgba(0, 0, 0, 0.5))
+.a
+  v: 1

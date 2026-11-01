@@ -1,0 +1,2 @@
+$x: 2;
+@if $x > 3 { .a { v: a; } } @else if $x > 1 { .a { v: b; } } @else { .a { v: c; } }

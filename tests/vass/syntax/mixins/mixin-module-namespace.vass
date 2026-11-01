@@ -1,0 +1,3 @@
+@use "../../fixtures/modules/mixin-helper" as h
+.a
+  @include h.accent

@@ -1,0 +1,4 @@
+@use "sass:list"
+.a
+  v: list.is-bracketed([1 2])
+  b: inspect([1 2])

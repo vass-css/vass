@@ -1,0 +1,3 @@
+@use "sass:color";
+@debug color.alpha(rgba(0,0,0,0.4));
+.a { a: rgba(red, 0.2); }

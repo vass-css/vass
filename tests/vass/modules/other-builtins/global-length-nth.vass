@@ -1,0 +1,4 @@
+@debug length(a b c)
+@debug nth(a b c, 2)
+.a
+  v: 1

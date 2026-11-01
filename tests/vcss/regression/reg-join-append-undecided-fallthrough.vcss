@@ -1,0 +1,5 @@
+@use "sass:list";
+@debug list.append((), a);
+@debug list.join((), (b c));
+@debug list.separator(list.join((a, b), c d));
+.a { v: 1; }

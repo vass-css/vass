@@ -1,0 +1,3 @@
+args: compile ghost.vcss
+exit: 1
+stderr: has:File not found: ghost.vcss

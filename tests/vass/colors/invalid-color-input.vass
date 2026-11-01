@@ -1,0 +1,3 @@
+@use "sass:color"
+.a
+  a: color.adjust(#f00, $hue: 30deg)

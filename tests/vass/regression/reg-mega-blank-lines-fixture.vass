@@ -1,0 +1,12 @@
+$base: #cc9966
+.r1
+  a: 1
+@media s
+  .m
+    x: 1
+.r2
+  b: 2
+@font-face
+  font-family: F
+.r3
+  c: 3

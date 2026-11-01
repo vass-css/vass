@@ -1,0 +1,2 @@
+@use "sass:math";
+.a { a: math.div(10, 4); b: math.div(20px, 2); c: math.div(20px, 1s); }

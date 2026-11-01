@@ -1,0 +1,4 @@
+@debug type-of((a: 1))
+@debug inspect(1 2 3)
+.a
+  v: 1

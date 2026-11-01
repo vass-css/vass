@@ -1,0 +1,4 @@
+@use "sass:math"
+@debug math.sqrt(-1)
+.a
+  v: 1

@@ -1,0 +1,2 @@
+Round 6 regression: has-key path through a non-map intermediate must be false.
+Verified against dart-sass 1.107.0 via npx sass.

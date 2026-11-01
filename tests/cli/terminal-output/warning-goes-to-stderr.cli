@@ -1,0 +1,10 @@
+# @warn lands on stderr with a WARNING: prefix.
+file: in.vcss
+<<<
+@warn "careful";
+a { b: 1; }
+>>>
+run: compile in.vcss
+exit: 0
+stderr: re:WARNING: careful
+stdout: has:a {

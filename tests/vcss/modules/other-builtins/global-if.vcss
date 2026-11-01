@@ -1,0 +1,1 @@
+.a { v: if(true, yes, no); b: if(false, yes, no); }

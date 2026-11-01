@@ -1,0 +1,2 @@
+$c: danger;
+.#{$c}-zone { c: 1; }

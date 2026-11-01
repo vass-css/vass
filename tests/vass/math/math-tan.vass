@@ -1,0 +1,3 @@
+@use "sass:math"
+.a
+  a: math.tan(0deg)

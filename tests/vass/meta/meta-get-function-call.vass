@@ -1,0 +1,7 @@
+@use "sass:meta"
+@function double($n)
+  @return $n * 2
+$f: meta.get-function("double")
+@debug meta.call($f, 21)
+.a
+  v: 1

@@ -1,0 +1,4 @@
+@function first($all...)
+  @return nth($all, 1)
+.x
+  v: first(a, b, c)

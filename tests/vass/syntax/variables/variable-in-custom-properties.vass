@@ -1,0 +1,4 @@
+$pad: 8px
+.a
+  --pad: #{$pad}
+  padding: var(--pad)

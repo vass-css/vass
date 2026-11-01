@@ -1,0 +1,30 @@
+body {
+  font-family: system-ui, sans-serif;
+  color: rgb(27.2211582307%, 9.8714090287%, 54.4423164615%);
+}
+
+.card {
+  padding: 24px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.card:hover {
+  background: rgb(79.4181486548%, 69.7911536708%, 94.5225718194%);
+}
+.card .title {
+  font-size: 18px;
+}
+
+.badge-info {
+  border-color: #0ea5e9;
+}
+
+.badge-ok {
+  border-color: #22c55e;
+}
+
+@media (max-width: 600px) {
+  .card {
+    padding: 12px;
+  }
+}

@@ -1,0 +1,3 @@
+@counter-style thumbs
+  system: cyclic
+  symbols: "1"

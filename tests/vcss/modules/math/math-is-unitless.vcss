@@ -1,0 +1,4 @@
+@use "sass:math";
+@debug math.is-unitless(42);
+@debug math.is-unitless(42px);
+.a { v: 1; }

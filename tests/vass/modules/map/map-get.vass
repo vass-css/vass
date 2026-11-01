@@ -1,0 +1,5 @@
+@use "sass:map"
+@debug map.get((a: 1, b: 2), b)
+@debug map.get((a: 1), z)
+.a
+  v: 1

@@ -1,0 +1,6 @@
+.btn:hover {
+  c: 1;
+}
+.btn:focus {
+  c: 2;
+}

@@ -1,0 +1,4 @@
+@mixin m
+  p: 0
+.a
+  @include m

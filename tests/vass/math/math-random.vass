@@ -1,0 +1,5 @@
+@use "sass:math"
+$r: math.random(6)
+@debug if($r >= 1 and $r <= 6, in-range, out-of-range)
+.a
+  t: if($r >= 1, num, other)

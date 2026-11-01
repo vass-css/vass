@@ -1,0 +1,4 @@
+@use "sass:math"
+.a
+  a: math.max(1px, 5px, 3px)
+  b: math.max(1, 2.5)

@@ -1,0 +1,5 @@
+@use "sass:math"
+$v: math.log(100) / math.log(10)
+@debug math.round($v) == 2
+.a
+  a: math.round($v)

@@ -1,0 +1,6 @@
+@mixin resp($name)
+  @media (#{$name} )
+    @content(760px)
+.a
+  @include resp(min-width) using ($w)
+    max: $w

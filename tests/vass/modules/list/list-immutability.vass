@@ -1,0 +1,7 @@
+@use "sass:list"
+$l: a b c
+$m: list.set-nth($l, 1, Z)
+@debug nth($l, 1) == a
+@debug nth($m, 1) == Z
+.a
+  v: 1

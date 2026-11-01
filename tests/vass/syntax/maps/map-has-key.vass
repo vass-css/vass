@@ -1,0 +1,6 @@
+@use "sass:map"
+$m: (a: 1)
+@debug map.has-key($m, a)
+@debug map.has-key($m, z)
+.a
+  v: 1

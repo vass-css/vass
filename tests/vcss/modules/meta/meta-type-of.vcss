@@ -1,0 +1,10 @@
+@use "sass:meta";
+@debug meta.type-of(1);
+@debug meta.type-of("s");
+@debug meta.type-of((a: 1));
+@debug meta.type-of((1 2));
+@debug meta.type-of(red);
+@debug meta.type-of(null);
+@debug meta.type-of(true);
+@debug meta.type-of(calc(1px + 2px));
+.a { v: 1; }

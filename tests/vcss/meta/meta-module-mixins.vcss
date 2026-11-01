@@ -1,0 +1,3 @@
+@use "sass:meta";
+@debug meta.module-mixins("sass:math");
+.a { v: 1; }

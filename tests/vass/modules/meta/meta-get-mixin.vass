@@ -1,0 +1,6 @@
+@use "sass:meta"
+@mixin m
+  a: 1
+$mx: meta.get-mixin("m")
+.a
+  @include meta.apply($mx)

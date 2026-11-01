@@ -1,0 +1,5 @@
+@mixin m($a, $b)
+  x: $a
+  y: $b
+.a
+  @include m($b: 2, $a: 1)

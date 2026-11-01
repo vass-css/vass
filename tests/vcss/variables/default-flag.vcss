@@ -1,0 +1,2 @@
+$g: 12px !default;
+.a { g: $g; }

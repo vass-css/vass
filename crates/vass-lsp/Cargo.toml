@@ -1,0 +1,23 @@
+[package]
+name = "vass-lsp"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+description = "Language Server for VASS CSS preprocessor"
+keywords = ["css", "preprocessor", "lsp", "language-server"]
+categories = ["development-tools"]
+
+[dependencies]
+vass-core.workspace = true
+vass-parser.workspace = true
+vass-evaluator.workspace = true
+thiserror.workspace = true
+tracing.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+
+[dev-dependencies]
+pretty_assertions.workspace = true
+tempfile = "3.8"

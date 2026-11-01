@@ -1,0 +1,6 @@
+@mixin card
+  border: 1px
+  @content
+.a
+  @include card
+    inner: 1

@@ -1,0 +1,5 @@
+@use "sass:map"
+@use "sass:list"
+$m: (a: 1, b: 2, c: 3)
+.a
+  v: list.length(map.keys($m))
