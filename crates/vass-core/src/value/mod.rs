@@ -10,7 +10,7 @@ mod string;
 pub use color::modern;
 pub use color::{Color, ColorSpace, ModernColor};
 pub use number::{Number, format_f64, format_f64_compressed};
-pub use string::BassString;
+pub use string::VassString;
 
 /// Separator used by a list value
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -98,15 +98,15 @@ impl ListValue {
 
 /// An ordered VASS map
 #[derive(Debug, Clone, PartialEq, Default)]
-pub struct BassMap {
+pub struct VassMap {
   /// Ordered key/value entries (duplicate keys not allowed after `set`)
   pub entries: Vec<(Value, Value)>,
 }
 
-impl BassMap {
+impl VassMap {
   /// An empty map
   pub fn new() -> Self {
-    BassMap {
+    VassMap {
       entries: Vec::new(),
     }
   }
@@ -156,7 +156,7 @@ impl BassMap {
   }
 
   /// Recursive merge: `other` wins; nested maps merge deeply
-  pub fn deep_merge(&self, other: &BassMap) -> BassMap {
+  pub fn deep_merge(&self, other: &VassMap) -> VassMap {
     let mut out = self.clone();
     for (k, v) in &other.entries {
       let merged = match (out.get(k), v) {
@@ -181,8 +181,8 @@ pub struct ArgListValue {
 
 impl ArgListValue {
   /// As a plain map of the named arguments
-  pub fn as_map(&self) -> BassMap {
-    BassMap {
+  pub fn as_map(&self) -> VassMap {
+    VassMap {
       entries: self.named.clone(),
     }
   }
@@ -239,13 +239,13 @@ pub enum Value {
   /// A number, possibly with a unit (`10px`)
   Number(Number),
   /// A string, quoted or unquoted
-  Str(BassString),
+  Str(VassString),
   /// A color
   Color(Color),
   /// A list of values
   List(ListValue),
   /// A map of values (`("a": 1)`)
-  Map(BassMap),
+  Map(VassMap),
   /// A first-class function reference
   Function(FunctionRef),
   /// A mixin reference (from `get-mixin` / `meta.get-mixin`)
@@ -269,7 +269,7 @@ impl Value {
   }
 
   /// Whether this is a string
-  pub fn as_string(&self) -> Option<&BassString> {
+  pub fn as_string(&self) -> Option<&VassString> {
     match self {
       Value::Str(s) => Some(s),
       _ => None,
@@ -277,7 +277,7 @@ impl Value {
   }
 
   /// Whether this is a map
-  pub fn as_map(&self) -> Option<&BassMap> {
+  pub fn as_map(&self) -> Option<&VassMap> {
     match self {
       Value::Map(m) => Some(m),
       _ => None,
@@ -449,7 +449,7 @@ impl From<f64> for Value {
 
 impl From<&str> for Value {
   fn from(s: &str) -> Self {
-    Value::Str(BassString::unquoted(s))
+    Value::Str(VassString::unquoted(s))
   }
 }
 
@@ -471,7 +471,7 @@ mod tests {
       vec![
         Value::Number(Number::new(1.0, Some("px".into()))),
         Value::Null,
-        Value::Str(BassString::unquoted("solid")),
+        Value::Str(VassString::unquoted("solid")),
       ],
       Separator::Space,
     );
@@ -486,7 +486,7 @@ mod tests {
 
   #[test]
   fn test_map_ops() {
-    let mut m = BassMap::new();
+    let mut m = VassMap::new();
     m.set(Value::from("a"), Value::from(1.0));
     m.set(Value::from("b"), Value::from(2.0));
     assert_eq!(m.get(&Value::from("a")), Some(&Value::from(1.0)));
@@ -509,16 +509,16 @@ mod tests {
       &Value::Number(Number::with_unit(1.0, "em")),
     ));
     assert!(values_equal(
-      &Value::Map(BassMap::new()),
-      &Value::Map(BassMap::new()),
+      &Value::Map(VassMap::new()),
+      &Value::Map(VassMap::new()),
     ));
   }
 
   #[test]
   fn test_inspect() {
-    assert_eq!(Value::Str(BassString::unquoted("hi")).inspect(), "hi");
-    assert_eq!(Value::Map(BassMap::new()).inspect(), "()");
-    let mut m = BassMap::new();
+    assert_eq!(Value::Str(VassString::unquoted("hi")).inspect(), "hi");
+    assert_eq!(Value::Map(VassMap::new()).inspect(), "()");
+    let mut m = VassMap::new();
     m.set(Value::from("k"), Value::from(1.5));
     assert_eq!(Value::Map(m).inspect(), "(k: 1.5)");
   }
@@ -534,7 +534,7 @@ mod tests {
       Value::List(ListValue::new(vec![], Separator::Comma)).type_name(),
       "list"
     );
-    assert_eq!(Value::Map(BassMap::new()).type_name(), "map");
+    assert_eq!(Value::Map(VassMap::new()).type_name(), "map");
   }
 
   #[test]
