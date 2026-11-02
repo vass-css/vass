@@ -57,6 +57,16 @@ mod binary_resolution_tests {
   }
 
   #[test]
+  fn test_cargo_binary_path_exists_for_fixture_runner() {
+    let path = option_env!("CARGO_BIN_EXE_vass")
+      .expect("Cargo must provide CARGO_BIN_EXE_vass to integration tests");
+    assert!(
+      Path::new(path).is_file(),
+      "Cargo-provided VASS executable does not exist: {path}"
+    );
+  }
+
+  #[test]
   fn test_bass_bin_uses_default_path_without_overrides() {
     let path = resolve_bass_bin(None, None);
     let expected = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../target/debug/vass");
