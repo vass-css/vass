@@ -40,7 +40,7 @@ fn unknown_argument_prints_usage_and_exits_two() {
 }
 
 fn frame(message: &str) -> String {
-  format!("Content-Length: {}\\r\\n\\r\\n{message}", message.len())
+  format!("Content-Length: {}\r\n\r\n{message}", message.len())
 }
 
 #[test]
