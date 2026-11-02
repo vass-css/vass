@@ -4,7 +4,7 @@
 //! existence checks) and are intercepted by the evaluator itself.
 
 use vass_core::error::Result;
-use vass_core::value::{VassMap, ListValue, Separator, Value};
+use vass_core::value::{ListValue, Separator, Value, VassMap};
 
 use super::{Args, str_value};
 
@@ -99,7 +99,7 @@ fn calc_text(v: &Value, fname: &str) -> Result<String> {
 #[cfg(test)]
 mod tests {
   use super::*;
-  use vass_core::value::{VassMap, VassString, Value};
+  use vass_core::value::{Value, VassMap, VassString};
 
   #[test]
   fn test_calc_text_valid_unquoted() {
