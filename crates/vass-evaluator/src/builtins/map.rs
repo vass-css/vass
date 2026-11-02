@@ -87,9 +87,9 @@ fn merge(args: Args) -> Result<Value> {
 /// key creates the path; an existing non-map value at the path is replaced,
 /// matching the reference implementation.
 fn merge_path(
-  map: &mut vass_core::value::BassMap,
+  map: &mut vass_core::value::VassMap,
   keys: &[Value],
-  overlay: vass_core::value::BassMap,
+  overlay: vass_core::value::VassMap,
 ) {
   if keys.len() == 1 {
     let target = match map.get(&keys[0]) {
@@ -108,7 +108,7 @@ fn merge_path(
   }
   let mut inner = match map.get(&keys[0]) {
     Some(Value::Map(m)) => m.clone(),
-    _ => vass_core::value::BassMap::new(),
+    _ => vass_core::value::VassMap::new(),
   };
   merge_path(&mut inner, &keys[1..], overlay);
   map.set(keys[0].clone(), Value::Map(inner));
@@ -196,7 +196,7 @@ fn set(args: Args) -> Result<Value> {
   Ok(Value::Map(out))
 }
 
-fn set_path(map: &mut vass_core::value::BassMap, keys: &[Value], value: Value) {
+fn set_path(map: &mut vass_core::value::VassMap, keys: &[Value], value: Value) {
   if keys.len() == 1 {
     map.set(keys[0].clone(), value);
     return;
@@ -204,10 +204,10 @@ fn set_path(map: &mut vass_core::value::BassMap, keys: &[Value], value: Value) {
   let inner = map
     .get(&keys[0])
     .cloned()
-    .unwrap_or(Value::Map(vass_core::value::BassMap::new()));
+    .unwrap_or(Value::Map(vass_core::value::VassMap::new()));
   let mut inner_map = match inner {
     Value::Map(m) => m,
-    _ => vass_core::value::BassMap::new(),
+    _ => vass_core::value::VassMap::new(),
   };
   set_path(&mut inner_map, &keys[1..], value);
   map.set(keys[0].clone(), Value::Map(inner_map));
@@ -285,11 +285,11 @@ fn remove_nested(map_val: &Value, key: &Value, rest: &[Value], fname: &str) -> R
 
 /// Borrow a map value without consuming it — mirrors `need_map`'s tolerance
 /// (arg lists and empty lists count as maps)
-fn need_map_ref(v: &Value, fname: &str) -> Result<vass_core::value::BassMap> {
+fn need_map_ref(v: &Value, fname: &str) -> Result<vass_core::value::VassMap> {
   match v {
     Value::Map(m) => Ok(m.clone()),
     Value::ArgList(a) => Ok(a.as_map()),
-    Value::List(l) if l.items.is_empty() => Ok(vass_core::value::BassMap::new()),
+    Value::List(l) if l.items.is_empty() => Ok(vass_core::value::VassMap::new()),
     other => Err(Error::type_error(format!(
       "{}: `$map` is not a map (got {}).",
       fname,
