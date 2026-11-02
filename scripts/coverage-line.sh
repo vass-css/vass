@@ -10,6 +10,6 @@ if ! command -v cargo-tarpaulin >/dev/null 2>&1; then
 fi
 
 echo "==> running stable line coverage (cargo-tarpaulin)"
-cargo tarpaulin --workspace --out lcov --engine Llvm
+cargo tarpaulin --workspace --out lcov --engine Llvm --fail-under 100
 
 echo "==> stable line coverage complete (see lcov.info / target/tarpaulin)"
