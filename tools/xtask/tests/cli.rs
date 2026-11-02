@@ -64,6 +64,17 @@ impl TestContext {
       .expect("xtask executable should start")
   }
 
+  fn run_without_cargo_in_path(&self, args: &[&str]) -> Output {
+    Command::new(env!("CARGO_BIN_EXE_xtask"))
+      .args(args)
+      .current_dir(&self.root)
+      .env("PATH", "")
+      .env("VASS_XTASK_LOG", &self.log)
+      .env("VASS_XTASK_EXIT", "0")
+      .output()
+      .expect("xtask executable should start")
+  }
+
   fn calls(&self) -> Vec<String> {
     fs::read_to_string(&self.log)
       .unwrap_or_default()
@@ -221,7 +232,7 @@ fn cargo_spawn_failure_is_reported() {
   let ctx = TestContext::new();
   fs::remove_file(ctx.bin.join("cargo")).expect("fake Cargo should be removed");
 
-  let output = ctx.run(&["check"], 0);
+  let output = ctx.run_without_cargo_in_path(&["check"]);
   assert!(!output.status.success());
   assert_eq!(output.status.code(), Some(1));
   assert!(
