@@ -462,7 +462,7 @@ async function activate(context) {
     const target = vscode.ConfigurationTarget.Global;
     for (const lang of LANGUAGES) {
       await editorCfg.update('formatOnSave', true, target, lang);
-      await editorCfg.update('defaultFormatter', 'basslang.vass-vscode', target, lang);
+      await editorCfg.update('defaultFormatter', 'vasslang.vass-vscode', target, lang);
     }
     vscode.window.showInformationMessage(
       'VASS: format-on-save enabled for [vass] and [vcss] using the VASS formatter.'
@@ -502,7 +502,7 @@ async function activate(context) {
     if (formatHintShown || !doc || !LANGUAGES.includes(doc.languageId)) return;
     formatHintShown = true;
     const cfg = vscode.workspace.getConfiguration('editor', doc);
-    if (cfg.get('formatOnSave') && cfg.get('defaultFormatter') === 'basslang.vass-vscode') return;
+    if (cfg.get('formatOnSave') && cfg.get('defaultFormatter') === 'vasslang.vass-vscode') return;
     vscode.window.showInformationMessage(
       'VASS: enable format-on-save for .vass and .vcss files?',
       'Enable', 'Not now'
