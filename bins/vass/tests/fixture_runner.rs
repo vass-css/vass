@@ -37,7 +37,6 @@ fn bass_bin() -> PathBuf {
   )
 }
 
-
 #[cfg(test)]
 mod binary_resolution_tests {
   use super::*;
