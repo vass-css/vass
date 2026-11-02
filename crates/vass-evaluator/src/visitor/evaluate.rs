@@ -15,8 +15,8 @@ use vass_core::ast::input::expression::{BinaryOp, CallArg, Expr, Param, StrPart,
 use vass_core::ast::input::statement::{IfChain, Statement, Stylesheet, UseRule};
 use vass_core::error::{Error, FixKind, Result};
 use vass_core::value::{
-  ArgListValue, VassMap, VassString, Color, ColorSpace, FunctionRef, ListValue, Number, Separator,
-  Value, values_equal,
+  ArgListValue, Color, ColorSpace, FunctionRef, ListValue, Number, Separator, Value, VassMap,
+  VassString, values_equal,
 };
 
 use crate::builtins;
