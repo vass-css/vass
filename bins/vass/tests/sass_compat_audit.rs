@@ -24,7 +24,7 @@ fn debug_of(src: &str) -> Vec<String> {
   use std::sync::atomic::{AtomicU32, Ordering};
   static SEQ: AtomicU32 = AtomicU32::new(0);
   let n = SEQ.fetch_add(1, Ordering::SeqCst);
-  let dir = std::env::temp_dir().join(format!("bass_audit_{}_{}", std::process::id(), n));
+  let dir = std::env::temp_dir().join(format!("vass_audit_{}_{}", std::process::id(), n));
   std::fs::create_dir_all(&dir).expect("tempdir");
   let path = dir.join("case.scss");
   let mut f = std::fs::File::create(&path).expect("create");
