@@ -1939,7 +1939,14 @@ mod tests {
     );
 
     assert!(invoke("invert", std::slice::from_ref(&red), &[]).is_ok());
-    assert!(invoke("invert", std::slice::from_ref(&red), &[("weight", number(0.5))]).is_ok());
+    assert!(
+      invoke(
+        "invert",
+        std::slice::from_ref(&red),
+        &[("weight", number(0.5))]
+      )
+      .is_ok()
+    );
     assert!(invoke("grayscale", std::slice::from_ref(&red), &[]).is_ok());
     assert!(invoke("complement", std::slice::from_ref(&red), &[]).is_ok());
     assert!(matches!(
