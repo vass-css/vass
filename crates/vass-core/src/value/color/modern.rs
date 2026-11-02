@@ -1305,7 +1305,10 @@ mod tests {
 
     assert_eq!(ColorSpace::from_name("RGB"), Some(ColorSpace::Srgb));
     assert_eq!(ColorSpace::from_name("xyz-d65"), Some(ColorSpace::Xyz));
-    assert_eq!(ColorSpace::from_name("srgb-linear"), Some(ColorSpace::SrgbLinear));
+    assert_eq!(
+      ColorSpace::from_name("srgb-linear"),
+      Some(ColorSpace::SrgbLinear)
+    );
     assert_eq!(ColorSpace::from_name("not-a-space"), None);
 
     assert_eq!(ColorSpace::Srgb.is_legacy(), true);
@@ -1320,11 +1323,7 @@ mod tests {
 
   #[test]
   fn modern_color_missing_channels_read_as_zero() {
-    let color = ModernColor::new(
-      ColorSpace::Oklab,
-      [Some(0.25), None, Some(-0.1)],
-      None,
-    );
+    let color = ModernColor::new(ColorSpace::Oklab, [Some(0.25), None, Some(-0.1)], None);
 
     assert_eq!(color.value_or_zero(0), 0.25);
     assert_eq!(color.value_or_zero(1), 0.0);
@@ -1429,5 +1428,4 @@ mod tests {
     assert!((lab[1] + 0.2).abs() < 1e-12);
     assert!((lab[2] + 0.3).abs() < 1e-12);
   }
-
 }
