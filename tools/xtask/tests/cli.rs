@@ -193,7 +193,7 @@ fn dispatches_all_xtask_commands_and_forwards_cargo_arguments() {
 
   let completions = ctx.run(&["completions", "bash"], 0);
   assert_success(&completions);
-  assert!(String::from_utf8_lossy(&completions.stdout).contains("xtask"));
+  assert!(String::from_utf8_lossy(&completions.stdout).contains("completions/vass.bash"));
   assert!(ctx.calls().is_empty());
 }
 
