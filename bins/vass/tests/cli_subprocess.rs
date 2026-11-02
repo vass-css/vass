@@ -395,7 +395,7 @@ fn build_rejects_invalid_output_style_after_finding_entries() {
   let out = run_vass(&["build", dir.to_str().unwrap(), "--style", "invalid"]);
   assert!(!out.status.success());
   assert!(
-    String::from_utf8_lossy(&out.stderr).contains("invalid output style"),
+    String::from_utf8_lossy(&out.stderr).contains("unknown --style `invalid`"),
     "stderr: {}",
     String::from_utf8_lossy(&out.stderr)
   );
