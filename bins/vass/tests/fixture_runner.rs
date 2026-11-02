@@ -18,11 +18,54 @@ use regex::Regex;
 /// `bins/vass/../tests` relative to this crate's manifest dir).
 const ROOT: &str = concat!(env!("CARGO_MANIFEST_DIR"), "/../../tests");
 
-/// The VASS binary under test.
-fn bass_bin() -> PathBuf {
-  std::env::var("BASS_BIN")
+/// Resolve the VASS binary under test.
+///
+/// Explicit overrides take precedence. Cargo supplies CARGO_BIN_EXE_vass
+/// when compiling integration tests, so this remains correct when a tool
+/// such as cargo-llvm-cov uses a separate target directory.
+fn resolve_bass_bin(
+  override_path: Option<std::ffi::OsString>,
+  cargo_bin: Option<&str>,
+) -> PathBuf {
+  override_path
     .map(PathBuf::from)
-    .unwrap_or_else(|_| Path::new(env!("CARGO_MANIFEST_DIR")).join("../../target/debug/vass"))
+    .or_else(|| cargo_bin.map(PathBuf::from))
+    .unwrap_or_else(|| Path::new(env!("CARGO_MANIFEST_DIR")).join("../../target/debug/vass"))
+}
+
+fn bass_bin() -> PathBuf {
+  resolve_bass_bin(
+    std::env::var_os("BASS_BIN"),
+    option_env!("CARGO_BIN_EXE_vass"),
+  )
+}
+
+
+#[cfg(test)]
+mod binary_resolution_tests {
+  use super::*;
+
+  #[test]
+  fn test_bass_bin_prefers_explicit_override() {
+    let path = resolve_bass_bin(
+      Some(std::ffi::OsString::from("custom/vass")),
+      Some("cargo/vass"),
+    );
+    assert_eq!(path, PathBuf::from("custom/vass"));
+  }
+
+  #[test]
+  fn test_bass_bin_uses_cargo_binary_path() {
+    let path = resolve_bass_bin(None, Some("cargo-target/debug/vass"));
+    assert_eq!(path, PathBuf::from("cargo-target/debug/vass"));
+  }
+
+  #[test]
+  fn test_bass_bin_uses_default_path_without_overrides() {
+    let path = resolve_bass_bin(None, None);
+    let expected = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../target/debug/vass");
+    assert_eq!(path, expected);
+  }
 }
 
 static DEBUG_RE: OnceLock<Regex> = OnceLock::new();
