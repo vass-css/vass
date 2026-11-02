@@ -205,7 +205,6 @@ fn completions_ok_exits_0() {
   assert!(out.status.success());
 }
 
-
 fn run_vass_with_stdin(args: &[&str], input: &str) -> std::process::Output {
   let mut child = Command::new(vass_bin())
     .args(args)
@@ -365,10 +364,8 @@ fn build_success_writes_only_entry_stylesheets() {
   let nested = source.join("nested");
   let output = dir.join("dist");
   std::fs::create_dir_all(&nested).expect("nested source directory");
-  std::fs::write(source.join("main.vass"), ".main\n  color: red\n")
-    .expect("entry stylesheet");
-  std::fs::write(source.join("_partial.vass"), "$accent: blue\n")
-    .expect("partial stylesheet");
+  std::fs::write(source.join("main.vass"), ".main\n  color: red\n").expect("entry stylesheet");
+  std::fs::write(source.join("_partial.vass"), "$accent: blue\n").expect("partial stylesheet");
   std::fs::write(nested.join("nested.vcss"), ".nested { color: blue; }\n")
     .expect("nested entry stylesheet");
 
@@ -395,12 +392,7 @@ fn build_rejects_invalid_output_style_after_finding_entries() {
   let path = dir.join("main.vass");
   std::fs::write(&path, ".main\n  color: red\n").expect("fixture should be written");
 
-  let out = run_vass(&[
-    "build",
-    dir.to_str().unwrap(),
-    "--style",
-    "invalid",
-  ]);
+  let out = run_vass(&["build", dir.to_str().unwrap(), "--style", "invalid"]);
   assert!(!out.status.success());
   assert!(
     String::from_utf8_lossy(&out.stderr).contains("invalid output style"),
