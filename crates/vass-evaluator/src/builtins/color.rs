@@ -1660,7 +1660,10 @@ mod tests {
   #[test]
   fn dispatcher_recognizes_every_documented_member() {
     for name in member_names() {
-      assert!(call(name, Args::default()).is_some(), "missing member {name}");
+      assert!(
+        call(name, Args::default()).is_some(),
+        "missing member {name}"
+      );
     }
     assert!(call("not-a-color-member", Args::default()).is_none());
   }
@@ -1700,7 +1703,10 @@ mod tests {
       "whiteness",
       "blackness",
     ] {
-      assert!(invoke(name, std::slice::from_ref(&red), &[]).is_ok(), "{name}");
+      assert!(
+        invoke(name, std::slice::from_ref(&red), &[]).is_ok(),
+        "{name}"
+      );
     }
 
     assert!(matches!(
@@ -1721,18 +1727,22 @@ mod tests {
   fn channel_validation_missingness_and_powerless_paths_are_checked() {
     let red = color_value(Color::rgb(255, 0, 0));
     assert!(invoke("channel", &[red.clone(), number(1.0)], &[]).is_err());
-    assert!(invoke(
-      "channel",
-      &[red.clone(), Value::from("red")],
-      &[("space", Value::from("unknown-space"))]
-    )
-    .is_err());
-    assert!(invoke(
-      "channel",
-      &[red.clone(), Value::from("no-such-channel")],
-      &[]
-    )
-    .is_err());
+    assert!(
+      invoke(
+        "channel",
+        &[red.clone(), Value::from("red")],
+        &[("space", Value::from("unknown-space"))]
+      )
+      .is_err()
+    );
+    assert!(
+      invoke(
+        "channel",
+        &[red.clone(), Value::from("no-such-channel")],
+        &[]
+      )
+      .is_err()
+    );
 
     let missing = modern_color(ColorSpace::Oklab, [None, Some(0.1), Some(0.2)], Some(1.0));
     assert!(matches!(
@@ -1744,15 +1754,15 @@ mod tests {
       Ok(Value::Bool(true))
     ));
     assert!(matches!(
-      invoke(
-        "is-missing",
-        &[missing.clone(), Value::from("alpha")],
-        &[]
-      ),
+      invoke("is-missing", &[missing.clone(), Value::from("alpha")], &[]),
       Ok(Value::Bool(false))
     ));
 
-    let powerless = modern_color(ColorSpace::Hsl, [Some(180.0), Some(0.0), Some(0.5)], Some(1.0));
+    let powerless = modern_color(
+      ColorSpace::Hsl,
+      [Some(180.0), Some(0.0), Some(0.5)],
+      Some(1.0),
+    );
     assert!(matches!(
       invoke(
         "is-powerless",
@@ -1761,18 +1771,8 @@ mod tests {
       ),
       Ok(Value::Bool(true))
     ));
-    assert!(invoke(
-      "is-powerless",
-      &[red.clone(), Value::from("hue")],
-      &[]
-    )
-    .is_err());
-    assert!(invoke(
-      "is-missing",
-      &[red, number(1.0)],
-      &[]
-    )
-    .is_err());
+    assert!(invoke("is-powerless", &[red.clone(), Value::from("hue")], &[]).is_err());
+    assert!(invoke("is-missing", &[red, number(1.0)], &[]).is_err());
   }
 
   #[test]
@@ -1786,7 +1786,10 @@ mod tests {
       )
       .unwrap(),
     );
-    assert_eq!(p3.modern.as_ref().map(|m| m.space), Some(ColorSpace::DisplayP3));
+    assert_eq!(
+      p3.modern.as_ref().map(|m| m.space),
+      Some(ColorSpace::DisplayP3)
+    );
 
     let modern_red = modern_color(
       ColorSpace::DisplayP3,
@@ -1794,19 +1797,10 @@ mod tests {
       Some(0.8),
     );
     assert!(matches!(
-      invoke(
-        "is-in-gamut",
-        std::slice::from_ref(&modern_red),
-        &[]
-      ),
+      invoke("is-in-gamut", std::slice::from_ref(&modern_red), &[]),
       Ok(Value::Bool(false))
     ));
-    assert!(invoke(
-      "to-gamut",
-      &[modern_red.clone()],
-      &[]
-    )
-    .is_err());
+    assert!(invoke("to-gamut", &[modern_red.clone()], &[]).is_err());
 
     let clipped = returned_color(
       invoke(
@@ -1820,46 +1814,45 @@ mod tests {
       )
       .unwrap(),
     );
-    assert!(clipped.modern.as_ref().unwrap().ch.iter().flatten().all(|v| (0.0..=1.0).contains(v)));
+    assert!(
+      clipped
+        .modern
+        .as_ref()
+        .unwrap()
+        .ch
+        .iter()
+        .flatten()
+        .all(|v| (0.0..=1.0).contains(v))
+    );
 
     let unbounded = returned_color(
       invoke(
         "to-gamut",
-        &[
-          modern_red.clone(),
-          Value::from("xyz"),
-          Value::from("clip"),
-        ],
+        &[modern_red.clone(), Value::from("xyz"), Value::from("clip")],
         &[],
       )
       .unwrap(),
     );
     assert!(unbounded.modern.is_some());
 
-    assert!(invoke(
-      "to-gamut",
-      &[legacy.clone(), Value::Null, Value::from("unknown")],
-      &[]
-    )
-    .is_err());
-    assert!(invoke(
-      "to-gamut",
-      &[legacy.clone(), Value::Null, Value::from("clip")],
-      &[]
-    )
-    .is_ok());
-    assert!(invoke(
-      "to-space",
-      &[legacy.clone(), number(1.0)],
-      &[]
-    )
-    .is_err());
-    assert!(invoke(
-      "to-space",
-      &[legacy, Value::from("unknown-space")],
-      &[]
-    )
-    .is_err());
+    assert!(
+      invoke(
+        "to-gamut",
+        &[legacy.clone(), Value::Null, Value::from("unknown")],
+        &[]
+      )
+      .is_err()
+    );
+    assert!(
+      invoke(
+        "to-gamut",
+        &[legacy.clone(), Value::Null, Value::from("clip")],
+        &[]
+      )
+      .is_ok()
+    );
+    assert!(invoke("to-space", &[legacy.clone(), number(1.0)], &[]).is_err());
+    assert!(invoke("to-space", &[legacy, Value::from("unknown-space")], &[]).is_err());
   }
 
   #[test]
@@ -1879,17 +1872,20 @@ mod tests {
     assert_eq!(hwb.modern.as_ref().map(|m| m.space), Some(ColorSpace::Hwb));
 
     assert!(invoke("hwb", &[], &[]).is_err());
-    assert!(invoke(
-      "hwb",
-      &[Value::from("invalid-channel")],
-      &[]
-    )
-    .is_err());
+    assert!(invoke("hwb", &[Value::from("invalid-channel")], &[]).is_err());
 
-    let hsl = modern_color(ColorSpace::Hsl, [Some(20.0), Some(0.4), Some(0.5)], Some(1.0));
+    let hsl = modern_color(
+      ColorSpace::Hsl,
+      [Some(20.0), Some(0.4), Some(0.5)],
+      Some(1.0),
+    );
     assert!(invoke("hue", std::slice::from_ref(&hsl), &[]).is_ok());
 
-    let p3 = modern_color(ColorSpace::DisplayP3, [Some(0.2), Some(0.3), Some(0.4)], Some(1.0));
+    let p3 = modern_color(
+      ColorSpace::DisplayP3,
+      [Some(0.2), Some(0.3), Some(0.4)],
+      Some(1.0),
+    );
     assert!(invoke("red", std::slice::from_ref(&p3), &[]).is_err());
     assert!(invoke("space", std::slice::from_ref(&hsl), &[]).is_ok());
     assert!(invoke("whiteness", std::slice::from_ref(&hsl), &[]).is_ok());
@@ -1910,30 +1906,40 @@ mod tests {
     ));
 
     assert!(invoke("mix", &[red.clone(), blue.clone()], &[]).is_ok());
-    assert!(invoke(
-      "mix",
-      &[red.clone(), blue.clone()],
-      &[("weight", number(0.25))]
-    )
-    .is_ok());
-    assert!(invoke("mix", &[red.clone(), blue.clone()], &[("method", Value::from("bad-space"))]).is_err());
+    assert!(
+      invoke(
+        "mix",
+        &[red.clone(), blue.clone()],
+        &[("weight", number(0.25))]
+      )
+      .is_ok()
+    );
+    assert!(
+      invoke(
+        "mix",
+        &[red.clone(), blue.clone()],
+        &[("method", Value::from("bad-space"))]
+      )
+      .is_err()
+    );
 
-    let modern = modern_color(ColorSpace::Oklch, [Some(0.6), Some(0.2), Some(40.0)], Some(1.0));
+    let modern = modern_color(
+      ColorSpace::Oklch,
+      [Some(0.6), Some(0.2), Some(40.0)],
+      Some(1.0),
+    );
     assert!(invoke("mix", &[red.clone(), modern.clone()], &[]).is_err());
-    assert!(invoke(
-      "mix",
-      &[red.clone(), modern],
-      &[("method", Value::from("oklch"))]
-    )
-    .is_ok());
+    assert!(
+      invoke(
+        "mix",
+        &[red.clone(), modern],
+        &[("method", Value::from("oklch"))]
+      )
+      .is_ok()
+    );
 
     assert!(invoke("invert", std::slice::from_ref(&red), &[]).is_ok());
-    assert!(invoke(
-      "invert",
-      &[red.clone()],
-      &[("weight", number(0.5))]
-    )
-    .is_ok());
+    assert!(invoke("invert", &[red.clone()], &[("weight", number(0.5))]).is_ok());
     assert!(invoke("grayscale", std::slice::from_ref(&red), &[]).is_ok());
     assert!(invoke("complement", std::slice::from_ref(&red), &[]).is_ok());
     assert!(matches!(
@@ -1975,18 +1981,22 @@ mod tests {
     );
     assert!(alpha_missing.missing & missing_flags::ALPHA != 0);
 
-    assert!(invoke(
-      "change",
-      std::slice::from_ref(&red),
-      &[("not-a-channel", number(1.0))]
-    )
-    .is_err());
-    assert!(invoke(
-      "change",
-      std::slice::from_ref(&red),
-      &[("red", Value::from("not-a-number"))]
-    )
-    .is_err());
+    assert!(
+      invoke(
+        "change",
+        std::slice::from_ref(&red),
+        &[("not-a-channel", number(1.0))]
+      )
+      .is_err()
+    );
+    assert!(
+      invoke(
+        "change",
+        std::slice::from_ref(&red),
+        &[("red", Value::from("not-a-number"))]
+      )
+      .is_err()
+    );
 
     let adjusted = returned_color(
       invoke(
@@ -2017,23 +2027,29 @@ mod tests {
       [Some(0.5), Some(0.2), Some(350.0)],
       Some(0.5),
     );
-    assert!(invoke(
-      "change",
-      std::slice::from_ref(&modern),
-      &[("hue", number(10.0))]
-    )
-    .is_ok());
-    assert!(invoke(
-      "adjust",
-      std::slice::from_ref(&modern),
-      &[("hue", number(30.0))]
-    )
-    .is_ok());
-    assert!(invoke(
-      "scale",
-      std::slice::from_ref(&modern),
-      &[("lightness", number(20.0))]
-    )
-    .is_ok());
+    assert!(
+      invoke(
+        "change",
+        std::slice::from_ref(&modern),
+        &[("hue", number(10.0))]
+      )
+      .is_ok()
+    );
+    assert!(
+      invoke(
+        "adjust",
+        std::slice::from_ref(&modern),
+        &[("hue", number(30.0))]
+      )
+      .is_ok()
+    );
+    assert!(
+      invoke(
+        "scale",
+        std::slice::from_ref(&modern),
+        &[("lightness", number(20.0))]
+      )
+      .is_ok()
+    );
   }
 }
