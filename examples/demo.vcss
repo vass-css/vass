@@ -1,4 +1,4 @@
-// BASS demo — braces syntax (.bcss)
+// VASS demo — braces syntax (.vcss)
 $primary: #5b21b6;
 $radius: 8px !default;
 
