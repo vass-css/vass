@@ -15,7 +15,7 @@ use vass_core::ast::input::expression::{BinaryOp, CallArg, Expr, Param, StrPart,
 use vass_core::ast::input::statement::{IfChain, Statement, Stylesheet, UseRule};
 use vass_core::error::{Error, FixKind, Result};
 use vass_core::value::{
-  ArgListValue, BassMap, BassString, Color, ColorSpace, FunctionRef, ListValue, Number, Separator,
+  ArgListValue, VassMap, VassString, Color, ColorSpace, FunctionRef, ListValue, Number, Separator,
   Value, values_equal,
 };
 
@@ -1216,7 +1216,7 @@ impl Evaluator {
       Expr::Bool(b) => Ok(Value::Bool(*b)),
       Expr::Number { value, unit } => Ok(Value::Number(Number::new(*value, unit.clone()))),
       Expr::Str { text, quoted } => {
-        let value = Value::Str(BassString::new(text.clone(), *quoted));
+        let value = Value::Str(VassString::new(text.clone(), *quoted));
         if *quoted {
           return Ok(value);
         }
@@ -1243,7 +1243,7 @@ impl Evaluator {
             }
           }
         }
-        let value = Value::Str(BassString::new(out, *quoted));
+        let value = Value::Str(VassString::new(out, *quoted));
         if matches!(value, Value::Str(ref s) if s.quoted) {
           return Ok(value);
         }
@@ -1252,8 +1252,8 @@ impl Evaluator {
       Expr::InterpValue { expr } => {
         let v = self.eval_expr(expr)?;
         Ok(match v {
-          Value::Str(s) => Value::Str(BassString::unquoted(s.text)),
-          other => Value::Str(BassString::unquoted(other.to_css())),
+          Value::Str(s) => Value::Str(VassString::unquoted(s.text)),
+          other => Value::Str(VassString::unquoted(other.to_css())),
         })
       }
       Expr::Color { hex } => {
@@ -1301,7 +1301,7 @@ impl Evaluator {
           (UnaryOp::Not, other) => Ok(Value::Bool(!other.is_truthy())),
           (UnaryOp::Neg, Value::Null) | (UnaryOp::Pos, Value::Null) => Ok(Value::Null),
           (UnaryOp::Neg, Value::Str(s)) if !s.quoted => {
-            Ok(Value::Str(BassString::unquoted(format!("-{}", s.text))))
+            Ok(Value::Str(VassString::unquoted(format!("-{}", s.text))))
           }
           _ => Err(Error::type_error(format!(
             "`{}` is not a number.",
@@ -1331,7 +1331,7 @@ impl Evaluator {
         }))
       }
       Expr::Map { entries } => {
-        let mut map = BassMap::new();
+        let mut map = VassMap::new();
         for (k, v) in entries {
           let key = self.eval_expr(k)?;
           let val = self.eval_expr(v)?;
@@ -1388,10 +1388,10 @@ impl Evaluator {
           };
           let ls = value_to_concat_text(&lv);
           let rs = value_to_concat_text(&rv);
-          return Ok(Value::Str(BassString::new(format!("{}{}", ls, rs), quoted)));
+          return Ok(Value::Str(VassString::new(format!("{}{}", ls, rs), quoted)));
         }
         _ => {
-          return Ok(Value::Str(BassString::unquoted(format!(
+          return Ok(Value::Str(VassString::unquoted(format!(
             "{}-{}",
             lv.to_css(),
             rv.to_css()
@@ -1403,7 +1403,7 @@ impl Evaluator {
     let rv = self.eval_expr(right)?;
     // `/` between two plain literals is a CSS separator, not division
     if op == BinaryOp::Div && !allow_slash_div {
-      return Ok(Value::Str(BassString::unquoted(format!(
+      return Ok(Value::Str(VassString::unquoted(format!(
         "{}/{}",
         lv.to_css(),
         rv.to_css()
@@ -1447,7 +1447,7 @@ impl Evaluator {
             // represented — the reference emits calc()
             match a.mul(b) {
               Ok(n) => Value::Number(n),
-              Err(_e) if a.unit.is_some() && b.unit.is_some() => Value::Str(BassString::unquoted(
+              Err(_e) if a.unit.is_some() && b.unit.is_some() => Value::Str(VassString::unquoted(
                 format!("calc({} * {})", a.to_css(), b.to_css()),
               )),
               Err(e) => return Err(e),
@@ -1461,7 +1461,7 @@ impl Evaluator {
             match a.div(b) {
               Ok(n) => Value::Number(n),
               Err(_e) if b.unit.is_some() || b.value == 0.0 => {
-                Value::Str(BassString::unquoted(a.div_calc(b)))
+                Value::Str(VassString::unquoted(a.div_calc(b)))
               }
               Err(e) => return Err(e),
             }
@@ -1508,7 +1508,7 @@ impl Evaluator {
       // `/` that reached the division context with a non-numeric
       // operand (e.g. quoted string) is a literal slash-separated
       // value: `12px / "Inter"` → 12px/"Inter" (reference behavior)
-      _ if op == BinaryOp::Div => Ok(Value::Str(BassString::unquoted(format!(
+      _ if op == BinaryOp::Div => Ok(Value::Str(VassString::unquoted(format!(
         "{}/{}",
         lv.to_css(),
         rv.to_css()
@@ -1775,14 +1775,14 @@ impl Evaluator {
             let entries: Vec<(Value, Value)> = if member == "module-variables" {
               m.variables
                 .iter()
-                .map(|(k, v)| (Value::Str(BassString::unquoted(k.clone())), v.clone()))
+                .map(|(k, v)| (Value::Str(VassString::unquoted(k.clone())), v.clone()))
                 .collect()
             } else {
               m.functions
                 .keys()
                 .map(|k| {
                   (
-                    Value::Str(BassString::unquoted(k.clone())),
+                    Value::Str(VassString::unquoted(k.clone())),
                     Value::Function(FunctionRef {
                       name: k.clone(),
                       user_defined: true,
@@ -1791,7 +1791,7 @@ impl Evaluator {
                 })
                 .collect()
             };
-            Ok(Value::Map(BassMap { entries }))
+            Ok(Value::Map(VassMap { entries }))
           }
           None => Err(Error::import(format!("No module named `{}`.", n))),
         }
@@ -1873,7 +1873,7 @@ impl Evaluator {
       })
       .collect::<Vec<_>>()
       .join(", ");
-    Ok(Value::Str(BassString::unquoted(format!(
+    Ok(Value::Str(VassString::unquoted(format!(
       "{}({})",
       name, inner
     ))))
@@ -2048,7 +2048,7 @@ impl Evaluator {
           )));
         }
         None if rest_slot.is_some() => {
-          rest_named.push((Value::Str(BassString::unquoted(k)), v));
+          rest_named.push((Value::Str(VassString::unquoted(k)), v));
         }
         None => {
           return Err(Error::type_error(format!(
@@ -3447,7 +3447,7 @@ fn try_modern_color(name: &str, evaluated: &[Value]) -> Option<vass_core::value:
   fn channel_text_value(text: &str) -> Option<Value> {
     let t = text.trim();
     if t.eq_ignore_ascii_case("none") {
-      return Some(Value::Str(BassString::unquoted("none")));
+      return Some(Value::Str(VassString::unquoted("none")));
     }
     if let Some(p) = t.strip_suffix('%') {
       return p
