@@ -60,7 +60,7 @@ fn div(args: Args) -> Result<Value> {
   match a.div(b) {
     Ok(n) => Ok(Value::Number(n)),
     Err(_) if b.unit.is_some() || b.value == 0.0 => Ok(Value::Str(
-      vass_core::value::BassString::unquoted(a.div_calc(b)),
+      vass_core::value::VassString::unquoted(a.div_calc(b)),
     )),
     Err(e) => Err(e),
   }
@@ -204,7 +204,7 @@ fn random(args: Args) -> Result<Value> {
 fn unit(args: Args) -> Result<Value> {
   const F: &str = "math.unit";
   let n = need_number(args.require(0, "number", F)?, F, "number")?;
-  Ok(Value::Str(vass_core::value::BassString::quoted(
+  Ok(Value::Str(vass_core::value::VassString::quoted(
     n.unit_string(),
   )))
 }
