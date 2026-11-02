@@ -12,8 +12,11 @@ mod tests {
   use super::*;
 
   #[test]
-  fn test_lint_run_delegates() {
-    // Just verify the function exists and is callable - it delegates to check
-    let _ = std::any::type_name::<Args>();
+  fn test_lint_args_exist() {
+    let _ = Args {
+      files: vec!["test.vass".to_string()],
+      format: super::super::check::Format::Crisp,
+      parse_only: false,
+    };
   }
 }

@@ -88,3 +88,90 @@ fn ensure_module(m: &str) -> anyhow::Result<()> {
     )
   }
 }
+
+#[cfg(test)]
+mod tests {
+  use super::*;
+
+  #[test]
+  fn test_ensure_module_valid() {
+    assert!(ensure_module("math").is_ok());
+    assert!(ensure_module("color").is_ok());
+    assert!(ensure_module("string").is_ok());
+  }
+
+  #[test]
+  fn test_ensure_module_invalid() {
+    assert!(ensure_module("nonexistent_module").is_err());
+  }
+
+  #[tokio::test]
+  async fn test_list_run_modules() {
+    let result = run(Args {
+      what: "modules".to_string(),
+      module: None,
+    })
+    .await;
+    assert!(result.is_ok());
+  }
+
+  #[tokio::test]
+  async fn test_list_run_functions_all() {
+    let result = run(Args {
+      what: "functions".to_string(),
+      module: None,
+    })
+    .await;
+    assert!(result.is_ok());
+  }
+
+  #[tokio::test]
+  async fn test_list_run_functions_module() {
+    let result = run(Args {
+      what: "functions".to_string(),
+      module: Some("math".to_string()),
+    })
+    .await;
+    assert!(result.is_ok());
+  }
+
+  #[tokio::test]
+  async fn test_list_run_globals() {
+    let result = run(Args {
+      what: "globals".to_string(),
+      module: None,
+    })
+    .await;
+    assert!(result.is_ok());
+  }
+
+  #[tokio::test]
+  async fn test_list_run_variables_all() {
+    let result = run(Args {
+      what: "variables".to_string(),
+      module: None,
+    })
+    .await;
+    assert!(result.is_ok());
+  }
+
+  #[tokio::test]
+  async fn test_list_run_variables_module() {
+    let result = run(Args {
+      what: "variables".to_string(),
+      module: Some("math".to_string()),
+    })
+    .await;
+    assert!(result.is_ok());
+  }
+
+  #[tokio::test]
+  async fn test_list_run_unknown() {
+    let result = run(Args {
+      what: "unknown_what".to_string(),
+      module: None,
+    })
+    .await;
+    assert!(result.is_err());
+  }
+}

@@ -227,4 +227,92 @@ mod tests {
     assert_eq!(names, vec!["keep.vcss", "top.vass"]);
     let _ = std::fs::remove_dir_all(&tmp);
   }
+
+  #[test]
+  fn test_format_enum() {
+    assert_eq!(Format::Crisp as u8, 0);
+    assert_eq!(Format::Simple as u8, 1);
+    assert_eq!(Format::Crisp, Format::Crisp);
+    assert_ne!(Format::Crisp, Format::Simple);
+  }
+
+  #[test]
+  fn test_format_debug() {
+    let s = format!("{:?}", Format::Crisp);
+    assert!(!s.is_empty());
+    let s = format!("{:?}", Format::Simple);
+    assert!(!s.is_empty());
+  }
+
+  #[test]
+  fn test_args_creation() {
+    let args = Args {
+      files: vec!["test.vass".to_string()],
+      parse_only: false,
+      format: Format::Crisp,
+    };
+    assert_eq!(args.files.len(), 1);
+    assert!(!args.parse_only);
+    assert_eq!(args.format, Format::Crisp);
+
+    let args2 = Args {
+      files: vec![],
+      parse_only: true,
+      format: Format::Simple,
+    };
+    assert!(args2.files.is_empty());
+    assert!(args2.parse_only);
+    assert_eq!(args2.format, Format::Simple);
+  }
+
+  #[tokio::test]
+  async fn test_check_run_nonexistent_file() {
+    let result = run(Args {
+      files: vec!["nonexistent_file_for_check_test.vass".to_string()],
+      parse_only: false,
+      format: Format::Crisp,
+    })
+    .await;
+    assert!(result.is_err());
+  }
+
+  #[tokio::test]
+  async fn test_check_run_empty_paths_bail() {
+    let result = run(Args {
+      files: vec![],
+      parse_only: false,
+      format: Format::Crisp,
+    })
+    .await;
+    assert!(result.is_err());
+    let msg = result.unwrap_err().to_string();
+    assert!(msg.contains("no `.vass`/`.vcss` files found"), "got: {msg}");
+  }
+
+  #[tokio::test]
+  async fn test_check_render_simple_ok() {
+    let dir = std::env::temp_dir().join(format!("vass-check-simple-{}", std::process::id()));
+    std::fs::create_dir_all(&dir).unwrap();
+    std::fs::write(dir.join("ok.vass"), ".a\n  color: red\n").unwrap();
+    let result = run(Args {
+      files: vec![dir.join("ok.vass").to_string_lossy().to_string()],
+      parse_only: false,
+      format: Format::Simple,
+    })
+    .await;
+    assert!(result.is_ok());
+    std::fs::remove_dir_all(&dir).ok();
+  }
+
+  #[test]
+  fn test_check_file_returns_diagnostics() {
+    let dir = std::env::temp_dir().join(format!("vass-check-file-{}", std::process::id()));
+    std::fs::create_dir_all(&dir).unwrap();
+    let path = dir.join("bad.vass");
+    std::fs::write(&path, ".a { color: red\n").unwrap();
+    let diags = check_file(&path, false);
+    assert!(!diags.is_empty());
+    assert!(diags.iter().any(|d| d.severity == Severity::Error));
+    std::fs::remove_dir_all(&dir).ok();
+  }
 }

@@ -90,3 +90,20 @@ fn main() -> ExitCode {
     }
   }
 }
+
+#[cfg(test)]
+mod tests {
+  use super::*;
+
+  #[test]
+  fn test_cli_version() {
+    let cli = Cli::parse_from(["xtask", "version"]);
+    assert!(matches!(cli.command, Commands::Version));
+  }
+
+  #[test]
+  fn test_cli_audit() {
+    let cli = Cli::parse_from(["xtask", "audit"]);
+    assert!(matches!(cli.command, Commands::Audit));
+  }
+}

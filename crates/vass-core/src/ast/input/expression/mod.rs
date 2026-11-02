@@ -236,17 +236,40 @@ mod tests {
   fn test_expr_is_list_start_hint() {
     assert!(!Expr::Null.is_list_start_hint());
     assert!(Expr::Bool(true).is_list_start_hint());
-    assert!(Expr::Number { value: 1.0, unit: None }.is_list_start_hint());
-    assert!(Expr::Str { text: "x".to_string(), quoted: true }.is_list_start_hint());
+    assert!(
+      Expr::Number {
+        value: 1.0,
+        unit: None
+      }
+      .is_list_start_hint()
+    );
+    assert!(
+      Expr::Str {
+        text: "x".to_string(),
+        quoted: true
+      }
+      .is_list_start_hint()
+    );
   }
 
   #[test]
   fn test_expr_variants() {
     let _ = Expr::Null;
     let _ = Expr::Bool(false);
-    let _ = Expr::Number { value: 42.0, unit: Some("px".to_string()) };
-    let _ = Expr::Str { text: "hello".to_string(), quoted: true };
-    let _ = Expr::Color { hex: "#ff0000".to_string() };
-    let _ = Expr::Variable { name: "x".to_string(), span: Span::dummy() };
+    let _ = Expr::Number {
+      value: 42.0,
+      unit: Some("px".to_string()),
+    };
+    let _ = Expr::Str {
+      text: "hello".to_string(),
+      quoted: true,
+    };
+    let _ = Expr::Color {
+      hex: "#ff0000".to_string(),
+    };
+    let _ = Expr::Variable {
+      name: "x".to_string(),
+      span: Span::dummy(),
+    };
   }
 }

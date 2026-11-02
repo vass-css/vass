@@ -463,9 +463,7 @@ mod tests {
   #[test]
   fn test_error_with_file_and_span() {
     let span = Span::new(0, 10, 1, 5);
-    let err = Error::parse("Test")
-      .with_file("test.vass")
-      .with_span(span);
+    let err = Error::parse("Test").with_file("test.vass").with_span(span);
     assert!(err.file.is_some());
     assert!(err.span.is_some());
     assert_eq!(err.span.unwrap().start.line, 1);

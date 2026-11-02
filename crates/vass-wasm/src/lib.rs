@@ -11,10 +11,10 @@
 #![warn(missing_docs)]
 #![allow(dead_code)]
 
-use wasm_bindgen::prelude::*;
 use vass_core::error::Error;
-use vass_parser::{parse, Syntax};
-use vass_transpiler::{render, OutputStyle};
+use vass_parser::{Syntax, parse};
+use vass_transpiler::{OutputStyle, render};
+use wasm_bindgen::prelude::*;
 
 /// Internal compile function: parse (braces first, then indented), evaluate,
 /// and render with the given output style.
@@ -31,8 +31,7 @@ fn compile_inner(source: &str, output_style: OutputStyle) -> Result<String, Erro
 /// falling back to indented syntax (`.vass`).
 #[wasm_bindgen]
 pub fn compile(source: &str) -> Result<String, JsValue> {
-  compile_inner(source, OutputStyle::Expanded)
-    .map_err(|e| JsValue::from_str(&e.to_string()))
+  compile_inner(source, OutputStyle::Expanded).map_err(|e| JsValue::from_str(&e.to_string()))
 }
 
 /// Compile VASS source to CSS with a specific output style.
@@ -48,11 +47,10 @@ pub fn compile_with_style(source: &str, style: &str) -> Result<String, JsValue> 
     _ => {
       return Err(JsValue::from_str(
         "invalid style: expected 'expanded' or 'compressed'",
-      ))
+      ));
     }
   };
-  compile_inner(source, output_style)
-    .map_err(|e| JsValue::from_str(&e.to_string()))
+  compile_inner(source, output_style).map_err(|e| JsValue::from_str(&e.to_string()))
 }
 
 /// Initialize the WASM module.
@@ -83,7 +81,8 @@ mod tests {
 
   #[test]
   fn compile_with_variables() {
-    let result = compile_inner("$color: red;\n.a { color: $color; }", OutputStyle::Expanded).unwrap();
+    let result =
+      compile_inner("$color: red;\n.a { color: $color; }", OutputStyle::Expanded).unwrap();
     assert!(result.contains("color: red"));
   }
 
@@ -95,14 +94,17 @@ mod tests {
 
   #[test]
   fn compile_compressed_style() {
-    let result =
-      compile_inner(".a { color: red; }", OutputStyle::Compressed).unwrap();
+    let result = compile_inner(".a { color: red; }", OutputStyle::Compressed).unwrap();
     assert_eq!(result, ".a{color:red}\n");
   }
 
   #[test]
   fn compile_variables_and_math() {
-    let result = compile_inner("$base: 10px;\n.a { width: $base * 2; }", OutputStyle::Expanded).unwrap();
+    let result = compile_inner(
+      "$base: 10px;\n.a { width: $base * 2; }",
+      OutputStyle::Expanded,
+    )
+    .unwrap();
     assert!(result.contains("width: 20px"));
   }
 

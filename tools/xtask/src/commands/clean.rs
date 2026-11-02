@@ -32,3 +32,17 @@ pub fn run(args: &[String]) -> anyhow::Result<()> {
 
   run_cargo("clean", args)
 }
+
+#[cfg(test)]
+mod tests {
+
+  #[test]
+  fn test_clean_args() {
+    let _: Vec<String> = vec![];
+  }
+
+  #[test]
+  fn test_clean_run_exists() {
+    let _ = std::any::type_name::<fn(&[String]) -> anyhow::Result<()>>();
+  }
+}

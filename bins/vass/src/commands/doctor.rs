@@ -127,3 +127,51 @@ fn check_path_env(name: &str, failed: &mut usize) {
     }
   }
 }
+
+#[cfg(test)]
+mod tests {
+  use super::*;
+
+  #[test]
+  fn test_check_ok() {
+    let mut failed = 0usize;
+    check("test_check", "detail", &mut failed);
+    assert_eq!(failed, 0);
+  }
+
+  #[test]
+  fn test_check_run_ok() {
+    let mut failed = 0usize;
+    check_run("test_run", || Ok(true), &mut failed);
+    assert_eq!(failed, 0);
+  }
+
+  #[test]
+  fn test_check_run_false() {
+    let mut failed = 0usize;
+    check_run("test_run_false", || Ok(false), &mut failed);
+    assert_eq!(failed, 1);
+  }
+
+  #[test]
+  fn test_check_run_err() {
+    let mut failed = 0usize;
+    check_run("test_run_err", || Err("boom".to_string()), &mut failed);
+    assert_eq!(failed, 1);
+  }
+
+  #[test]
+  fn test_check_path_env() {
+    let mut failed = 0usize;
+    check_path_env("test_path", &mut failed);
+    // current_exe() should exist in test context
+    assert_eq!(failed, 0);
+  }
+
+  #[tokio::test]
+  async fn test_doctor_run() {
+    let result = run(Args {}).await;
+    // Doctor may fail on some checks but should not panic
+    let _ = result;
+  }
+}

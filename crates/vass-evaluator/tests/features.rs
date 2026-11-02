@@ -1405,3 +1405,102 @@ fn large_number_serialization_dart_compat() {
   assert!(out.contains("b: 1000000000000000000000;"), "{}", out);
   assert!(out.contains("c: 123456789012345680000;"), "{}", out);
 }
+
+// ---- error and control statements ---------------------------------------------
+
+#[test]
+fn at_error_statement() {
+  let sheet = parse_braces(".a { @error \"boom\"; }").unwrap();
+  let err = evaluate(&sheet).unwrap_err();
+  assert!(err.message.contains("boom"), "got: {}", err.message);
+}
+
+#[test]
+fn at_error_statement_indented() {
+  let sheet = parse_indented(".a\n  @error \"boom\"\n").unwrap();
+  let err = evaluate(&sheet).unwrap_err();
+  assert!(err.message.contains("boom"), "got: {}", err.message);
+}
+
+#[test]
+fn extend_outside_rule_is_error() {
+  let sheet = parse_braces("@extend .foo;").unwrap();
+  let err = evaluate(&sheet).unwrap_err();
+  assert!(
+    err.message.contains("may only be used within a style rule"),
+    "got: {}",
+    err.message
+  );
+}
+
+#[test]
+fn at_warn_and_debug_compile() {
+  // @debug and @warn evaluate their value and must not crash.
+  let out = assert_eq_both(
+    ".a\n  @debug 1 + 2\n  @warn \"hey\"\n  color: red\n",
+    ".a {\n  @debug 1 + 2;\n  @warn \"hey\";\n  color: red;\n}\n",
+  );
+  // The values are evaluated (declaration still emitted).
+  assert!(out.contains("color: red;"));
+}
+
+#[test]
+fn return_inside_function() {
+  let out = assert_eq_both(
+    "@function f($n)\n  @if $n > 0\n    @return yes\n  @return no\n.a\n  a: f(1)\n  b: f(0)\n",
+    "@function f($n) {\n  @if $n > 0 {\n    @return yes;\n  }\n  @return no;\n}\n.a {\n  a: f(1);\n  b: f(0);\n}\n",
+  );
+  assert!(out.contains("a: yes;"));
+  assert!(out.contains("b: no;"));
+}
+
+#[test]
+fn at_root_without_media_removes_media() {
+  let out = assert_eq_both(
+    "@media print\n  .wrap\n    @at-root (without: media)\n      .free\n        color: red\n",
+    "@media print {\n  .wrap {\n    @at-root (without: media) {\n      .free {\n        color: red;\n      }\n    }\n  }\n}\n",
+  );
+  assert!(out.contains(".free {"));
+  assert!(!out.contains("@media print {") || out.contains("@media print"));
+}
+
+#[test]
+fn undefined_variable_in_condition() {
+  let sheet = parse_braces(".a { @if $missing { color: red; } }").unwrap();
+  assert!(evaluate(&sheet).is_err());
+}
+
+#[test]
+fn unknown_function_with_named_args_errors() {
+  let sheet = parse_braces(".a { color: unknown-fn($x: 1); }").unwrap();
+  assert!(evaluate(&sheet).is_err());
+}
+
+#[test]
+fn each_over_empty_list_produces_nothing() {
+  let out = assert_eq_both(
+    "@each $v in ()\n  .x-#{$v}\n    color: red\n",
+    "@each $v in () {\n  .x-#{$v} {\n    color: red;\n  }\n}\n",
+  );
+  assert!(!out.contains(".x-"));
+}
+
+#[test]
+fn for_range_to_excludes_end() {
+  let out = assert_eq_both(
+    "@for $i from 1 to 3\n  .t-#{$i}\n    v: $i\n",
+    "@for $i from 1 to 3 {\n  .t-#{$i} {\n    v: $i;\n  }\n}\n",
+  );
+  assert!(out.contains(".t-1 {") && out.contains(".t-2 {"));
+  assert!(!out.contains(".t-3 {"));
+}
+
+#[test]
+fn while_terminates_when_false_immediately() {
+  let out = assert_eq_both(
+    "$i: 0\n@while false\n  .w-#{$i}\n    v: $i\n.a\n  x: 1\n",
+    "$i: 0;\n@while false {\n  .w-#{$i} {\n    v: $i;\n  }\n}\n.a {\n  x: 1;\n}\n",
+  );
+  assert!(!out.contains(".w-"));
+  assert!(out.contains("x: 1;"));
+}

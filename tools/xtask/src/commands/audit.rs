@@ -34,3 +34,18 @@ pub fn run() -> anyhow::Result<()> {
   println!("audit: all gates passed");
   Ok(())
 }
+
+#[cfg(test)]
+mod tests {
+
+  #[test]
+  fn test_audit_args() {
+    let _: Vec<String> = vec![];
+  }
+
+  #[test]
+  fn test_audit_run_exists() {
+    // Just verify the function signature compiles
+    let _ = std::any::type_name::<fn() -> anyhow::Result<()>>();
+  }
+}

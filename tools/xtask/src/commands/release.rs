@@ -6,17 +6,19 @@
 //! GitHub Actions release workflow which has the necessary OIDC/trusted
 //! publishing permissions.
 
-use crate::commands::{check_all_crate_versions, run_cargo, with_workspace, workspace_version};
+use crate::commands::{
+  check_all_crate_versions, run_cargo, with_workspace, workspace_root, workspace_version,
+};
 
 pub fn run(version: &str) -> anyhow::Result<()> {
   let v = version.strip_prefix('v').unwrap_or(version);
   println!("== version check ==");
-  let ws = workspace_version()?;
+  let ws = workspace_version(workspace_root())?;
   if ws != v {
     anyhow::bail!("workspace version {ws} does not match requested {v}");
   }
   println!("workspace version: {ws}");
-  check_all_crate_versions(v)?;
+  check_all_crate_versions(v, workspace_root())?;
   println!("all crates declare version {v}");
 
   println!("== quality gates ==");
@@ -50,4 +52,18 @@ pub fn run(version: &str) -> anyhow::Result<()> {
   println!("release {v}: all validation passed");
   println!("NOTE: publishing is performed by the GitHub Actions release workflow.");
   Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+  #[test]
+  fn test_release_version_strip_prefix() {
+    assert_eq!("v1.0.0".strip_prefix('v'), Some("1.0.0"));
+    assert_eq!("1.0.0".strip_prefix('v'), None);
+  }
+
+  #[test]
+  fn test_release_run_exists() {
+    let _ = std::any::type_name::<fn(&str) -> anyhow::Result<()>>();
+  }
 }

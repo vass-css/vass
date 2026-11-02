@@ -49,7 +49,7 @@ pub fn render_expanded(sheet: &CssStylesheet) -> String {
 #[cfg(test)]
 mod tests {
   use super::*;
-  use vass_core::ast::css::*;
+  use vass_core::ast::css::{CssChild, CssNode};
 
   #[test]
   fn test_render_expanded() {

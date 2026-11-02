@@ -95,3 +95,139 @@ fn calc_text(v: &Value, fname: &str) -> Result<String> {
     ))),
   }
 }
+
+#[cfg(test)]
+mod tests {
+  use super::*;
+  use vass_core::value::{BassMap, BassString, Value};
+
+  #[test]
+  fn test_calc_text_valid_unquoted() {
+    let v = Value::Str(BassString::unquoted("calc(10px + 20px)".to_string()));
+    let result = calc_text(&v, "meta.test");
+    assert!(result.is_ok());
+    assert_eq!(result.unwrap(), "calc(10px + 20px)");
+  }
+
+  #[test]
+  fn test_calc_text_quoted_string_rejected() {
+    let v = Value::Str(BassString::quoted("calc(10px)".to_string()));
+    let result = calc_text(&v, "meta.test");
+    assert!(result.is_err());
+  }
+
+  #[test]
+  fn test_calc_text_number_rejected() {
+    let v = Value::Number(vass_core::value::Number::unitless(42.0));
+    let result = calc_text(&v, "meta.test");
+    assert!(result.is_err());
+  }
+
+  #[test]
+  fn test_calc_text_empty_unquoted() {
+    let v = Value::Str(BassString::unquoted("".to_string()));
+    let result = calc_text(&v, "meta.test");
+    assert!(result.is_ok());
+    assert_eq!(result.unwrap(), "");
+  }
+
+  #[test]
+  fn test_call_unknown_name_returns_none() {
+    let args = Args {
+      positional: Vec::new(),
+      named: Vec::new(),
+    };
+    let result = call("nonexistent", args);
+    assert!(result.is_none());
+  }
+
+  #[test]
+  fn test_call_type_of() {
+    let num = Value::Number(vass_core::value::Number::unitless(42.0));
+    let args = Args {
+      positional: vec![&num],
+      named: Vec::new(),
+    };
+    let result = call("type-of", args);
+    assert!(result.is_some());
+    let result = result.unwrap().unwrap();
+    assert_eq!(result, Value::from("number"));
+  }
+
+  #[test]
+  fn test_call_inspect() {
+    let s = Value::from("hello");
+    let args = Args {
+      positional: vec![&s],
+      named: Vec::new(),
+    };
+    let result = call("inspect", args);
+    assert!(result.is_some());
+  }
+
+  #[test]
+  fn test_call_keywords_map() {
+    let map = BassMap::new();
+    let binding = Value::Map(map);
+    let args = Args {
+      positional: vec![&binding],
+      named: Vec::new(),
+    };
+    let result = call("keywords", args);
+    assert!(result.is_some());
+  }
+
+  #[test]
+  fn test_call_keywords_non_map() {
+    let s = Value::from("not a map");
+    let args = Args {
+      positional: vec![&s],
+      named: Vec::new(),
+    };
+    let result = call("keywords", args);
+    assert!(result.is_some());
+    let result = result.unwrap().unwrap();
+    match result {
+      Value::Map(m) => assert!(m.entries.is_empty()),
+      _ => panic!("expected Map"),
+    }
+  }
+
+  #[test]
+  fn test_call_missing_arg() {
+    let args = Args {
+      positional: Vec::new(),
+      named: Vec::new(),
+    };
+    let result = call("type-of", args);
+    assert!(result.is_some());
+    let result = result.unwrap();
+    assert!(result.is_err());
+  }
+
+  #[test]
+  fn test_call_calc_name_rejects_empty_name() {
+    let s = Value::Str(BassString::unquoted("(something)".to_string()));
+    let args = Args {
+      positional: vec![&s],
+      named: Vec::new(),
+    };
+    let result = call("calc-name", args);
+    assert!(result.is_some());
+    let result = result.unwrap();
+    assert!(result.is_err());
+  }
+
+  #[test]
+  fn test_call_calc_args_rejects_no_paren() {
+    let s = Value::from("not-a-calc");
+    let args = Args {
+      positional: vec![&s],
+      named: Vec::new(),
+    };
+    let result = call("calc-args", args);
+    assert!(result.is_some());
+    let result = result.unwrap();
+    assert!(result.is_err());
+  }
+}

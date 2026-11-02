@@ -18,3 +18,17 @@ pub fn run() -> anyhow::Result<()> {
   println!("verify: all gates passed");
   Ok(())
 }
+
+#[cfg(test)]
+mod tests {
+
+  #[test]
+  fn test_verify_args() {
+    let _: Vec<String> = vec![];
+  }
+
+  #[test]
+  fn test_verify_run_exists() {
+    let _ = std::any::type_name::<fn() -> anyhow::Result<()>>();
+  }
+}

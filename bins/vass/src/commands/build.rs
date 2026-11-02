@@ -124,3 +124,99 @@ fn bass_compile(input: &Path, output: &Path, style: OutputStyle) -> anyhow::Resu
   std::fs::write(output, &rendered)?;
   Ok(rendered.len())
 }
+
+#[cfg(test)]
+mod tests {
+  use super::*;
+  use crate::commands::parse_style;
+
+  #[test]
+  fn test_is_entry_stylesheet_vass() {
+    let p = std::path::Path::new("main.vass");
+    assert!(is_entry_stylesheet(p));
+  }
+
+  #[test]
+  fn test_is_entry_stylesheet_vcss() {
+    let p = std::path::Path::new("main.vcss");
+    assert!(is_entry_stylesheet(p));
+  }
+
+  #[test]
+  fn test_is_entry_stylesheet_partial() {
+    let p = std::path::Path::new("_partial.vass");
+    assert!(!is_entry_stylesheet(p));
+  }
+
+  #[test]
+  fn test_is_entry_stylesheet_other_ext() {
+    let p = std::path::Path::new("main.css");
+    assert!(!is_entry_stylesheet(p));
+  }
+
+  #[test]
+  fn test_is_entry_stylesheet_no_name() {
+    let p = std::path::Path::new(".");
+    assert!(!is_entry_stylesheet(p));
+  }
+
+  #[tokio::test]
+  async fn test_build_run_invalid_style() {
+    let result = run(Args {
+      dir: ".nonexistent_dir_for_test".to_string(),
+      out_dir: "dist".to_string(),
+      style: "expanded".to_string(),
+    })
+    .await;
+    assert!(result.is_err());
+  }
+
+  #[tokio::test]
+  async fn test_build_no_entry_stylesheets() {
+    let dir = std::env::temp_dir().join(format!("vass-build-empty-{}", std::process::id()));
+    std::fs::create_dir_all(&dir).unwrap();
+    std::fs::write(dir.join("_partial.vass"), "$x: 1\n").unwrap();
+    let result = run(Args {
+      dir: dir.to_string_lossy().to_string(),
+      out_dir: "dist".to_string(),
+      style: "expanded".to_string(),
+    })
+    .await;
+    assert!(result.is_err());
+    let msg = result.unwrap_err().to_string();
+    assert!(msg.contains("no entry stylesheets"), "got: {msg}");
+    std::fs::remove_dir_all(&dir).ok();
+  }
+
+  #[tokio::test]
+  async fn test_build_compile_error() {
+    let dir = std::env::temp_dir().join(format!("vass-build-err-{}", std::process::id()));
+    std::fs::create_dir_all(&dir).unwrap();
+    std::fs::write(dir.join("bad.vass"), "@error \"boom\"\n").unwrap();
+    let result = run(Args {
+      dir: dir.to_string_lossy().to_string(),
+      out_dir: "dist".to_string(),
+      style: "expanded".to_string(),
+    })
+    .await;
+    assert!(result.is_err());
+    let msg = result.unwrap_err().to_string();
+    assert!(msg.contains("failed to build"), "got: {msg}");
+    std::fs::remove_dir_all(&dir).ok();
+  }
+
+  #[test]
+  fn test_parse_style_expanded() {
+    assert!(parse_style("expanded").is_ok());
+  }
+
+  #[test]
+  fn test_parse_style_compressed() {
+    assert!(parse_style("compressed").is_ok());
+  }
+
+  #[test]
+  fn test_parse_style_invalid() {
+    assert!(parse_style("invalid").is_err());
+  }
+}

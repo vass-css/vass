@@ -108,3 +108,92 @@ pub async fn run(args: Args) -> anyhow::Result<()> {
   println!("compile time:  {:.2?}", elapsed);
   Ok(())
 }
+
+#[cfg(test)]
+mod tests {
+  use super::*;
+
+  #[test]
+  fn test_stats_new() {
+    let s = Stats::default();
+    assert_eq!(s.rules, 0);
+    assert_eq!(s.at_rules, 0);
+    assert_eq!(s.declarations, 0);
+    assert_eq!(s.comments, 0);
+    assert_eq!(s.raw, 0);
+    assert_eq!(s.selectors, 0);
+  }
+
+  #[test]
+  fn test_stats_visit_nodes_rule() {
+    let mut s = Stats::default();
+    let nodes = vec![CssNode::Rule {
+      selector: ".a,.b".to_string(),
+      children: vec![CssChild::decl("color", "red")],
+      group: 0,
+      open_line: 1,
+      close_line: 2,
+    }];
+    s.visit_nodes(&nodes);
+    assert_eq!(s.rules, 1);
+    assert_eq!(s.selectors, 2);
+    assert_eq!(s.declarations, 1);
+  }
+
+  #[test]
+  fn test_stats_visit_nodes_at_rule() {
+    let mut s = Stats::default();
+    let nodes = vec![CssNode::AtRule {
+      header: "@media".to_string(),
+      children: vec![CssChild::decl("color", "red")],
+      nodes: vec![],
+      group: 0,
+      open_line: 1,
+      close_line: 2,
+    }];
+    s.visit_nodes(&nodes);
+    assert_eq!(s.at_rules, 1);
+    assert_eq!(s.declarations, 1);
+  }
+
+  #[test]
+  fn test_stats_visit_nodes_comment() {
+    let mut s = Stats::default();
+    let nodes = vec![CssNode::Comment("test comment".to_string(), 1)];
+    s.visit_nodes(&nodes);
+    assert_eq!(s.comments, 1);
+  }
+
+  #[test]
+  fn test_stats_visit_nodes_raw() {
+    let mut s = Stats::default();
+    let nodes = vec![CssNode::Raw("raw content".to_string(), 1)];
+    s.visit_nodes(&nodes);
+    assert_eq!(s.raw, 1);
+  }
+
+  #[test]
+  fn test_stats_visit_children_decl() {
+    let mut s = Stats::default();
+    let children = vec![CssChild::decl("color", "red")];
+    s.visit_children(&children);
+    assert_eq!(s.declarations, 1);
+  }
+
+  #[test]
+  fn test_stats_visit_children_comment() {
+    let mut s = Stats::default();
+    let children = vec![CssChild::Comment("test".to_string(), 1)];
+    s.visit_children(&children);
+    assert_eq!(s.comments, 1);
+  }
+
+  #[tokio::test]
+  async fn test_stats_run_nonexistent_file() {
+    let result = run(Args {
+      input: "nonexistent_file_for_stats_test.vass".to_string(),
+    })
+    .await;
+    assert!(result.is_err());
+  }
+}

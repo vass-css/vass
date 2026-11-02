@@ -12,7 +12,6 @@ pub fn generate(_sheet: &CssStylesheet) -> Option<String> {
 #[cfg(test)]
 mod tests {
   use super::*;
-  use vass_core::ast::css::*;
 
   #[test]
   fn test_generate_returns_none() {

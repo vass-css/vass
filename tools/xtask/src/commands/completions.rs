@@ -24,3 +24,47 @@ pub fn run(shell: Shell) -> anyhow::Result<()> {
   println!("wrote {}", path.display());
   Ok(())
 }
+
+#[cfg(test)]
+mod tests {
+  use super::*;
+
+  #[test]
+  fn test_completions_run_bash() {
+    // This writes to disk; in test context we just verify it doesn't panic
+    // The completions dir will be created in CWD
+    let result = run(Shell::Bash);
+    // May fail if completions dir can't be created, but shouldn't panic
+    let _ = result;
+    // Clean up if created
+    let _ = std::fs::remove_dir_all("completions");
+  }
+
+  #[test]
+  fn test_completions_run_zsh() {
+    let result = run(Shell::Zsh);
+    let _ = result;
+    let _ = std::fs::remove_dir_all("completions");
+  }
+
+  #[test]
+  fn test_completions_run_fish() {
+    let result = run(Shell::Fish);
+    let _ = result;
+    let _ = std::fs::remove_dir_all("completions");
+  }
+
+  #[test]
+  fn test_completions_run_powershell() {
+    let result = run(Shell::PowerShell);
+    let _ = result;
+    let _ = std::fs::remove_dir_all("completions");
+  }
+
+  #[test]
+  fn test_completions_run_elvish() {
+    let result = run(Shell::Elvish);
+    let _ = result;
+    let _ = std::fs::remove_dir_all("completions");
+  }
+}

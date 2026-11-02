@@ -67,3 +67,18 @@ pub async fn run(args: Args) -> anyhow::Result<()> {
   }
   Ok(())
 }
+
+#[cfg(test)]
+mod tests {
+  use super::*;
+
+  #[tokio::test]
+  async fn test_lsp_run_unsupported_transport() {
+    let result = run(Args {
+      transport: "tcp".to_string(),
+      stdio: false,
+    })
+    .await;
+    assert!(result.is_err());
+  }
+}

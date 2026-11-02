@@ -94,3 +94,32 @@ source-map = true
 
   Ok(())
 }
+
+#[cfg(test)]
+mod tests {
+  use super::*;
+
+  #[tokio::test]
+  async fn test_init_run_vass() {
+    let result = run(Args {
+      name: "test_init_project_vass".to_string(),
+      vcss: false,
+    })
+    .await;
+    assert!(result.is_ok());
+    // Clean up
+    let _ = std::fs::remove_dir_all("test_init_project_vass");
+  }
+
+  #[tokio::test]
+  async fn test_init_run_vcss() {
+    let result = run(Args {
+      name: "test_init_project_vcss".to_string(),
+      vcss: true,
+    })
+    .await;
+    assert!(result.is_ok());
+    // Clean up
+    let _ = std::fs::remove_dir_all("test_init_project_vcss");
+  }
+}

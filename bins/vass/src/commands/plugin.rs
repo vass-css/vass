@@ -44,3 +44,48 @@ pub async fn run(args: Args) -> anyhow::Result<()> {
 
   Ok(())
 }
+
+#[cfg(test)]
+mod tests {
+  use super::*;
+
+  #[tokio::test]
+  async fn test_plugin_run_list() {
+    let result = run(Args {
+      command: PluginCommands::List,
+    })
+    .await;
+    assert!(result.is_ok());
+  }
+
+  #[tokio::test]
+  async fn test_plugin_run_install() {
+    let result = run(Args {
+      command: PluginCommands::Install {
+        name: "test-plugin".to_string(),
+      },
+    })
+    .await;
+    assert!(result.is_ok());
+  }
+
+  #[tokio::test]
+  async fn test_plugin_run_remove() {
+    let result = run(Args {
+      command: PluginCommands::Remove {
+        name: "test-plugin".to_string(),
+      },
+    })
+    .await;
+    assert!(result.is_ok());
+  }
+
+  #[tokio::test]
+  async fn test_plugin_run_update() {
+    let result = run(Args {
+      command: PluginCommands::Update,
+    })
+    .await;
+    assert!(result.is_ok());
+  }
+}

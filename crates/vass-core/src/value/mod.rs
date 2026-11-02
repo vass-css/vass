@@ -9,7 +9,7 @@ mod string;
 
 pub use color::modern;
 pub use color::{Color, ColorSpace, ModernColor};
-pub use number::{Number, format_f64};
+pub use number::{Number, format_f64, format_f64_compressed};
 pub use string::BassString;
 
 /// Separator used by a list value
@@ -39,7 +39,6 @@ impl Separator {
     }
   }
 }
-
 
 /// A list value
 #[derive(Debug, Clone, PartialEq)]

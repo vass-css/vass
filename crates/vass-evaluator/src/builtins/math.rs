@@ -235,3 +235,368 @@ fn clamp(args: Args) -> Result<Value> {
     Ok(Value::Number(val.clone()))
   }
 }
+
+#[cfg(test)]
+mod tests {
+  use super::*;
+  use vass_core::value::Value;
+
+  #[test]
+  fn test_call_unknown_name_returns_none() {
+    let args = Args {
+      positional: Vec::new(),
+      named: Vec::new(),
+    };
+    assert!(call("nonexistent", args).is_none());
+  }
+
+  #[test]
+  fn test_math1_abs() {
+    let n = Value::Number(vass_core::value::Number::new(-5.0, Some("px".to_string())));
+    let args = Args {
+      positional: vec![&n],
+      named: Vec::new(),
+    };
+    let result = call("abs", args);
+    assert!(result.is_some());
+    let result = result.unwrap().unwrap();
+    match result {
+      Value::Number(num) => assert_eq!(num.value, 5.0),
+      _ => panic!("expected Number"),
+    }
+  }
+
+  #[test]
+  fn test_math1_ceil() {
+    let n = Value::Number(vass_core::value::Number::new(3.2, None));
+    let args = Args {
+      positional: vec![&n],
+      named: Vec::new(),
+    };
+    let result = call("ceil", args);
+    assert!(result.is_some());
+    let result = result.unwrap().unwrap();
+    match result {
+      Value::Number(num) => assert_eq!(num.value, 4.0),
+      _ => panic!("expected Number"),
+    }
+  }
+
+  #[test]
+  fn test_math1_floor() {
+    let n = Value::Number(vass_core::value::Number::new(3.8, None));
+    let args = Args {
+      positional: vec![&n],
+      named: Vec::new(),
+    };
+    let result = call("floor", args);
+    assert!(result.is_some());
+    let result = result.unwrap().unwrap();
+    match result {
+      Value::Number(num) => assert_eq!(num.value, 3.0),
+      _ => panic!("expected Number"),
+    }
+  }
+
+  #[test]
+  fn test_math1_round() {
+    let n = Value::Number(vass_core::value::Number::new(2.5, None));
+    let args = Args {
+      positional: vec![&n],
+      named: Vec::new(),
+    };
+    let result = call("round", args);
+    assert!(result.is_some());
+  }
+
+  #[test]
+  fn test_math_div() {
+    let a = Value::Number(vass_core::value::Number::new(100.0, Some("px".to_string())));
+    let b = Value::Number(vass_core::value::Number::new(4.0, None));
+    let args = Args {
+      positional: vec![&a, &b],
+      named: Vec::new(),
+    };
+    let result = call("div", args);
+    assert!(result.is_some());
+  }
+
+  #[test]
+  fn test_math_div_by_zero() {
+    let a = Value::Number(vass_core::value::Number::new(10.0, Some("px".to_string())));
+    let b = Value::Number(vass_core::value::Number::new(0.0, None));
+    let args = Args {
+      positional: vec![&a, &b],
+      named: Vec::new(),
+    };
+    let result = call("div", args);
+    assert!(result.is_some());
+  }
+
+  #[test]
+  fn test_math_max() {
+    let a = Value::Number(vass_core::value::Number::new(5.0, None));
+    let b = Value::Number(vass_core::value::Number::new(10.0, None));
+    let args = Args {
+      positional: vec![&a, &b],
+      named: Vec::new(),
+    };
+    let result = call("max", args);
+    assert!(result.is_some());
+  }
+
+  #[test]
+  fn test_math_min() {
+    let a = Value::Number(vass_core::value::Number::new(5.0, None));
+    let b = Value::Number(vass_core::value::Number::new(10.0, None));
+    let args = Args {
+      positional: vec![&a, &b],
+      named: Vec::new(),
+    };
+    let result = call("min", args);
+    assert!(result.is_some());
+  }
+
+  #[test]
+  fn test_math_hypot() {
+    let a = Value::Number(vass_core::value::Number::new(3.0, None));
+    let b = Value::Number(vass_core::value::Number::new(4.0, None));
+    let args = Args {
+      positional: vec![&a, &b],
+      named: Vec::new(),
+    };
+    let result = call("hypot", args);
+    assert!(result.is_some());
+    let result = result.unwrap().unwrap();
+    match result {
+      Value::Number(num) => assert!((num.value - 5.0).abs() < 0.001),
+      _ => panic!("expected Number"),
+    }
+  }
+
+  #[test]
+  fn test_math_log() {
+    let n = Value::Number(vass_core::value::Number::new(100.0, None));
+    let args = Args {
+      positional: vec![&n],
+      named: Vec::new(),
+    };
+    let result = call("log", args);
+    assert!(result.is_some());
+  }
+
+  #[test]
+  fn test_math_pow() {
+    let base = Value::Number(vass_core::value::Number::new(2.0, None));
+    let exp = Value::Number(vass_core::value::Number::new(3.0, None));
+    let args = Args {
+      positional: vec![&base, &exp],
+      named: Vec::new(),
+    };
+    let result = call("pow", args);
+    assert!(result.is_some());
+    let result = result.unwrap().unwrap();
+    match result {
+      Value::Number(num) => assert_eq!(num.value, 8.0),
+      _ => panic!("expected Number"),
+    }
+  }
+
+  #[test]
+  fn test_math_sqrt() {
+    let n = Value::Number(vass_core::value::Number::new(16.0, None));
+    let args = Args {
+      positional: vec![&n],
+      named: Vec::new(),
+    };
+    let result = call("sqrt", args);
+    assert!(result.is_some());
+    let result = result.unwrap().unwrap();
+    match result {
+      Value::Number(num) => assert_eq!(num.value, 4.0),
+      _ => panic!("expected Number"),
+    }
+  }
+
+  #[test]
+  fn test_math_cos() {
+    let n = Value::Number(vass_core::value::Number::new(0.0, Some("deg".to_string())));
+    let args = Args {
+      positional: vec![&n],
+      named: Vec::new(),
+    };
+    let result = call("cos", args);
+    assert!(result.is_some());
+  }
+
+  #[test]
+  fn test_math_sin() {
+    let n = Value::Number(vass_core::value::Number::new(0.0, Some("deg".to_string())));
+    let args = Args {
+      positional: vec![&n],
+      named: Vec::new(),
+    };
+    let result = call("sin", args);
+    assert!(result.is_some());
+  }
+
+  #[test]
+  fn test_math_tan() {
+    let n = Value::Number(vass_core::value::Number::new(0.0, Some("deg".to_string())));
+    let args = Args {
+      positional: vec![&n],
+      named: Vec::new(),
+    };
+    let result = call("tan", args);
+    assert!(result.is_some());
+  }
+
+  #[test]
+  fn test_math_acos() {
+    let n = Value::Number(vass_core::value::Number::new(0.5, None));
+    let args = Args {
+      positional: vec![&n],
+      named: Vec::new(),
+    };
+    let result = call("acos", args);
+    assert!(result.is_some());
+  }
+
+  #[test]
+  fn test_math_asin() {
+    let n = Value::Number(vass_core::value::Number::new(0.5, None));
+    let args = Args {
+      positional: vec![&n],
+      named: Vec::new(),
+    };
+    let result = call("asin", args);
+    assert!(result.is_some());
+  }
+
+  #[test]
+  fn test_math_atan() {
+    let n = Value::Number(vass_core::value::Number::new(1.0, None));
+    let args = Args {
+      positional: vec![&n],
+      named: Vec::new(),
+    };
+    let result = call("atan", args);
+    assert!(result.is_some());
+  }
+
+  #[test]
+  fn test_math_atan2() {
+    let y = Value::Number(vass_core::value::Number::new(1.0, None));
+    let x = Value::Number(vass_core::value::Number::new(1.0, None));
+    let args = Args {
+      positional: vec![&y, &x],
+      named: Vec::new(),
+    };
+    let result = call("atan2", args);
+    assert!(result.is_some());
+  }
+
+  #[test]
+  fn test_math_percentage() {
+    let n = Value::Number(vass_core::value::Number::new(0.5, None));
+    let args = Args {
+      positional: vec![&n],
+      named: Vec::new(),
+    };
+    let result = call("percentage", args);
+    assert!(result.is_some());
+  }
+
+  #[test]
+  fn test_math_random() {
+    let args = Args {
+      positional: Vec::new(),
+      named: Vec::new(),
+    };
+    let result = call("random", args);
+    assert!(result.is_some());
+  }
+
+  #[test]
+  fn test_math_random_with_limit() {
+    let limit = Value::Number(vass_core::value::Number::new(100.0, None));
+    let args = Args {
+      positional: vec![&limit],
+      named: Vec::new(),
+    };
+    let result = call("random", args);
+    assert!(result.is_some());
+  }
+
+  #[test]
+  fn test_math_unit() {
+    let n = Value::Number(vass_core::value::Number::new(10.0, Some("px".to_string())));
+    let args = Args {
+      positional: vec![&n],
+      named: Vec::new(),
+    };
+    let result = call("unit", args);
+    assert!(result.is_some());
+  }
+
+  #[test]
+  fn test_math_unitless() {
+    let n = Value::Number(vass_core::value::Number::new(10.0, None));
+    let args = Args {
+      positional: vec![&n],
+      named: Vec::new(),
+    };
+    let result = call("unitless", args);
+    assert!(result.is_some());
+  }
+
+  #[test]
+  fn test_math_compatible() {
+    let a = Value::Number(vass_core::value::Number::new(10.0, Some("px".to_string())));
+    let b = Value::Number(vass_core::value::Number::new(5.0, Some("px".to_string())));
+    let args = Args {
+      positional: vec![&a, &b],
+      named: Vec::new(),
+    };
+    let result = call("compatible", args);
+    assert!(result.is_some());
+  }
+
+  #[test]
+  fn test_math_clamp() {
+    let min = Value::Number(vass_core::value::Number::new(0.0, None));
+    let val = Value::Number(vass_core::value::Number::new(5.0, None));
+    let max = Value::Number(vass_core::value::Number::new(10.0, None));
+    let args = Args {
+      positional: vec![&min, &val, &max],
+      named: Vec::new(),
+    };
+    let result = call("clamp", args);
+    assert!(result.is_some());
+  }
+
+  #[test]
+  fn test_math_invalid_units() {
+    let n = Value::Number(vass_core::value::Number::new(5.0, Some("px".to_string())));
+    let args = Args {
+      positional: vec![&n],
+      named: Vec::new(),
+    };
+    let result = call("log", args);
+    assert!(result.is_some());
+    let result = result.unwrap();
+    assert!(result.is_err());
+  }
+
+  #[test]
+  fn test_math_div_negative_exponent() {
+    let base = Value::Number(vass_core::value::Number::new(2.0, None));
+    let exp = Value::Number(vass_core::value::Number::new(-1.0, None));
+    let args = Args {
+      positional: vec![&base, &exp],
+      named: Vec::new(),
+    };
+    let result = call("pow", args);
+    assert!(result.is_some());
+  }
+}

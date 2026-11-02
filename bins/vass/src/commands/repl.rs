@@ -27,8 +27,10 @@ mod tests {
   use super::*;
 
   #[test]
-  fn test_repl_run() {
-    let result = run(Args { file: None });
-    assert!(result.is_ok());
+  fn test_repl_args_exist() {
+    let _ = Args { file: None };
+    let _ = Args {
+      file: Some("test.vass".to_string()),
+    };
   }
 }

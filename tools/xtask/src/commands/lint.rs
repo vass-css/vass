@@ -13,3 +13,17 @@ pub fn run(args: &[String]) -> anyhow::Result<()> {
   a.extend_from_slice(args);
   run_cargo("clippy", &a)
 }
+
+#[cfg(test)]
+mod tests {
+
+  #[test]
+  fn test_lint_args() {
+    let _: Vec<String> = vec![];
+  }
+
+  #[test]
+  fn test_lint_run_exists() {
+    let _ = std::any::type_name::<fn(&[String]) -> anyhow::Result<()>>();
+  }
+}

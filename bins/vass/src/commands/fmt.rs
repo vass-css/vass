@@ -93,3 +93,85 @@ fn path_braces(path: &Path, source: &str) -> bool {
 fn guess_braces(source: &str) -> bool {
   source.contains('{')
 }
+
+#[cfg(test)]
+mod tests {
+  use super::*;
+
+  #[test]
+  fn test_path_braces_vcss() {
+    let path = std::path::Path::new("test.vcss");
+    assert!(path_braces(path, ".a { color: red; }"));
+  }
+
+  #[test]
+  fn test_path_braces_scss() {
+    let path = std::path::Path::new("test.scss");
+    assert!(path_braces(path, ".a { color: red; }"));
+  }
+
+  #[test]
+  fn test_path_braces_vass() {
+    let path = std::path::Path::new("test.vass");
+    assert!(!path_braces(path, ".a { color: red; }"));
+  }
+
+  #[test]
+  fn test_path_braces_sass() {
+    let path = std::path::Path::new("test.sass");
+    assert!(!path_braces(path, ".a { color: red; }"));
+  }
+
+  #[test]
+  fn test_path_braces_unknown_ext() {
+    let path = std::path::Path::new("test.css");
+    assert!(path_braces(path, ".a { color: red; }"));
+    assert!(!path_braces(path, ".a\n  color: red\n"));
+  }
+
+  #[test]
+  fn test_path_braces_no_ext() {
+    let path = std::path::Path::new("test");
+    assert!(path_braces(path, ".a { color: red; }"));
+    assert!(!path_braces(path, ".a\n  color: red\n"));
+  }
+
+  #[test]
+  fn test_guess_braces() {
+    assert!(guess_braces(".a { color: red; }"));
+    assert!(!guess_braces(".a\n  color: red\n"));
+  }
+
+  #[tokio::test]
+  async fn test_fmt_run_no_files() {
+    let result = run(Args {
+      files: Vec::new(),
+      write: false,
+      check: false,
+    })
+    .await;
+    assert!(result.is_err());
+  }
+
+  #[tokio::test]
+  async fn test_fmt_run_stdin_with_other_files() {
+    let result = run(Args {
+      files: vec!["-".to_string(), "test.vass".to_string()],
+      write: false,
+      check: false,
+    })
+    .await;
+    assert!(result.is_err());
+  }
+
+  #[tokio::test]
+  async fn test_fmt_run_invalid_file() {
+    let result = run(Args {
+      files: vec!["nonexistent_file_for_test.vass".to_string()],
+      write: false,
+      check: false,
+    })
+    .await;
+    assert!(result.is_err());
+  }
+}
