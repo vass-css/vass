@@ -276,7 +276,7 @@ fn space_of(args: Args) -> Result<Value> {
       }
     }
   };
-  Ok(Value::Str(vass_core::value::BassString::quoted(name)))
+  Ok(Value::Str(vass_core::value::VassString::quoted(name)))
 }
 
 fn same(args: Args) -> Result<Value> {
