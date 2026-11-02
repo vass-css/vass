@@ -23,15 +23,15 @@ const ROOT: &str = concat!(env!("CARGO_MANIFEST_DIR"), "/../../tests");
 /// Explicit overrides take precedence. Cargo supplies CARGO_BIN_EXE_vass
 /// when compiling integration tests, so this remains correct when a tool
 /// such as cargo-llvm-cov uses a separate target directory.
-fn resolve_bass_bin(override_path: Option<std::ffi::OsString>, cargo_bin: Option<&str>) -> PathBuf {
+fn resolve_vass_bin(override_path: Option<std::ffi::OsString>, cargo_bin: Option<&str>) -> PathBuf {
   override_path
     .map(PathBuf::from)
     .or_else(|| cargo_bin.map(PathBuf::from))
     .unwrap_or_else(|| Path::new(env!("CARGO_MANIFEST_DIR")).join("../../target/debug/vass"))
 }
 
-fn bass_bin() -> PathBuf {
-  resolve_bass_bin(
+fn vass_bin() -> PathBuf {
+  resolve_vass_bin(
     std::env::var_os("BASS_BIN"),
     option_env!("CARGO_BIN_EXE_vass"),
   )
@@ -42,8 +42,8 @@ mod binary_resolution_tests {
   use super::*;
 
   #[test]
-  fn test_bass_bin_prefers_explicit_override() {
-    let path = resolve_bass_bin(
+  fn test_vass_bin_prefers_explicit_override() {
+    let path = resolve_vass_bin(
       Some(std::ffi::OsString::from("custom/vass")),
       Some("cargo/vass"),
     );
@@ -51,8 +51,8 @@ mod binary_resolution_tests {
   }
 
   #[test]
-  fn test_bass_bin_uses_cargo_binary_path() {
-    let path = resolve_bass_bin(None, Some("cargo-target/debug/vass"));
+  fn test_vass_bin_uses_cargo_binary_path() {
+    let path = resolve_vass_bin(None, Some("cargo-target/debug/vass"));
     assert_eq!(path, PathBuf::from("cargo-target/debug/vass"));
   }
 
@@ -66,8 +66,8 @@ mod binary_resolution_tests {
   }
 
   #[test]
-  fn test_bass_bin_uses_default_path_without_overrides() {
-    let path = resolve_bass_bin(None, None);
+  fn test_vass_bin_uses_default_path_without_overrides() {
+    let path = resolve_vass_bin(None, None);
     let expected = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../target/debug/vass");
     assert_eq!(path, expected);
   }
@@ -440,7 +440,7 @@ fn run_blocks_fixture(rel: &str, _kind: &str) -> (Status, Option<String>) {
   let base = Path::new(ROOT).join(rel);
   let dir = base.parent().unwrap_or(Path::new("")).to_path_buf();
   let mut env: HashMap<String, String> = HashMap::new();
-  env.insert("vass".to_string(), bass_bin().to_string_lossy().to_string());
+  env.insert("vass".to_string(), vass_bin().to_string_lossy().to_string());
   env.insert("tests".to_string(), ROOT.to_string());
   env.insert("dir".to_string(), dir.to_string_lossy().to_string());
   env.insert("tmp".to_string(), String::new());
@@ -508,9 +508,9 @@ fn run_blocks_fixture(rel: &str, _kind: &str) -> (Status, Option<String>) {
     let raw = if blk.bass_args {
       raw
     } else if raw == "vass" {
-      bass_bin().to_string_lossy().to_string()
+      vass_bin().to_string_lossy().to_string()
     } else if let Some(rest) = raw.strip_prefix("vass ") {
-      format!("{} {}", bass_bin().to_string_lossy(), rest)
+      format!("{} {}", vass_bin().to_string_lossy(), rest)
     } else {
       // Many fixtures invoke Vass subcommands directly (e.g. `exec ...`,
       // `fmt ...`) without a leading `vass` token. Rewrite those to use
@@ -522,7 +522,7 @@ fn run_blocks_fixture(rel: &str, _kind: &str) -> (Status, Option<String>) {
         "doctor", "explain", "list", "stats", "version", "help",
       ];
       if subcommands.contains(&cmd) {
-        format!("{} {}", bass_bin().to_string_lossy(), raw)
+        format!("{} {}", vass_bin().to_string_lossy(), raw)
       } else {
         raw
       }
@@ -532,7 +532,7 @@ fn run_blocks_fixture(rel: &str, _kind: &str) -> (Status, Option<String>) {
     // help/exit-code fixtures rely on that. Spawn the binary directly
     // so `bash -c ""` (which exits 0) doesn't mask the real exit code.
     let mut cmd = if blk.bass_args {
-      let mut c = Command::new(bass_bin());
+      let mut c = Command::new(vass_bin());
       c.args(shlex_split(&raw))
         .current_dir(tmp.path())
         .stdin(Stdio::piped())
@@ -540,7 +540,7 @@ fn run_blocks_fixture(rel: &str, _kind: &str) -> (Status, Option<String>) {
         .stderr(Stdio::piped());
       c
     } else if raw.trim().is_empty() {
-      let mut c = Command::new(bass_bin());
+      let mut c = Command::new(vass_bin());
       c.current_dir(tmp.path())
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
@@ -665,7 +665,7 @@ fn run_vcss_fixture(rel: &str) -> (Status, Option<String>) {
     return (Status::Invalid, Some("no expectation file".to_string()));
   }
 
-  let mut cmd = Command::new(bass_bin());
+  let mut cmd = Command::new(vass_bin());
   cmd
     .arg("compile")
     .arg(&base)
