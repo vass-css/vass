@@ -3,7 +3,7 @@
 use vass_core::error::{Error, Result};
 use vass_core::value::format_f64;
 use vass_core::value::{
-  BassMap, BassString, Color, ColorSpace, ListValue, ModernColor, Number, Separator, Value,
+  VassMap, VassString, Color, ColorSpace, ListValue, ModernColor, Number, Separator, Value,
 };
 
 use super::{
@@ -350,12 +350,12 @@ fn split_slash_channels(v: &Value) -> Option<(Value, Value)> {
     Value::Str(s) if !s.quoted => {
       let (a, b) = s.text.split_once('/')?;
       let chan = if a.trim().eq_ignore_ascii_case("none") {
-        Value::Str(BassString::unquoted("none"))
+        Value::Str(VassString::unquoted("none"))
       } else {
         parse_number_text(a)?
       };
       let alpha = if b.trim().eq_ignore_ascii_case("none") {
-        Value::Str(BassString::unquoted("none"))
+        Value::Str(VassString::unquoted("none"))
       } else {
         parse_number_text(b)?
       };
@@ -807,7 +807,7 @@ pub(crate) fn min_max_values(
       .map(|v| v.to_css())
       .collect::<Vec<_>>()
       .join(", ");
-    Ok(Value::Str(BassString::unquoted(format!(
+    Ok(Value::Str(VassString::unquoted(format!(
       "{}({})",
       calc_name, joined
     ))))
@@ -869,7 +869,7 @@ fn unquote(args: Args) -> Result<Value> {
   const F: &str = "unquote";
   let v = args.require(0, "string", F)?;
   Ok(match v {
-    Value::Str(s) => Value::Str(BassString::unquoted(s.text.clone())),
+    Value::Str(s) => Value::Str(VassString::unquoted(s.text.clone())),
     Value::Number(n) => unquoted(n.to_css()),
     Value::Color(c) => unquoted(c.to_css()),
     other => unquoted(other.to_css()),
@@ -893,7 +893,7 @@ fn change_case(args: Args, upper: bool) -> Result<Value> {
       } else {
         s.text.to_ascii_lowercase()
       };
-      Ok(Value::Str(BassString::new(text, s.quoted)))
+      Ok(Value::Str(VassString::new(text, s.quoted)))
     }
     _ => Err(Error::type_error(format!(
       "{}: `${}` is not a string.",
@@ -1144,7 +1144,7 @@ fn map_get(args: Args) -> Result<Value> {
       }
       Some(other) => {
         val = Some(other.clone());
-        cur = BassMap::new();
+        cur = VassMap::new();
       }
       None => return Ok(Value::Null),
     }
