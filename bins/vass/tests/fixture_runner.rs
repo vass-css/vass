@@ -32,7 +32,7 @@ fn resolve_vass_bin(override_path: Option<std::ffi::OsString>, cargo_bin: Option
 
 fn vass_bin() -> PathBuf {
   resolve_vass_bin(
-    std::env::var_os("BASS_BIN"),
+    std::env::var_os("VASS_BIN"),
     option_env!("CARGO_BIN_EXE_vass"),
   )
 }
@@ -299,7 +299,7 @@ fn shlex_split(s: &str) -> Vec<String> {
 #[derive(Debug, Clone, Default)]
 struct RunBlock {
   args: String,
-  bass_args: bool,
+  vass_args: bool,
   stdin: String,
   exit: i32,
   stdout: Vec<String>,
@@ -391,7 +391,7 @@ fn parse_spec(path: &Path, env: &HashMap<String, String>) -> Result<ParsedSpec, 
         let args = substitute(val, env).replace("\\n", "\n");
         blocks.push(RunBlock {
           args,
-          bass_args: key == "args",
+          vass_args: key == "args",
           ..Default::default()
         });
         cur_idx = Some(blocks.len() - 1);
@@ -505,7 +505,7 @@ fn run_blocks_fixture(rel: &str, _kind: &str) -> (Status, Option<String>) {
     // `{vass}` is already substituted by `substitute()`; a bare leading
     // `vass` token is rewritten to the real binary path here.
     let raw = substitute(&blk.args, &env);
-    let raw = if blk.bass_args {
+    let raw = if blk.vass_args {
       raw
     } else if raw == "vass" {
       vass_bin().to_string_lossy().to_string()
@@ -531,7 +531,7 @@ fn run_blocks_fixture(rel: &str, _kind: &str) -> (Status, Option<String>) {
     // An empty `run:` line means "invoke vass with no arguments" — the
     // help/exit-code fixtures rely on that. Spawn the binary directly
     // so `bash -c ""` (which exits 0) doesn't mask the real exit code.
-    let mut cmd = if blk.bass_args {
+    let mut cmd = if blk.vass_args {
       let mut c = Command::new(vass_bin());
       c.args(shlex_split(&raw))
         .current_dir(tmp.path())
@@ -801,7 +801,7 @@ fn run_fixture(rel: &str, quiet: bool) -> (Status, Option<String>) {
 /// Runs all non-watch fixtures and asserts none fail.
 #[test]
 fn run_all_fixtures() {
-  let quiet = std::env::var("BASS_TEST_QUIET").is_ok();
+  let quiet = std::env::var("VASS_TEST_QUIET").is_ok();
   let fixtures = discover("");
   let mut pass = 0i32;
   let mut fail = 0i32;
