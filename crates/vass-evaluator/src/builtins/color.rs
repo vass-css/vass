@@ -1612,3 +1612,424 @@ fn scale(args: Args) -> Result<Value> {
   out.missing = c.missing;
   Ok(Value::Color(out))
 }
+
+#[cfg(test)]
+mod tests {
+  use super::*;
+  use vass_core::value::Number;
+
+  fn number(value: f64) -> Value {
+    Value::Number(Number::unitless(value))
+  }
+
+  fn color_value(color: Color) -> Value {
+    Value::Color(color)
+  }
+
+  fn modern_color(space: ColorSpace, channels: [Option<f64>; 3], alpha: Option<f64>) -> Value {
+    color_value(ModernColor::new(space, channels, alpha).into_color())
+  }
+
+  fn invoke(name: &str, positional: &[Value], named: &[(&str, Value)]) -> Result<Value> {
+    let positional_refs = positional.iter().collect::<Vec<_>>();
+    let named_owned = named
+      .iter()
+      .map(|(name, value)| ((*name).to_string(), value.clone()))
+      .collect::<Vec<_>>();
+    let named_refs = named_owned
+      .iter()
+      .map(|(name, value)| (name.clone(), value))
+      .collect::<Vec<_>>();
+    call(
+      name,
+      Args {
+        positional: positional_refs,
+        named: named_refs,
+      },
+    )
+    .expect("known color member")
+  }
+
+  fn returned_color(value: Value) -> Color {
+    match value {
+      Value::Color(color) => color,
+      other => panic!("expected color result, got {}", other.inspect()),
+    }
+  }
+
+  #[test]
+  fn dispatcher_recognizes_every_documented_member() {
+    for name in member_names() {
+      assert!(call(name, Args::default()).is_some(), "missing member {name}");
+    }
+    assert!(call("not-a-color-member", Args::default()).is_none());
+  }
+
+  #[test]
+  fn legacy_channel_getters_and_channel_space_reads_work() {
+    let red = color_value(Color::rgb(255, 0, 0));
+
+    assert!(matches!(
+      invoke("channel", &[red.clone(), Value::from("RED")], &[]),
+      Ok(Value::Number(n)) if n.value == 255.0
+    ));
+    assert!(matches!(
+      invoke("channel", &[red.clone(), Value::from("alpha")], &[]),
+      Ok(Value::Number(n)) if n.value == 1.0
+    ));
+    assert!(matches!(
+      invoke(
+        "channel",
+        &[red.clone(), Value::from("red")],
+        &[("space", Value::from("display-p3"))]
+      ),
+      Ok(Value::Number(_))
+    ));
+    assert!(matches!(
+      invoke("red", std::slice::from_ref(&red), &[]),
+      Ok(Value::Number(n)) if n.value == 255.0
+    ));
+    for name in [
+      "green",
+      "blue",
+      "hue",
+      "saturation",
+      "lightness",
+      "alpha",
+      "opacity",
+      "whiteness",
+      "blackness",
+    ] {
+      assert!(invoke(name, std::slice::from_ref(&red), &[]).is_ok(), "{name}");
+    }
+
+    assert!(matches!(
+      invoke("space", std::slice::from_ref(&red), &[]),
+      Ok(Value::Str(s)) if s.text == "rgb"
+    ));
+    assert!(matches!(
+      invoke("is-legacy", std::slice::from_ref(&red), &[]),
+      Ok(Value::Bool(true))
+    ));
+    assert!(matches!(
+      invoke("is-in-gamut", std::slice::from_ref(&red), &[]),
+      Ok(Value::Bool(true))
+    ));
+  }
+
+  #[test]
+  fn channel_validation_missingness_and_powerless_paths_are_checked() {
+    let red = color_value(Color::rgb(255, 0, 0));
+    assert!(invoke("channel", &[red.clone(), number(1.0)], &[]).is_err());
+    assert!(invoke(
+      "channel",
+      &[red.clone(), Value::from("red")],
+      &[("space", Value::from("unknown-space"))]
+    )
+    .is_err());
+    assert!(invoke(
+      "channel",
+      &[red.clone(), Value::from("no-such-channel")],
+      &[]
+    )
+    .is_err());
+
+    let missing = modern_color(ColorSpace::Oklab, [None, Some(0.1), Some(0.2)], Some(1.0));
+    assert!(matches!(
+      invoke(
+        "is-missing",
+        &[missing.clone(), Value::from("lightness")],
+        &[]
+      ),
+      Ok(Value::Bool(true))
+    ));
+    assert!(matches!(
+      invoke(
+        "is-missing",
+        &[missing.clone(), Value::from("alpha")],
+        &[]
+      ),
+      Ok(Value::Bool(false))
+    ));
+
+    let powerless = modern_color(ColorSpace::Hsl, [Some(180.0), Some(0.0), Some(0.5)], Some(1.0));
+    assert!(matches!(
+      invoke(
+        "is-powerless",
+        &[powerless.clone(), Value::from("hue")],
+        &[]
+      ),
+      Ok(Value::Bool(true))
+    ));
+    assert!(invoke(
+      "is-powerless",
+      &[red.clone(), Value::from("hue")],
+      &[]
+    )
+    .is_err());
+    assert!(invoke(
+      "is-missing",
+      &[red, number(1.0)],
+      &[]
+    )
+    .is_err());
+  }
+
+  #[test]
+  fn modern_color_space_conversion_and_gamut_mapping_are_exercised() {
+    let legacy = color_value(Color::rgb(240, 20, 40));
+    let p3 = returned_color(
+      invoke(
+        "to-space",
+        &[legacy.clone(), Value::from("display-p3")],
+        &[],
+      )
+      .unwrap(),
+    );
+    assert_eq!(p3.modern.as_ref().map(|m| m.space), Some(ColorSpace::DisplayP3));
+
+    let modern_red = modern_color(
+      ColorSpace::DisplayP3,
+      [Some(1.4), Some(0.4), Some(0.2)],
+      Some(0.8),
+    );
+    assert!(matches!(
+      invoke(
+        "is-in-gamut",
+        std::slice::from_ref(&modern_red),
+        &[]
+      ),
+      Ok(Value::Bool(false))
+    ));
+    assert!(invoke(
+      "to-gamut",
+      &[modern_red.clone()],
+      &[]
+    )
+    .is_err());
+
+    let clipped = returned_color(
+      invoke(
+        "to-gamut",
+        &[
+          modern_red.clone(),
+          Value::from("display-p3"),
+          Value::from("clip"),
+        ],
+        &[],
+      )
+      .unwrap(),
+    );
+    assert!(clipped.modern.as_ref().unwrap().ch.iter().flatten().all(|v| (0.0..=1.0).contains(v)));
+
+    let unbounded = returned_color(
+      invoke(
+        "to-gamut",
+        &[
+          modern_red.clone(),
+          Value::from("xyz"),
+          Value::from("clip"),
+        ],
+        &[],
+      )
+      .unwrap(),
+    );
+    assert!(unbounded.modern.is_some());
+
+    assert!(invoke(
+      "to-gamut",
+      &[legacy.clone(), Value::Null, Value::from("unknown")],
+      &[]
+    )
+    .is_err());
+    assert!(invoke(
+      "to-gamut",
+      &[legacy.clone(), Value::Null, Value::from("clip")],
+      &[]
+    )
+    .is_ok());
+    assert!(invoke(
+      "to-space",
+      &[legacy.clone(), number(1.0)],
+      &[]
+    )
+    .is_err());
+    assert!(invoke(
+      "to-space",
+      &[legacy, Value::from("unknown-space")],
+      &[]
+    )
+    .is_err());
+  }
+
+  #[test]
+  fn hwb_constructor_and_legacy_hsl_members_cover_normalization() {
+    let hwb = returned_color(
+      invoke(
+        "hwb",
+        &[
+          number(30.0),
+          Value::Number(Number::new(150.0, Some("%".to_string()))),
+          Value::Number(Number::new(150.0, Some("%".to_string()))),
+        ],
+        &[],
+      )
+      .unwrap(),
+    );
+    assert_eq!(hwb.modern.as_ref().map(|m| m.space), Some(ColorSpace::Hwb));
+
+    assert!(invoke("hwb", &[], &[]).is_err());
+    assert!(invoke(
+      "hwb",
+      &[Value::from("invalid-channel")],
+      &[]
+    )
+    .is_err());
+
+    let hsl = modern_color(ColorSpace::Hsl, [Some(20.0), Some(0.4), Some(0.5)], Some(1.0));
+    assert!(invoke("hue", std::slice::from_ref(&hsl), &[]).is_ok());
+
+    let p3 = modern_color(ColorSpace::DisplayP3, [Some(0.2), Some(0.3), Some(0.4)], Some(1.0));
+    assert!(invoke("red", std::slice::from_ref(&p3), &[]).is_err());
+    assert!(invoke("space", std::slice::from_ref(&hsl), &[]).is_ok());
+    assert!(invoke("whiteness", std::slice::from_ref(&hsl), &[]).is_ok());
+  }
+
+  #[test]
+  fn comparison_mix_and_simple_color_operations_cover_legacy_and_modern() {
+    let red = color_value(Color::rgb(255, 0, 0));
+    let blue = color_value(Color::rgb(0, 0, 255));
+
+    assert!(matches!(
+      invoke("same", &[red.clone(), red.clone()], &[]),
+      Ok(Value::Bool(true))
+    ));
+    assert!(matches!(
+      invoke("same", &[red.clone(), blue.clone()], &[]),
+      Ok(Value::Bool(false))
+    ));
+
+    assert!(invoke("mix", &[red.clone(), blue.clone()], &[]).is_ok());
+    assert!(invoke(
+      "mix",
+      &[red.clone(), blue.clone()],
+      &[("weight", number(0.25))]
+    )
+    .is_ok());
+    assert!(invoke("mix", &[red.clone(), blue.clone()], &[("method", Value::from("bad-space"))]).is_err());
+
+    let modern = modern_color(ColorSpace::Oklch, [Some(0.6), Some(0.2), Some(40.0)], Some(1.0));
+    assert!(invoke("mix", &[red.clone(), modern.clone()], &[]).is_err());
+    assert!(invoke(
+      "mix",
+      &[red.clone(), modern],
+      &[("method", Value::from("oklch"))]
+    )
+    .is_ok());
+
+    assert!(invoke("invert", std::slice::from_ref(&red), &[]).is_ok());
+    assert!(invoke(
+      "invert",
+      &[red.clone()],
+      &[("weight", number(0.5))]
+    )
+    .is_ok());
+    assert!(invoke("grayscale", std::slice::from_ref(&red), &[]).is_ok());
+    assert!(invoke("complement", std::slice::from_ref(&red), &[]).is_ok());
+    assert!(matches!(
+      invoke("ie-hex-str", std::slice::from_ref(&red), &[]),
+      Ok(Value::Str(_))
+    ));
+  }
+
+  #[test]
+  fn change_adjust_and_scale_cover_legacy_and_modern_channels() {
+    let red = color_value(Color::rgb(100, 120, 140));
+    let changed = returned_color(
+      invoke(
+        "change",
+        std::slice::from_ref(&red),
+        &[("red", number(220.0))],
+      )
+      .unwrap(),
+    );
+    assert_eq!(changed.r, 220.0);
+
+    let alpha_changed = returned_color(
+      invoke(
+        "change",
+        std::slice::from_ref(&red),
+        &[("alpha", number(0.25))],
+      )
+      .unwrap(),
+    );
+    assert!((alpha_changed.a - 0.25).abs() < 1e-12);
+
+    let alpha_missing = returned_color(
+      invoke(
+        "change",
+        std::slice::from_ref(&red),
+        &[("alpha", Value::from("none"))],
+      )
+      .unwrap(),
+    );
+    assert!(alpha_missing.missing & missing_flags::ALPHA != 0);
+
+    assert!(invoke(
+      "change",
+      std::slice::from_ref(&red),
+      &[("not-a-channel", number(1.0))]
+    )
+    .is_err());
+    assert!(invoke(
+      "change",
+      std::slice::from_ref(&red),
+      &[("red", Value::from("not-a-number"))]
+    )
+    .is_err());
+
+    let adjusted = returned_color(
+      invoke(
+        "adjust",
+        std::slice::from_ref(&red),
+        &[("red", number(20.0)), ("alpha", number(0.1))],
+      )
+      .unwrap(),
+    );
+    assert!(adjusted.r > red.as_color().map_or(0.0, |c| c.r));
+
+    let scaled = returned_color(
+      invoke(
+        "scale",
+        std::slice::from_ref(&red),
+        &[("red", number(25.0)), ("green", number(-10.0))],
+      )
+      .unwrap(),
+    );
+    assert!(scaled.r >= 100.0);
+
+    let modern = modern_color(
+      ColorSpace::Oklch,
+      [Some(0.5), Some(0.2), Some(350.0)],
+      Some(0.5),
+    );
+    assert!(invoke(
+      "change",
+      std::slice::from_ref(&modern),
+      &[("hue", number(10.0))]
+    )
+    .is_ok());
+    assert!(invoke(
+      "adjust",
+      std::slice::from_ref(&modern),
+      &[("hue", number(30.0))]
+    )
+    .is_ok());
+    assert!(invoke(
+      "scale",
+      std::slice::from_ref(&modern),
+      &[("lightness", number(20.0))]
+    )
+    .is_ok());
+  }
+}
