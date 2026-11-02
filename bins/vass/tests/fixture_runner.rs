@@ -58,8 +58,7 @@ mod binary_resolution_tests {
 
   #[test]
   fn test_cargo_binary_path_exists_for_fixture_runner() {
-    let path = option_env!("CARGO_BIN_EXE_vass")
-      .expect("Cargo must provide CARGO_BIN_EXE_vass to integration tests");
+    let path = env!("CARGO_BIN_EXE_vass");
     assert!(
       Path::new(path).is_file(),
       "Cargo-provided VASS executable does not exist: {path}"
