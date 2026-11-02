@@ -4,14 +4,14 @@ use std::fmt;
 
 /// A VASS string: quoted (`"hello"`) or unquoted (`hello`)
 #[derive(Debug, Clone, PartialEq)]
-pub struct BassString {
+pub struct VassString {
   /// The string content (without quotes)
   pub text: String,
   /// Whether the string is quoted in CSS output
   pub quoted: bool,
 }
 
-impl BassString {
+impl VassString {
   /// Create a new string value
   pub fn new(text: impl Into<String>, quoted: bool) -> Self {
     Self {
@@ -95,7 +95,7 @@ fn push_css_escape(out: &mut String, c: char, next: Option<char>) {
   }
 }
 
-impl fmt::Display for BassString {
+impl fmt::Display for VassString {
   fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
     write!(f, "{}", self.to_css())
   }
@@ -107,24 +107,24 @@ mod tests {
 
   #[test]
   fn test_to_css() {
-    assert_eq!(BassString::unquoted("solid").to_css(), "solid");
-    assert_eq!(BassString::quoted("hello").to_css(), "\"hello\"");
+    assert_eq!(VassString::unquoted("solid").to_css(), "solid");
+    assert_eq!(VassString::quoted("hello").to_css(), "\"hello\"");
     // Reference behavior: a string containing double quotes (but no
     // single quotes) is serialized with single quotes instead of
     // backslash-escaping.
-    assert_eq!(BassString::quoted("a\"b").to_css(), "'a\"b'");
+    assert_eq!(VassString::quoted("a\"b").to_css(), "'a\"b'");
     // Both quote styles present -> double quotes with escapes
-    assert_eq!(BassString::quoted("a\"b'c").to_css(), "\"a\\\"b'c\"");
+    assert_eq!(VassString::quoted("a\"b'c").to_css(), "\"a\\\"b'c\"");
     // Backslashes are re-escaped
-    assert_eq!(BassString::quoted("a\\b").to_css(), "\"a\\\\b\"");
+    assert_eq!(VassString::quoted("a\\b").to_css(), "\"a\\\\b\"");
     // Private Use Area characters are escaped like the reference does
-    assert_eq!(BassString::quoted("\u{f112}").to_css(), "\"\\f112\"");
-    assert_eq!(BassString::quoted("\u{e000}").to_css(), "\"\\e000\"");
+    assert_eq!(VassString::quoted("\u{f112}").to_css(), "\"\\f112\"");
+    assert_eq!(VassString::quoted("\u{e000}").to_css(), "\"\\e000\"");
     // Non-PUA symbols stay literal
-    assert_eq!(BassString::quoted("\u{2192}").to_css(), "\"\u{2192}\"");
+    assert_eq!(VassString::quoted("\u{2192}").to_css(), "\"\u{2192}\"");
     // Line feed becomes the \a escape
-    assert_eq!(BassString::quoted("a\nb").to_css(), "\"a\\ab\"");
+    assert_eq!(VassString::quoted("a\nb").to_css(), "\"a\\ab\"");
     // An escape followed by a hex digit needs a terminator space
-    assert_eq!(BassString::quoted("\u{f112}a").to_css(), "\"\\f112 a\"");
+    assert_eq!(VassString::quoted("\u{f112}a").to_css(), "\"\\f112 a\"");
   }
 }
