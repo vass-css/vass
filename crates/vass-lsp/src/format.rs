@@ -560,14 +560,14 @@ mod tests {
   }
 
   #[test]
-  fn bass_preserves_space_indent_levels() {
+  fn vass_preserves_space_indent_levels() {
     let src = ".a\n  color: red\n  .b\n    color: blue\n";
     let out = format_source(src, false);
     assert_eq!(out, src);
   }
 
   #[test]
-  fn bass_comment_strip() {
+  fn vass_comment_strip() {
     let src = "// top\n.a\n  color: red // trailing\n";
     let out = format_source(src, false);
     assert!(out.starts_with("// top\n.a\n"), "{out}");
