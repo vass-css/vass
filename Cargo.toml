@@ -42,7 +42,7 @@ vass-wasm = { path = "crates/vass-wasm" }
 vass-linter = { path = "crates/vass-linter" }
 vass-fmt = { path = "crates/vass-fmt" }
 
-thiserror = "1.0"
+thiserror = "2.0"
 anyhow = "1.0"
 libc = "0.2"
 serde = { version = "1.0", features = ["derive"] }
