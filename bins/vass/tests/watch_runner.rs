@@ -15,8 +15,8 @@ use std::time::{Duration, Instant};
 
 use regex::Regex;
 
-fn bass_bin() -> PathBuf {
-  std::env::var("BASS_BIN")
+fn vass_bin() -> PathBuf {
+  std::env::var("VASS_BIN")
     .map(PathBuf::from)
     .unwrap_or_else(|_| PathBuf::from(env!("CARGO_BIN_EXE_vass")))
 }
@@ -38,7 +38,7 @@ impl Watch {
   fn new(input_name: &str, workdir: &Path) -> std::io::Result<Self> {
     let log_path = workdir.join("watch.log");
     let log_file = fs::File::create(&log_path)?;
-    let child = Command::new(bass_bin())
+    let child = Command::new(vass_bin())
       .arg("watch")
       .arg(input_name)
       .arg("--poll-interval")
@@ -438,10 +438,10 @@ fn run_all_watch_scenarios() {
   let mut skip_count = 0i32;
 
   for (name, fn_) in SCENARIOS {
-    if !bass_bin().exists() {
+    if !vass_bin().exists() {
       println!(
         "RESULT SKIP {name} NOT-VERIFIED vass binary not found at {:?}",
-        bass_bin()
+        vass_bin()
       );
       skip_count += 1;
       continue;

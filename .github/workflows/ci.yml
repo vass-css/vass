@@ -171,6 +171,16 @@ jobs:
       - name: Run stable line coverage
         run: ./scripts/coverage-line.sh
 
+      - name: Upload stable line coverage diagnostics
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: stable-line-coverage
+          path: |
+            lcov.info
+            target/tarpaulin/**
+          if-no-files-found: warn
+
   coverage-branch:
     name: Nightly Branch Coverage
     runs-on: ubuntu-latest
@@ -201,3 +211,11 @@ jobs:
 
       - name: Run nightly branch coverage
         run: ./scripts/coverage-branch.sh
+
+      - name: Upload nightly coverage diagnostics
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: nightly-coverage
+          path: target/coverage/**
+          if-no-files-found: warn

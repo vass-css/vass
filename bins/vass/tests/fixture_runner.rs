@@ -18,11 +18,59 @@ use regex::Regex;
 /// `bins/vass/../tests` relative to this crate's manifest dir).
 const ROOT: &str = concat!(env!("CARGO_MANIFEST_DIR"), "/../../tests");
 
-/// The VASS binary under test.
-fn bass_bin() -> PathBuf {
-  std::env::var("BASS_BIN")
+/// Resolve the VASS binary under test.
+///
+/// Explicit overrides take precedence. Cargo supplies CARGO_BIN_EXE_vass
+/// when compiling integration tests, so this remains correct when a tool
+/// such as cargo-llvm-cov uses a separate target directory.
+fn resolve_vass_bin(override_path: Option<std::ffi::OsString>, cargo_bin: Option<&str>) -> PathBuf {
+  override_path
     .map(PathBuf::from)
-    .unwrap_or_else(|_| Path::new(env!("CARGO_MANIFEST_DIR")).join("../../target/debug/vass"))
+    .or_else(|| cargo_bin.map(PathBuf::from))
+    .unwrap_or_else(|| Path::new(env!("CARGO_MANIFEST_DIR")).join("../../target/debug/vass"))
+}
+
+fn vass_bin() -> PathBuf {
+  resolve_vass_bin(
+    std::env::var_os("VASS_BIN"),
+    option_env!("CARGO_BIN_EXE_vass"),
+  )
+}
+
+#[cfg(test)]
+mod binary_resolution_tests {
+  use super::*;
+
+  #[test]
+  fn test_vass_bin_prefers_explicit_override() {
+    let path = resolve_vass_bin(
+      Some(std::ffi::OsString::from("custom/vass")),
+      Some("cargo/vass"),
+    );
+    assert_eq!(path, PathBuf::from("custom/vass"));
+  }
+
+  #[test]
+  fn test_vass_bin_uses_cargo_binary_path() {
+    let path = resolve_vass_bin(None, Some("cargo-target/debug/vass"));
+    assert_eq!(path, PathBuf::from("cargo-target/debug/vass"));
+  }
+
+  #[test]
+  fn test_cargo_binary_path_exists_for_fixture_runner() {
+    let path = env!("CARGO_BIN_EXE_vass");
+    assert!(
+      Path::new(path).is_file(),
+      "Cargo-provided VASS executable does not exist: {path}"
+    );
+  }
+
+  #[test]
+  fn test_vass_bin_uses_default_path_without_overrides() {
+    let path = resolve_vass_bin(None, None);
+    let expected = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../target/debug/vass");
+    assert_eq!(path, expected);
+  }
 }
 
 static DEBUG_RE: OnceLock<Regex> = OnceLock::new();
@@ -251,7 +299,7 @@ fn shlex_split(s: &str) -> Vec<String> {
 #[derive(Debug, Clone, Default)]
 struct RunBlock {
   args: String,
-  bass_args: bool,
+  vass_args: bool,
   stdin: String,
   exit: i32,
   stdout: Vec<String>,
@@ -343,7 +391,7 @@ fn parse_spec(path: &Path, env: &HashMap<String, String>) -> Result<ParsedSpec, 
         let args = substitute(val, env).replace("\\n", "\n");
         blocks.push(RunBlock {
           args,
-          bass_args: key == "args",
+          vass_args: key == "args",
           ..Default::default()
         });
         cur_idx = Some(blocks.len() - 1);
@@ -392,7 +440,7 @@ fn run_blocks_fixture(rel: &str, _kind: &str) -> (Status, Option<String>) {
   let base = Path::new(ROOT).join(rel);
   let dir = base.parent().unwrap_or(Path::new("")).to_path_buf();
   let mut env: HashMap<String, String> = HashMap::new();
-  env.insert("vass".to_string(), bass_bin().to_string_lossy().to_string());
+  env.insert("vass".to_string(), vass_bin().to_string_lossy().to_string());
   env.insert("tests".to_string(), ROOT.to_string());
   env.insert("dir".to_string(), dir.to_string_lossy().to_string());
   env.insert("tmp".to_string(), String::new());
@@ -457,12 +505,12 @@ fn run_blocks_fixture(rel: &str, _kind: &str) -> (Status, Option<String>) {
     // `{vass}` is already substituted by `substitute()`; a bare leading
     // `vass` token is rewritten to the real binary path here.
     let raw = substitute(&blk.args, &env);
-    let raw = if blk.bass_args {
+    let raw = if blk.vass_args {
       raw
     } else if raw == "vass" {
-      bass_bin().to_string_lossy().to_string()
+      vass_bin().to_string_lossy().to_string()
     } else if let Some(rest) = raw.strip_prefix("vass ") {
-      format!("{} {}", bass_bin().to_string_lossy(), rest)
+      format!("{} {}", vass_bin().to_string_lossy(), rest)
     } else {
       // Many fixtures invoke Vass subcommands directly (e.g. `exec ...`,
       // `fmt ...`) without a leading `vass` token. Rewrite those to use
@@ -474,7 +522,7 @@ fn run_blocks_fixture(rel: &str, _kind: &str) -> (Status, Option<String>) {
         "doctor", "explain", "list", "stats", "version", "help",
       ];
       if subcommands.contains(&cmd) {
-        format!("{} {}", bass_bin().to_string_lossy(), raw)
+        format!("{} {}", vass_bin().to_string_lossy(), raw)
       } else {
         raw
       }
@@ -483,8 +531,8 @@ fn run_blocks_fixture(rel: &str, _kind: &str) -> (Status, Option<String>) {
     // An empty `run:` line means "invoke vass with no arguments" — the
     // help/exit-code fixtures rely on that. Spawn the binary directly
     // so `bash -c ""` (which exits 0) doesn't mask the real exit code.
-    let mut cmd = if blk.bass_args {
-      let mut c = Command::new(bass_bin());
+    let mut cmd = if blk.vass_args {
+      let mut c = Command::new(vass_bin());
       c.args(shlex_split(&raw))
         .current_dir(tmp.path())
         .stdin(Stdio::piped())
@@ -492,7 +540,7 @@ fn run_blocks_fixture(rel: &str, _kind: &str) -> (Status, Option<String>) {
         .stderr(Stdio::piped());
       c
     } else if raw.trim().is_empty() {
-      let mut c = Command::new(bass_bin());
+      let mut c = Command::new(vass_bin());
       c.current_dir(tmp.path())
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
@@ -617,7 +665,7 @@ fn run_vcss_fixture(rel: &str) -> (Status, Option<String>) {
     return (Status::Invalid, Some("no expectation file".to_string()));
   }
 
-  let mut cmd = Command::new(bass_bin());
+  let mut cmd = Command::new(vass_bin());
   cmd
     .arg("compile")
     .arg(&base)
@@ -753,7 +801,7 @@ fn run_fixture(rel: &str, quiet: bool) -> (Status, Option<String>) {
 /// Runs all non-watch fixtures and asserts none fail.
 #[test]
 fn run_all_fixtures() {
-  let quiet = std::env::var("BASS_TEST_QUIET").is_ok();
+  let quiet = std::env::var("VASS_TEST_QUIET").is_ok();
   let fixtures = discover("");
   let mut pass = 0i32;
   let mut fail = 0i32;

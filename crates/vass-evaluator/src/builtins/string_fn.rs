@@ -35,7 +35,7 @@ fn quote(args: Args) -> Result<Value> {
 fn unquote(args: Args) -> Result<Value> {
   let v = args.require(0, "string", "string.unquote")?;
   Ok(match v {
-    Value::Str(s) => Value::Str(vass_core::value::BassString::unquoted(s.text.clone())),
+    Value::Str(s) => Value::Str(vass_core::value::VassString::unquoted(s.text.clone())),
     // Non-strings pass through unchanged (string.unquote(10px) -> 10px,
     // still a number — reference behavior)
     other => other.clone(),
@@ -52,7 +52,7 @@ fn change_case(args: Args, upper: bool) -> Result<Value> {
       } else {
         s.text.to_ascii_lowercase()
       };
-      Ok(Value::Str(vass_core::value::BassString::new(
+      Ok(Value::Str(vass_core::value::VassString::new(
         text, s.quoted,
       )))
     }

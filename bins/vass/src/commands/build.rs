@@ -47,7 +47,7 @@ pub async fn run(args: Args) -> anyhow::Result<()> {
     let rel = entry.strip_prefix(&src).unwrap_or(entry.as_path());
     let out = PathBuf::from(&args.out_dir).join(rel).with_extension("css");
 
-    match bass_compile(entry, &out, style) {
+    match vass_compile(entry, &out, style) {
       Ok(bytes) => {
         println!(
           "built {} -> {} ({bytes} bytes)",
@@ -99,7 +99,7 @@ fn is_entry_stylesheet(p: &Path) -> bool {
   )
 }
 
-fn bass_compile(input: &Path, output: &Path, style: OutputStyle) -> anyhow::Result<usize> {
+fn vass_compile(input: &Path, output: &Path, style: OutputStyle) -> anyhow::Result<usize> {
   let source = vass_io::read_to_string(input).map_err(|e| anyhow::anyhow!("{}", e))?;
   let syntax = vass_parser::detect_syntax(input);
   // Same rustc-style diagnostic blocks as `vass compile` (snippet + caret

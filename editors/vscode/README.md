@@ -87,14 +87,14 @@ code --install-extension vass-vscode-0.2.1.vsix
 `…` > `Install from VSIX…`, and pick the file.)
 
 Upgrades cleanly over 0.2.0 — same extension identity
-(`basslang.vass-vscode`).
+(`vasslang.vass-vscode`).
 
 ### Option B — from the source folder
 
 Copy this folder into your VS Code extensions directory and restart VS Code:
 
 ```powershell
-Copy-Item -Recurse editors\vscode "$env:USERPROFILE\.vscode\extensions\basslang.vass-vscode-0.2.1"
+Copy-Item -Recurse editors\vscode "$env:USERPROFILE\.vscode\extensions\vasslang.vass-vscode-1.0.0"
 ```
 
 No `npm install` is needed — the extension has **zero dependencies**.

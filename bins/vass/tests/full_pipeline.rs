@@ -26,7 +26,7 @@ fn core_value_null_bool_number() {
   let v = vass_core::value::Value::Number(n);
   assert_eq!(v.type_name(), "number");
 
-  let s = vass_core::value::BassString::unquoted("hello");
+  let s = vass_core::value::VassString::unquoted("hello");
   let v = vass_core::value::Value::Str(s);
   assert_eq!(v.type_name(), "string");
 }
@@ -42,7 +42,7 @@ fn core_value_list_map() {
   );
   assert_eq!(list.to_css(), "1");
 
-  let map = vass_core::value::BassMap::new();
+  let map = vass_core::value::VassMap::new();
   assert!(map.entries.is_empty());
   let v = vass_core::value::Value::Map(map);
   assert_eq!(v.type_name(), "map");
@@ -62,7 +62,7 @@ fn core_value_color() {
 
 #[test]
 fn core_value_inspect_debug() {
-  let v = vass_core::value::Value::Str(vass_core::value::BassString::quoted("hi".to_string()));
+  let v = vass_core::value::Value::Str(vass_core::value::VassString::quoted("hi".to_string()));
   assert_eq!(v.to_debug_string(), "hi");
 
   let v = vass_core::value::Value::Number(vass_core::value::Number::unitless(1.5));
@@ -104,7 +104,7 @@ fn core_list_to_css() {
 
 #[test]
 fn core_map_ops() {
-  let mut m = vass_core::value::BassMap::new();
+  let mut m = vass_core::value::VassMap::new();
   m.set(
     vass_core::value::Value::from("a"),
     vass_core::value::Value::from(1.0),
@@ -124,12 +124,12 @@ fn core_map_ops() {
 
 #[test]
 fn core_map_deep_merge() {
-  let mut a = vass_core::value::BassMap::new();
+  let mut a = vass_core::value::VassMap::new();
   a.set(
     vass_core::value::Value::from("color"),
     vass_core::value::Value::from(1.0),
   );
-  let mut b = vass_core::value::BassMap::new();
+  let mut b = vass_core::value::VassMap::new();
   b.set(
     vass_core::value::Value::from("width"),
     vass_core::value::Value::from(2.0),
@@ -320,15 +320,15 @@ fn core_util_string() {
 #[test]
 fn core_bass_string() {
   assert_eq!(
-    vass_core::value::BassString::unquoted("solid").to_css(),
+    vass_core::value::VassString::unquoted("solid").to_css(),
     "solid"
   );
   assert_eq!(
-    vass_core::value::BassString::quoted("hello").to_css(),
+    vass_core::value::VassString::quoted("hello").to_css(),
     "\"hello\""
   );
   assert_eq!(
-    vass_core::value::BassString::quoted("a\"b").to_css(),
+    vass_core::value::VassString::quoted("a\"b").to_css(),
     "'a\"b'"
   );
 }

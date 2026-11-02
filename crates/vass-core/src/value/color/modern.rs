@@ -1264,4 +1264,168 @@ mod tests {
     let back = to_srgb_linear(oklch, ColorSpace::Oklch);
     assert!((back[0] - 1.0).abs() < 1e-9 && back[1].abs() < 1e-9 && back[2].abs() < 1e-9);
   }
+  #[test]
+  fn every_color_space_exposes_consistent_metadata() {
+    let spaces = [
+      ColorSpace::Srgb,
+      ColorSpace::SrgbLinear,
+      ColorSpace::DisplayP3,
+      ColorSpace::A98Rgb,
+      ColorSpace::ProphotoRgb,
+      ColorSpace::Rec2020,
+      ColorSpace::Xyz,
+      ColorSpace::XyzD50,
+      ColorSpace::Hsl,
+      ColorSpace::Hwb,
+      ColorSpace::Lab,
+      ColorSpace::Lch,
+      ColorSpace::Oklab,
+      ColorSpace::Oklch,
+    ];
+
+    for space in spaces {
+      assert_eq!(ColorSpace::from_name(space.name()), Some(space));
+      assert!(!space.channels().is_empty());
+      for channel in space.channels() {
+        let value = 12.5;
+        let stored = space.channel_in(channel, value);
+        assert!((space.channel_out(channel, stored) - value).abs() < 1e-12);
+        if *channel == "hue" {
+          assert_eq!(space.channel_unit(channel), Some("deg"));
+        }
+      }
+      assert_eq!(space.channel_unit("not-a-channel"), None);
+      for index in 0..3 {
+        let _ = space.channel_bounds(index);
+      }
+      let _ = space.is_legacy();
+      let _ = space.is_polar();
+      let _ = space.is_bounded();
+    }
+
+    assert_eq!(ColorSpace::from_name("RGB"), Some(ColorSpace::Srgb));
+    assert_eq!(ColorSpace::from_name("xyz-d65"), Some(ColorSpace::Xyz));
+    assert_eq!(
+      ColorSpace::from_name("srgb-linear"),
+      Some(ColorSpace::SrgbLinear)
+    );
+    assert_eq!(ColorSpace::from_name("not-a-space"), None);
+
+    assert!(ColorSpace::Srgb.is_legacy());
+    assert!(ColorSpace::Hsl.is_legacy());
+    assert!(!ColorSpace::DisplayP3.is_legacy());
+    assert!(ColorSpace::Oklch.is_polar());
+    assert!(!ColorSpace::Lab.is_polar());
+    assert!(!ColorSpace::Xyz.is_bounded());
+    assert!(!ColorSpace::XyzD50.is_bounded());
+    assert!(ColorSpace::Srgb.is_bounded());
+  }
+
+  #[test]
+  fn modern_color_missing_channels_read_as_zero() {
+    let color = ModernColor::new(ColorSpace::Oklab, [Some(0.25), None, Some(-0.1)], None);
+
+    assert_eq!(color.value_or_zero(0), 0.25);
+    assert_eq!(color.value_or_zero(1), 0.0);
+    assert_eq!(color.value_or_zero(2), -0.1);
+    assert_eq!(color.alpha, None);
+  }
+
+  #[test]
+  fn transfer_functions_cover_linear_and_gamma_ranges() {
+    assert!((srgb_to_linear(0.02) - 0.02 / 12.92).abs() < 1e-12);
+    assert!(srgb_to_linear(0.5) > 0.0);
+    assert!(srgb_to_linear(-0.5) < 0.0);
+    assert!((linear_to_srgb(0.001) - 0.001 * 12.92).abs() < 1e-12);
+    assert!(linear_to_srgb(0.5) > 0.0);
+    assert!(linear_to_srgb(-0.5) < 0.0);
+
+    assert!(a98_to_linear(0.5) > 0.0);
+    assert!(a98_to_linear(-0.5) < 0.0);
+    assert!(linear_to_a98(0.5) > 0.0);
+    assert!(linear_to_a98(-0.5) < 0.0);
+
+    assert!((prophoto_to_linear(0.01) - 0.01 / 16.0).abs() < 1e-12);
+    assert!(prophoto_to_linear(0.5) > 0.0);
+    assert!(prophoto_to_linear(-0.5) < 0.0);
+    assert!(linear_to_prophoto(0.001) > 0.0);
+    assert!(linear_to_prophoto(0.5) > 0.0);
+    assert!(linear_to_prophoto(-0.5) < 0.0);
+
+    assert!(rec2020_to_linear(0.5) > 0.0);
+    assert!(rec2020_to_linear(-0.5) < 0.0);
+    assert!(linear_to_rec2020(0.5) > 0.0);
+    assert!(linear_to_rec2020(-0.5) < 0.0);
+  }
+
+  #[test]
+  fn conversion_hub_exercises_every_source_and_destination_space() {
+    let spaces = [
+      ColorSpace::Srgb,
+      ColorSpace::SrgbLinear,
+      ColorSpace::DisplayP3,
+      ColorSpace::A98Rgb,
+      ColorSpace::ProphotoRgb,
+      ColorSpace::Rec2020,
+      ColorSpace::Xyz,
+      ColorSpace::XyzD50,
+      ColorSpace::Hsl,
+      ColorSpace::Hwb,
+      ColorSpace::Lab,
+      ColorSpace::Lch,
+      ColorSpace::Oklab,
+      ColorSpace::Oklch,
+    ];
+
+    for from in spaces {
+      for to in spaces {
+        let converted = convert_native([0.25, 0.5, 0.75], from, to);
+        assert!(
+          converted.iter().all(|channel| channel.is_finite()),
+          "non-finite conversion from {:?} to {:?}: {:?}",
+          from,
+          to,
+          converted
+        );
+        if from == to {
+          assert_eq!(converted, [0.25, 0.5, 0.75]);
+        }
+      }
+    }
+  }
+
+  #[test]
+  fn hsl_and_hwb_conversions_cover_achromatic_and_chromatic_edges() {
+    let gray = linear_rgb_to_hsl([0.4, 0.4, 0.4]);
+    assert_eq!(gray, (0.0, 0.0, 0.4));
+
+    let red_high = linear_rgb_to_hsl([1.0, 0.5, 0.75]);
+    assert!(red_high.0 > 0.0 && red_high.1 > 0.0 && red_high.2 > 0.5);
+    let red_low = linear_rgb_to_hsl([1.0, 0.0, 0.0]);
+    assert_eq!(red_low.0, 0.0);
+    let green = linear_rgb_to_hsl([0.0, 1.0, 0.0]);
+    assert_eq!(green.0, 120.0);
+    let blue = linear_rgb_to_hsl([0.0, 0.0, 1.0]);
+    assert_eq!(blue.0, 240.0);
+
+    assert_eq!(hsl_to_linear_rgb([180.0, 0.0, 0.25]), [0.25, 0.25, 0.25]);
+    let hsl_rgb = hsl_to_linear_rgb([210.0, 0.7, 0.6]);
+    assert!(hsl_rgb.iter().all(|channel| channel.is_finite()));
+
+    let hwb = rgb_to_hwb([0.2, 0.4, 0.8]);
+    assert!(hwb.0 >= 0.0 && hwb.0 <= 360.0);
+    assert_eq!(hwb_to_rgb([0.0, 0.8, 0.4]), [2.0 / 3.0; 3]);
+    let rgb = hwb_to_rgb([60.0, 0.2, 0.3]);
+    assert!(rgb.iter().all(|channel| channel.is_finite()));
+  }
+
+  #[test]
+  fn lab_lch_conversion_handles_negative_hue_and_round_trips() {
+    let lch = lab_to_lch([0.6, -0.2, -0.3]);
+    assert!(lch[2] >= 0.0 && lch[2] < 360.0);
+    let lab = lch_to_lab(lch);
+    assert!((lab[0] - 0.6).abs() < 1e-12);
+    assert!((lab[1] + 0.2).abs() < 1e-12);
+    assert!((lab[2] + 0.3).abs() < 1e-12);
+  }
 }

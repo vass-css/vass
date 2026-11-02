@@ -4,7 +4,7 @@
 //! existence checks) and are intercepted by the evaluator itself.
 
 use vass_core::error::Result;
-use vass_core::value::{BassMap, ListValue, Separator, Value};
+use vass_core::value::{ListValue, Separator, Value, VassMap};
 
 use super::{Args, str_value};
 
@@ -30,7 +30,7 @@ pub fn call(name: &str, args: Args) -> Option<Result<Value>> {
         Value::ArgList(a) => Ok(Value::Map(a.as_map())),
         other => Ok(Value::Map(match other {
           Value::Map(m) => m.clone(),
-          _ => BassMap::new(),
+          _ => VassMap::new(),
         })),
       },
       // Calculations are represented as unquoted `name(...)` strings;
@@ -99,11 +99,11 @@ fn calc_text(v: &Value, fname: &str) -> Result<String> {
 #[cfg(test)]
 mod tests {
   use super::*;
-  use vass_core::value::{BassMap, BassString, Value};
+  use vass_core::value::{Value, VassMap, VassString};
 
   #[test]
   fn test_calc_text_valid_unquoted() {
-    let v = Value::Str(BassString::unquoted("calc(10px + 20px)".to_string()));
+    let v = Value::Str(VassString::unquoted("calc(10px + 20px)".to_string()));
     let result = calc_text(&v, "meta.test");
     assert!(result.is_ok());
     assert_eq!(result.unwrap(), "calc(10px + 20px)");
@@ -111,7 +111,7 @@ mod tests {
 
   #[test]
   fn test_calc_text_quoted_string_rejected() {
-    let v = Value::Str(BassString::quoted("calc(10px)".to_string()));
+    let v = Value::Str(VassString::quoted("calc(10px)".to_string()));
     let result = calc_text(&v, "meta.test");
     assert!(result.is_err());
   }
@@ -125,7 +125,7 @@ mod tests {
 
   #[test]
   fn test_calc_text_empty_unquoted() {
-    let v = Value::Str(BassString::unquoted("".to_string()));
+    let v = Value::Str(VassString::unquoted("".to_string()));
     let result = calc_text(&v, "meta.test");
     assert!(result.is_ok());
     assert_eq!(result.unwrap(), "");
@@ -167,7 +167,7 @@ mod tests {
 
   #[test]
   fn test_call_keywords_map() {
-    let map = BassMap::new();
+    let map = VassMap::new();
     let binding = Value::Map(map);
     let args = Args {
       positional: vec![&binding],
@@ -207,7 +207,7 @@ mod tests {
 
   #[test]
   fn test_call_calc_name_rejects_empty_name() {
-    let s = Value::Str(BassString::unquoted("(something)".to_string()));
+    let s = Value::Str(VassString::unquoted("(something)".to_string()));
     let args = Args {
       positional: vec![&s],
       named: Vec::new(),
