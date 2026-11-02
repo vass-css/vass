@@ -53,7 +53,7 @@ tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 clap = { version = "4.0", features = ["derive"] }
 clap_complete = "4.0"
 indexmap = "2.0"
-hashbrown = "0.14"
+hashbrown = "0.17"
 smallvec = "1.11"
 smartstring = "1.0"
 bitflags = "2.4"
