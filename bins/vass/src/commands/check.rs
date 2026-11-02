@@ -209,7 +209,7 @@ mod tests {
 
   #[test]
   fn walk_skips_vendor_dirs() {
-    let tmp = std::env::temp_dir().join("bass_check_walk_test");
+    let tmp = std::env::temp_dir().join("vass_check_walk_test");
     let _ = std::fs::remove_dir_all(&tmp);
     std::fs::create_dir_all(tmp.join("node_modules")).unwrap();
     std::fs::create_dir_all(tmp.join("src")).unwrap();
