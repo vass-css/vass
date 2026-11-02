@@ -1,5 +1,6 @@
 //! Subprocess tests for the VASS LSP server entry point.
 
+use std::io::Write;
 use std::process::{Command, Stdio};
 
 fn run_server(args: &[&str]) -> std::process::Output {
@@ -38,13 +39,42 @@ fn unknown_argument_prints_usage_and_exits_two() {
   assert!(stderr.contains("communicates over stdio"));
 }
 
+fn frame(message: &str) -> String {
+  format!("Content-Length: {}\\r\\n\\r\\n{message}", message.len())
+}
+
 #[test]
-fn no_arguments_starts_stdio_server_and_exits_on_eof() {
-  let output = run_server(&[]);
+fn no_arguments_starts_stdio_server_and_handles_shutdown() {
+  let mut child = Command::new(env!("CARGO_BIN_EXE_vass-lsp-server"))
+    .stdin(Stdio::piped())
+    .stdout(Stdio::piped())
+    .stderr(Stdio::piped())
+    .spawn()
+    .expect("LSP server executable should start");
+
+  let input = [
+    frame(r#"{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"processId":null,"rootUri":null,"capabilities":{}}}"#),
+    frame(r#"{"jsonrpc":"2.0","method":"initialized","params":{}}"#),
+    frame(r#"{"jsonrpc":"2.0","id":2,"method":"shutdown","params":{}}"#),
+    frame(r#"{"jsonrpc":"2.0","method":"exit","params":null}"#),
+  ]
+  .concat();
+
+  child
+    .stdin
+    .take()
+    .expect("stdin should be piped")
+    .write_all(input.as_bytes())
+    .expect("LSP protocol messages should be sent");
+
+  let output = child.wait_with_output().expect("LSP server should exit");
   assert!(
     output.status.success(),
-    "LSP server should shut down cleanly on stdin EOF; stderr: {}",
+    "LSP server should shut down cleanly; stderr: {}",
     String::from_utf8_lossy(&output.stderr)
   );
-  assert!(output.stdout.is_empty(), "LSP protocol output must not be polluted");
+  assert!(
+    String::from_utf8_lossy(&output.stdout).contains("Content-Length:"),
+    "LSP responses should use Content-Length framing"
+  );
 }
