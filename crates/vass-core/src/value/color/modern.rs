@@ -1311,14 +1311,14 @@ mod tests {
     );
     assert_eq!(ColorSpace::from_name("not-a-space"), None);
 
-    assert_eq!(ColorSpace::Srgb.is_legacy(), true);
-    assert_eq!(ColorSpace::Hsl.is_legacy(), true);
-    assert_eq!(ColorSpace::DisplayP3.is_legacy(), false);
-    assert_eq!(ColorSpace::Oklch.is_polar(), true);
-    assert_eq!(ColorSpace::Lab.is_polar(), false);
-    assert_eq!(ColorSpace::Xyz.is_bounded(), false);
-    assert_eq!(ColorSpace::XyzD50.is_bounded(), false);
-    assert_eq!(ColorSpace::Srgb.is_bounded(), true);
+    assert!(ColorSpace::Srgb.is_legacy());
+    assert!(ColorSpace::Hsl.is_legacy());
+    assert!(!ColorSpace::DisplayP3.is_legacy());
+    assert!(ColorSpace::Oklch.is_polar());
+    assert!(!ColorSpace::Lab.is_polar());
+    assert!(!ColorSpace::Xyz.is_bounded());
+    assert!(!ColorSpace::XyzD50.is_bounded());
+    assert!(ColorSpace::Srgb.is_bounded());
   }
 
   #[test]
