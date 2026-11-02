@@ -23,10 +23,7 @@ const ROOT: &str = concat!(env!("CARGO_MANIFEST_DIR"), "/../../tests");
 /// Explicit overrides take precedence. Cargo supplies CARGO_BIN_EXE_vass
 /// when compiling integration tests, so this remains correct when a tool
 /// such as cargo-llvm-cov uses a separate target directory.
-fn resolve_bass_bin(
-  override_path: Option<std::ffi::OsString>,
-  cargo_bin: Option<&str>,
-) -> PathBuf {
+fn resolve_bass_bin(override_path: Option<std::ffi::OsString>, cargo_bin: Option<&str>) -> PathBuf {
   override_path
     .map(PathBuf::from)
     .or_else(|| cargo_bin.map(PathBuf::from))
