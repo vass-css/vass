@@ -22,7 +22,7 @@ pub use modules::{
 };
 
 use vass_core::error::{Error, Result};
-use vass_core::value::{BassMap, BassString, ListValue, Separator, Value};
+use vass_core::value::{VassMap, VassString, ListValue, Separator, Value};
 
 /// Evaluated call arguments: positional plus named
 #[derive(Debug, Default)]
@@ -60,12 +60,12 @@ impl<'a> Args<'a> {
   }
 
   /// The named argument map (for rest/keyword handling)
-  pub fn named_map(&self) -> BassMap {
-    BassMap {
+  pub fn named_map(&self) -> VassMap {
+    VassMap {
       entries: self
         .named
         .iter()
-        .map(|(k, v)| (Value::Str(BassString::unquoted(k.clone())), (*v).clone()))
+        .map(|(k, v)| (Value::Str(VassString::unquoted(k.clone())), (*v).clone()))
         .collect(),
     }
   }
@@ -170,11 +170,11 @@ pub fn to_list(v: &Value) -> (Vec<Value>, Separator, bool) {
 }
 
 /// Coerce to a map (arglists use their named entries)
-pub fn need_map(v: &Value, fname: &str, arg: &str) -> Result<BassMap> {
+pub fn need_map(v: &Value, fname: &str, arg: &str) -> Result<VassMap> {
   match v {
     Value::Map(m) => Ok(m.clone()),
     Value::ArgList(a) => Ok(a.as_map()),
-    Value::List(l) if l.items.is_empty() => Ok(BassMap::new()),
+    Value::List(l) if l.items.is_empty() => Ok(VassMap::new()),
     _ => Err(Error::type_error(format!(
       "{}: `${}` is not a map (got {}).",
       fname,
@@ -186,12 +186,12 @@ pub fn need_map(v: &Value, fname: &str, arg: &str) -> Result<BassMap> {
 
 /// Build a string value
 pub fn str_value(text: impl Into<String>, quoted: bool) -> Value {
-  Value::Str(BassString::new(text, quoted))
+  Value::Str(VassString::new(text, quoted))
 }
 
 /// Build an unquoted string value
 pub fn unquoted(text: impl Into<String>) -> Value {
-  Value::Str(BassString::unquoted(text))
+  Value::Str(VassString::unquoted(text))
 }
 
 /// Build a unitless number value
@@ -237,7 +237,7 @@ mod tests {
     // Scalars carry no decided separator (reference `undecided`):
     // join/append auto rules fall through to the other operand
     assert_eq!(sep, Separator::Undecided);
-    let (items, sep, _) = to_list(&Value::Map(BassMap::new()));
+    let (items, sep, _) = to_list(&Value::Map(VassMap::new()));
     assert_eq!(items.len(), 0);
     assert_eq!(sep, Separator::Comma);
   }
