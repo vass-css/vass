@@ -1996,7 +1996,11 @@ mod tests {
       )
       .unwrap(),
     );
-    assert!(adjusted.r > red.as_color().map_or(0.0, |c| c.r));
+    let original_red = match &red {
+      Value::Color(color) => color.r,
+      _ => unreachable!(),
+    };
+    assert!(adjusted.r > original_red);
 
     let scaled = returned_color(
       invoke(
