@@ -3,7 +3,7 @@
 use vass_core::error::{Error, Result};
 use vass_core::value::format_f64;
 use vass_core::value::{
-  VassMap, VassString, Color, ColorSpace, ListValue, ModernColor, Number, Separator, Value,
+  Color, ColorSpace, ListValue, ModernColor, Number, Separator, Value, VassMap, VassString,
 };
 
 use super::{
