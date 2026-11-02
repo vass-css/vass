@@ -22,7 +22,7 @@ pub use modules::{
 };
 
 use vass_core::error::{Error, Result};
-use vass_core::value::{VassMap, VassString, ListValue, Separator, Value};
+use vass_core::value::{ListValue, Separator, Value, VassMap, VassString};
 
 /// Evaluated call arguments: positional plus named
 #[derive(Debug, Default)]
