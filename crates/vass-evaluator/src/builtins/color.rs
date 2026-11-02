@@ -1800,7 +1800,7 @@ mod tests {
       invoke("is-in-gamut", std::slice::from_ref(&modern_red), &[]),
       Ok(Value::Bool(false))
     ));
-    assert!(invoke("to-gamut", &[modern_red.clone()], &[]).is_err());
+    assert!(invoke("to-gamut", std::slice::from_ref(&modern_red), &[]).is_err());
 
     let clipped = returned_color(
       invoke(
@@ -1939,7 +1939,7 @@ mod tests {
     );
 
     assert!(invoke("invert", std::slice::from_ref(&red), &[]).is_ok());
-    assert!(invoke("invert", &[red.clone()], &[("weight", number(0.5))]).is_ok());
+    assert!(invoke("invert", std::slice::from_ref(&red), &[("weight", number(0.5))]).is_ok());
     assert!(invoke("grayscale", std::slice::from_ref(&red), &[]).is_ok());
     assert!(invoke("complement", std::slice::from_ref(&red), &[]).is_ok());
     assert!(matches!(
